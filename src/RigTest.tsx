@@ -15,7 +15,7 @@ const poses = (rig: Rig): RigPose[] => [
 ];
 
 export const RigTest: React.FC = () => (
-  <AbsoluteFill style={{background: '#7a8aa0'}}>
+  <AbsoluteFill style={{background: '#3cc46a'}}>
     {Object.keys(RIGS).map((id, row) => (
       <div key={id} style={{position: 'absolute', top: 40 + row * 620, left: 0, width: 1080, height: 600}}>
         <svg width={1080} height={600}>

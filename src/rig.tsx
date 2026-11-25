@@ -7,7 +7,8 @@ import {TIMELINE} from './lib';
  * 原图就是「静止姿势」，所有角度都是相对原图的增量（度，顺时针为正）。
  */
 
-type Part = {file: string; x: number; y: number; w: number; h: number; pivot: [number, number]; parent: string | null};
+/** base：远侧肢体复用近侧肢体的图，先绕近侧关节转到远侧原来的角度、再平移到远侧关节；shade：压暗显得在后面 */
+type Part = {file: string; x: number; y: number; w: number; h: number; pivot: [number, number]; parent: string | null; base?: {dx: number; dy: number; rot: number; pivot: [number, number]}; shade?: number};
 export type Rig = {size: [number, number]; facing: 1 | -1; ground: number; order: string[]; parts: Record<string, Part>; keypoints: Record<string, [number, number]>; hand?: [number, number]; feet?: {near: [number, number]; far: [number, number]}};
 export type RigPose = Partial<Record<'lean' | 'head' | 'arm' | 'arm_far' | 'leg_near' | 'leg_far', number>>;
 
@@ -69,7 +70,12 @@ export const RigPuppet: React.FC<{id: string; pose: RigPose; height: number; fac
         const p = P[name];
         return (
           <g key={name} transform={rot(name)}>
-            <image href={staticFile(`images/${IMGSET}/rig_${id}/${p.file}`)} x={p.x} y={p.y} width={p.w} height={p.h} />
+            <g
+              transform={p.base ? `translate(${p.base.dx} ${p.base.dy}) rotate(${p.base.rot} ${p.base.pivot[0]} ${p.base.pivot[1]})` : undefined}
+              style={{filter: p.shade ? `brightness(${p.shade})` : undefined}}
+            >
+              <image href={staticFile(`images/${IMGSET}/rig_${id}/${p.file}`)} x={p.x} y={p.y} width={p.w} height={p.h} />
+            </g>
             {name === 'arm' && prop && wrist && (
               <g transform={`translate(${wrist[0]}, ${wrist[1]})`}>
                 <image href={staticFile(`images/${IMGSET}/${prop}`)} x={-60} y={-150} width={120} height={160} />
