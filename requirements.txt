@@ -1,0 +1,4 @@
+# 项目主环境（.venv）：配音调度、配乐合成
+edge-tts>=7
+numpy
+scipy

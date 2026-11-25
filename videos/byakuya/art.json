@@ -1,0 +1,169 @@
+{
+  "style": "soft painterly flat illustration for a Chinese animated story narration video, semi-realistic proportions, simple calm faces with small eyes and minimal features (not anime, no big eyes), smooth airbrushed gradients, atmospheric haze, dreamy soft glow and rim light, muted desaturated cool blue and indigo palette with soft white highlights, gentle film grain, melancholic cinematic mood, 1970s Osaka Japan, no text, no letters, no watermark",
+  "character_style": "full body, standing, centered, plain flat light gray background, no shadow on background, no text",
+  "characters": {
+    "ryoji_kid": {
+      "prompt": "an 11-year-old thin Japanese boy, messy black hair falling over his eyes, pale skin, gloomy quiet expression, dark gray knit sweater, dark navy shorts, white socks, black shoes, holding small red-handled paper-cutting scissors in his right hand",
+      "poses": {
+        "stand": "",
+        "walk": "the same boy walking to the right, side view",
+        "down": "the same boy looking down with his head lowered, hands at his sides"
+      }
+    },
+    "yukiho_kid": {
+      "prompt": "an 11-year-old Japanese girl, long straight black hair with blunt bangs, pale delicate face, calm gentle expression, simple white dress, white socks, black shoes, holding a red hardcover book against her chest",
+      "poses": {
+        "stand": "",
+        "walk": "the same girl walking to the left, side view",
+        "smile": "the same girl smiling softly with her hands folded in front"
+      }
+    },
+    "sasagaki": {
+      "prompt": "a Japanese police detective in his fifties, short gray hair, tired sharp eyes, brown trench coat over a white shirt and dark tie, gray trousers, holding a small notebook",
+      "poses": {
+        "stand": "",
+        "think": "the same detective with one hand on his chin, thinking",
+        "walk": "the same detective walking to the right, side view"
+      }
+    },
+    "yosuke": {
+      "prompt": "a 52-year-old Japanese pawnbroker, balding with gray hair on the sides, round glasses, slightly heavy build, gray cardigan over a white shirt, dark trousers, faint unsettling smile",
+      "poses": {
+        "stand": ""
+      }
+    },
+    "fumiyo": {
+      "prompt": "a tired Japanese woman in her thirties, short messy dark brown bob hair, pale worried face, faded pink cardigan, beige apron, long skirt",
+      "poses": {
+        "stand": "",
+        "sad": "the same woman looking down sadly, arms crossed"
+      }
+    },
+    "terasaki": {
+      "prompt": "a Japanese delivery driver in his forties, short black hair, navy work cap, blue work uniform jacket, gray trousers, nervous expression",
+      "poses": {
+        "stand": ""
+      }
+    },
+    "reiko": {
+      "prompt": "an elegant Japanese woman in her fifties, gray hair neatly tied in a bun, gentle refined face, dark green kimono with a subtle pattern, standing gracefully with hands folded",
+      "poses": {
+        "stand": ""
+      }
+    },
+    "yukiho": {
+      "prompt": "a beautiful Japanese woman in her late twenties, long straight black hair, elegant pale face, calm mysterious expression, white long elegant dress, pearl earrings, white high heels",
+      "poses": {
+        "stand": "",
+        "back": "the same woman walking away, seen from behind, back view, long black hair"
+      }
+    },
+    "ryoji": {
+      "prompt": "a thin Japanese man in his late twenties, messy black hair falling over his eyes, pale gloomy face, black long coat over a dark sweater, black trousers, hands in pockets",
+      "poses": {
+        "stand": ""
+      }
+    },
+    "ryoji_teen": {
+      "ref": "ryoji_kid",
+      "prompt": "a 16-year-old high school boy. Change his clothes: he now wears a black gakuran school uniform jacket with a stand-up collar and gold buttons, and long black trousers. Taller, slimmer teenage body, messy black hair over his eyes, gloomy cool expression",
+      "poses": {
+        "stand": "",
+        "walk": "the same boy walking to the right, side view, hands in pockets"
+      }
+    },
+    "yukiho_teen": {
+      "ref": "yukiho_kid",
+      "prompt": "a 15-year-old Japanese schoolgirl, long straight black hair with blunt bangs, beautiful calm face, navy sailor school uniform with a white scarf",
+      "poses": {
+        "stand": "",
+        "smile": "the same girl smiling gently, hands folded in front"
+      }
+    },
+    "yayoiko": {
+      "prompt": "a Japanese woman in her forties, permed dark hair, heavy makeup, flashy red blouse and black skirt, cold careless expression",
+      "poses": {
+        "stand": ""
+      }
+    },
+    "matsuura": {
+      "prompt": "a Japanese man in his thirties, slicked-back hair, thin face with a sly smile, gray suit with open collar, holding a pair of sunglasses",
+      "poses": {
+        "stand": ""
+      }
+    },
+    "akiyoshi": {
+      "prompt": "a 13-year-old Japanese schoolboy, short hair, wearing a black gakuran school uniform jacket and long black trousers (boy's uniform, no skirt), holding an old film camera",
+      "poses": {
+        "stand": ""
+      }
+    },
+    "kikuchi": {
+      "prompt": "a 13-year-old Japanese schoolboy, short neat hair, round face, wearing a black gakuran school uniform jacket and long black trousers (boy's uniform, no skirt), nervous expression, holding an old photograph",
+      "poses": {
+        "stand": ""
+      }
+    },
+    "miyako": {
+      "prompt": "a 14-year-old Japanese schoolgirl, shoulder-length hair with a headband, proud gossipy expression, navy sailor school uniform",
+      "poses": {
+        "stand": ""
+      }
+    },
+    "eriko": {
+      "prompt": "a 14-year-old Japanese schoolgirl, short bob hair, round glasses, shy plain expression, navy sailor school uniform",
+      "poses": {
+        "stand": ""
+      }
+    },
+    "tomohiko": {
+      "prompt": "a 17-year-old Japanese high school boy, slightly long hair, thin face, black gakuran school uniform, anxious frightened expression",
+      "poses": {
+        "stand": ""
+      }
+    },
+    "yuko": {
+      "prompt": "an elegant Japanese woman in her thirties, wavy shoulder-length hair, fur collar coat over a dark dress, red lipstick",
+      "poses": {
+        "stand": ""
+      }
+    },
+    "namie": {
+      "prompt": "a Japanese woman in her late twenties, hair tied back, glasses, plain beige office suit, timid expression, holding a ledger",
+      "poses": {
+        "stand": ""
+      }
+    }
+  },
+  "backgrounds": {
+    "ruins": "an abandoned unfinished concrete building in a 1970s Osaka neighborhood at dusk, empty dark window holes, rusty steel bars, rubble on the ground, a large ventilation duct, a strip of yellow tape across the entrance, purple-blue dusk sky with the last orange glow on the horizon, no people",
+    "police": "a cluttered 1970s Japanese police investigation office at night, wooden desks with stacks of files, a pinboard with photos and a map connected by red string, desk lamp glow, cigarette smoke in the air, dark window with city lights, no people",
+    "apartment": "a small cramped 1970s Japanese apartment room, worn tatami floor, an old gas stove with a pot of miso soup, a small window with dim evening light, a low table, faded wallpaper, quiet and lonely atmosphere, no people",
+    "library": "an elementary school library in 1970s Japan, tall wooden bookshelves full of old books, long wooden reading table, warm afternoon sunlight through tall windows, dust floating in the light, peaceful, no people",
+    "pawnshop": "an old Japanese pawnshop facade on a narrow Osaka street at night, a plain dark blue noren curtain without letters, wooden sliding doors, a dim paper lantern, wet asphalt reflecting the light, no people",
+    "road": "a dark rural road at night in 1970s Japan, a small white delivery truck crashed into a guardrail with its headlights still on, broken glass, light rain, cold blue tones, no people",
+    "mansion": "an elegant traditional Japanese house with a tidy garden, stone lantern, pine trees, a tea room with sliding paper doors, soft morning light, refined and quiet, no people",
+    "snow_night": "a quiet snowy night in a city street, soft falling snow, cold blue moonlight, empty street with warm window lights in the distance, a lonely and poetic mood, no people",
+    "park": "a small neighborhood park in 1970s Osaka at dusk, an empty swing gently moving, sandbox, old street lamp, apartment buildings behind, lonely mood, no people",
+    "school": "a 1970s Japanese girls' junior high school building exterior with a gate and ginkgo trees, autumn afternoon, no people",
+    "rooftop": "a 1970s Japanese school rooftop with a tall wire fence, cloudy sky, city rooftops below, no people",
+    "storage": "an old wooden storage shed behind a school at dusk, door slightly open, dark inside, dry leaves, ominous mood, no people",
+    "neon": "a busy 1970s Osaka Shinsaibashi street at night with glowing neon signs without readable text, rain-wet pavement, no people in foreground",
+    "hotel": "a dim 1970s hotel corridor at night, a row of doors, one door slightly open with light spilling out, red carpet, eerie quiet, no people",
+    "office": "a small cramped 1979 office room with early personal computers, cassette tapes and game boxes on shelves, a desk with ledgers, fluorescent light, no people"
+  },
+  "props": {
+    "scissors": "a pair of small paper-cutting scissors with red plastic handles, slightly open",
+    "lighter": "a luxurious gold Dunhill lighter, rectangular, closed",
+    "money": "a thick stack of Japanese 10000 yen banknotes tied with a paper band",
+    "pudding": "a small fruit pudding dessert in a clear plastic cup with a red cherry on top, realistic food, plain object without any face or eyes",
+    "papercut": "a delicate red paper-cut artwork of a flower and a bird, intricate cutout pattern",
+    "papership": "a red paper-cut artwork of a sailing ship on waves, intricate cutout pattern",
+    "photo": "an old faded instant photograph showing a man and a woman walking out of a building at night, slightly bent",
+    "keychain": "a small red daruma doll keychain with a metal ring",
+    "ticket": "a torn old cinema ticket stub, paper, no readable text",
+    "camera": "an old 1970s film camera"
+  },
+  "prop_style": "single object, centered, plain flat light gray background, no shadow, no text",
+  "prop_art_style": "soft painterly illustration, smooth airbrushed gradients, soft glow and rim light, muted cool blue palette, realistic inanimate object, no face, no eyes, no text"
+}

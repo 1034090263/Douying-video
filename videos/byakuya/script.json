@@ -1,0 +1,1598 @@
+{
+  "title": "白夜行 · 上",
+  "theme": {
+    "style": "plain",
+    "seal": "白",
+    "font": "serif",
+    "music": "piano",
+    "bpm": 72,
+    "transition": "fade",
+    "colors": {
+      "red": "#b3261e",
+      "gold": "#e8e4dc",
+      "highlight": "#a9c8ff"
+    },
+    "keywords": [
+      "桐原洋介",
+      "笹垣润三",
+      "西本文代",
+      "雪穗",
+      "亮司",
+      "寺崎忠夫",
+      "唐泽礼子",
+      "剪刀",
+      "打火机",
+      "一百万",
+      "煤气",
+      "十九年"
+    ]
+  },
+  "cover": {
+    "seal": "白",
+    "line1": "白夜行",
+    "line2": "上 · 废楼",
+    "tag": "东野圭吾 · 19 年的共生"
+  },
+  "engine": "index",
+  "indextts": {
+    "home": "~/tts/index-tts",
+    "voice": "voices/narrator.wav",
+    "speed": 1.1,
+    "emo_alpha": 0.65
+  },
+  "pronounce": {
+    "笹垣": "TI4垣"
+  },
+  "scenes": [
+    {
+      "type": "shot",
+      "hold": 1.2,
+      "narration": "1992年的圣诞夜，大阪一家精品店开业。一个扮成圣诞老人的男人倒在楼梯下，手边是一把剪刀。不远处，一个穿白裙的女人转身上楼，一次都没有回头。而这一切，要从十九年前说起。",
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "data": {
+        "bg": "bg_snow_night.png",
+        "caption": "1992 · 圣诞夜",
+        "camera": {
+          "from": [
+            1.18,
+            0,
+            40
+          ],
+          "to": [
+            1.0,
+            0,
+            0
+          ]
+        },
+        "layers": [
+          {
+            "img": "prop_scissors.png",
+            "x": 380,
+            "y": 1640,
+            "h": 230,
+            "enter": {
+              "cue": "剪刀",
+              "type": "pop"
+            }
+          },
+          {
+            "img": "char_yukiho_back.png",
+            "x": 720,
+            "y": 1870,
+            "h": 1156,
+            "enter": {
+              "cue": "穿白裙",
+              "type": "fade"
+            },
+            "move": [
+              {
+                "cue": "转身上楼",
+                "x": 800,
+                "y": 1600,
+                "dur": 120
+              }
+            ],
+            "dim": {
+              "cue": "十九年前",
+              "to": 0.35
+            }
+          }
+        ],
+        "dark": {
+          "cue": "十九年前",
+          "to": 0.45
+        },
+        "title": {
+          "cue": "十九年前",
+          "text": "白夜行",
+          "sub": "上 · 废楼",
+          "y": 720
+        },
+        "mood": "sad",
+        "fx": [
+          "snow",
+          "fog"
+        ],
+        "hits": [
+          "十九年前"
+        ],
+        "cam": [
+          {
+            "cue": "剪刀",
+            "to": [
+              1.28,
+              60,
+              -80
+            ],
+            "dur": 30
+          },
+          {
+            "cue": "穿白裙",
+            "to": [
+              1.1,
+              -20,
+              -20
+            ],
+            "dur": 40
+          }
+        ]
+      },
+      "intensity": 0.5
+    },
+    {
+      "type": "shot",
+      "narration": "1973年10月，大阪。几个小学生钻进一栋停工大楼的通风管里玩耍，在楼里发现了一具男尸。死者叫桐原洋介，五十二岁，经营一家当铺，胸口被细长的利器刺了好几下。",
+      "emotion": {
+        "calm": 0.5
+      },
+      "data": {
+        "bg": "bg_ruins.png",
+        "caption": "1973 · 大阪",
+        "layers": [
+          {
+            "img": "char_yosuke_stand.png",
+            "x": 540,
+            "y": 1910,
+            "h": 1180,
+            "enter": {
+              "type": "fade",
+              "cue": "桐原洋介"
+            },
+            "glow": true
+          }
+        ],
+        "camera": {
+          "from": [
+            1.0,
+            0,
+            0
+          ],
+          "to": [
+            1.12,
+            0,
+            -30
+          ]
+        },
+        "sfx": [
+          {
+            "cue": "男尸",
+            "name": "boom",
+            "volume": 0.35
+          }
+        ],
+        "mood": "tense",
+        "fx": [
+          "dust",
+          "fog"
+        ],
+        "hits": [
+          "男尸"
+        ],
+        "cam": [
+          {
+            "cue": "桐原洋介",
+            "to": [
+              1.2,
+              0,
+              -60
+            ],
+            "dur": 40
+          }
+        ]
+      },
+      "intensity": 0.7
+    },
+    {
+      "type": "shot",
+      "narration": "负责此案的刑警叫笹垣润三。他注意到几处怪事：死者的皮带，比平时松了两个扣；他当天从银行取出的一百万日元不见了，钱包和一只登喜路打火机，也一起消失了。",
+      "emotion": {
+        "calm": 0.45,
+        "surprised": 0.1
+      },
+      "data": {
+        "bg": "bg_ruins.png",
+        "caption": "搜查",
+        "layers": [
+          {
+            "img": "char_sasagaki_walk.png",
+            "x": 330,
+            "y": 1910,
+            "h": 1204,
+            "enter": {
+              "type": "left",
+              "cue": "笹垣润三"
+            },
+            "acts": [
+              {
+                "cue": "怪事",
+                "do": "swap",
+                "img": "char_sasagaki_think.png"
+              },
+              {
+                "cue": "一百万",
+                "do": "lean",
+                "amount": 0.6
+              }
+            ]
+          },
+          {
+            "img": "prop_lighter.png",
+            "x": 790,
+            "y": 1050,
+            "h": 260,
+            "enter": {
+              "type": "pop",
+              "cue": "打火机"
+            }
+          },
+          {
+            "img": "prop_money.png",
+            "x": 780,
+            "y": 1380,
+            "h": 230,
+            "enter": {
+              "type": "pop",
+              "cue": "一百万"
+            }
+          }
+        ],
+        "camera": {
+          "from": [
+            1.12,
+            -30,
+            -30
+          ],
+          "to": [
+            1.18,
+            30,
+            -20
+          ]
+        },
+        "mood": "tense",
+        "fx": [
+          "fog"
+        ],
+        "hits": [
+          "一百万"
+        ],
+        "cam": [
+          {
+            "cue": "打火机",
+            "to": [
+              1.24,
+              -60,
+              -20
+            ],
+            "dur": 30
+          }
+        ]
+      },
+      "intensity": 0.65
+    },
+    {
+      "type": "shot",
+      "narration": "警方先查死者身边的人。妻子弥生子和店员松浦勇，案发时都在当铺里，互相作证。他们的儿子桐原亮司，上小学五年级，眼神阴沉，房间里挂着一幅精致的剪纸帆船。",
+      "emotion": {
+        "calm": 0.5
+      },
+      "data": {
+        "bg": "bg_pawnshop.png",
+        "caption": "桐原当铺",
+        "layers": [
+          {
+            "img": "char_yayoiko_stand.png",
+            "x": 300,
+            "y": 1910,
+            "h": 1180,
+            "enter": {
+              "type": "fade",
+              "cue": "弥生子"
+            },
+            "acts": [
+              {
+                "cue": "互相作证",
+                "do": "nod"
+              }
+            ]
+          },
+          {
+            "img": "char_matsuura_stand.png",
+            "x": 780,
+            "y": 1910,
+            "h": 1180,
+            "enter": {
+              "type": "fade",
+              "cue": "松浦勇"
+            },
+            "acts": [
+              {
+                "cue": "互相作证",
+                "do": "nod"
+              }
+            ]
+          },
+          {
+            "img": "char_ryoji_kid_stand.png",
+            "x": 540,
+            "y": 1950,
+            "h": 968,
+            "enter": {
+              "type": "fade",
+              "cue": "桐原亮司"
+            },
+            "z": 2,
+            "acts": [
+              {
+                "cue": "眼神阴沉",
+                "do": "lean",
+                "amount": 0.4
+              }
+            ]
+          },
+          {
+            "img": "prop_papership.png",
+            "x": 540,
+            "y": 760,
+            "h": 240,
+            "enter": {
+              "type": "pop",
+              "cue": "剪纸帆船"
+            }
+          }
+        ],
+        "sfx": [
+          {
+            "cue": "剪纸帆船",
+            "name": "pop",
+            "volume": 0.4
+          }
+        ],
+        "mood": "cold",
+        "fx": [
+          "rain"
+        ],
+        "hits": [],
+        "cam": [
+          {
+            "cue": "眼神阴沉",
+            "to": [
+              1.2,
+              0,
+              -80
+            ],
+            "dur": 36
+          }
+        ]
+      },
+      "intensity": 0.55
+    },
+    {
+      "type": "shot",
+      "narration": "接着，笹垣查到，洋介遇害前最后去的地方，是西本文代的家。文代独自带着女儿生活，垃圾桶里，有洋介买来的水果布丁的包装。",
+      "emotion": {
+        "calm": 0.5
+      },
+      "data": {
+        "bg": "bg_apartment.png",
+        "caption": "西本家",
+        "layers": [
+          {
+            "img": "char_fumiyo_stand.png",
+            "x": 360,
+            "y": 1910,
+            "h": 1180,
+            "enter": {
+              "type": "fade",
+              "cue": "西本文代"
+            },
+            "acts": [
+              {
+                "cue": "垃圾桶",
+                "do": "tremble"
+              },
+              {
+                "cue": "水果布丁",
+                "do": "shake"
+              }
+            ]
+          },
+          {
+            "img": "prop_pudding.png",
+            "x": 760,
+            "y": 1050,
+            "h": 240,
+            "enter": {
+              "type": "pop",
+              "cue": "水果布丁"
+            }
+          }
+        ],
+        "mood": "tense",
+        "fx": [
+          "smoke"
+        ],
+        "hits": [
+          "水果布丁"
+        ]
+      },
+      "intensity": 0.55
+    },
+    {
+      "type": "shot",
+      "narration": "可文代有不在场证明：有人看见，那段时间她一个人坐在公园的秋千上发呆。",
+      "emotion": {
+        "calm": 0.4,
+        "melancholic": 0.3
+      },
+      "data": {
+        "bg": "bg_park.png",
+        "caption": "不在场证明",
+        "layers": [
+          {
+            "img": "char_fumiyo_sad.png",
+            "x": 540,
+            "y": 1910,
+            "h": 1180,
+            "acts": [
+              {
+                "cue": "秋千",
+                "do": "sink"
+              }
+            ]
+          }
+        ],
+        "mood": "sad",
+        "fx": [
+          "fog"
+        ],
+        "hits": []
+      },
+      "intensity": 0.4
+    },
+    {
+      "type": "shot",
+      "narration": "文代的女儿雪穗，也上小学五年级，长得出奇漂亮。笹垣去问话时，她正在读一本《飘》，谈吐老成，完全不像个孩子。",
+      "emotion": {
+        "calm": 0.5
+      },
+      "data": {
+        "bg": "bg_apartment.png",
+        "caption": "西本雪穗",
+        "layers": [
+          {
+            "img": "char_yukiho_kid_stand.png",
+            "x": 540,
+            "y": 1910,
+            "h": 968,
+            "enter": {
+              "type": "fade",
+              "cue": "雪穗"
+            },
+            "acts": [
+              {
+                "cue": "读一本",
+                "do": "nod",
+                "amount": 0.5
+              }
+            ]
+          }
+        ],
+        "camera": {
+          "from": [
+            1.15,
+            0,
+            -40
+          ],
+          "to": [
+            1.05,
+            0,
+            -10
+          ]
+        },
+        "mood": "cold",
+        "fx": [
+          "dust"
+        ],
+        "hits": [],
+        "cam": [
+          {
+            "cue": "谈吐老成",
+            "to": [
+              1.32,
+              0,
+              -260
+            ],
+            "dur": 40
+          }
+        ]
+      },
+      "intensity": 0.5
+    },
+    {
+      "type": "shot",
+      "narration": "很快，文代的情人、送货员寺崎忠夫成了头号嫌疑人。可一个月后，他在高速公路上疲劳驾驶，撞墙身亡。车里找到了那只登喜路打火机，上面却没有任何指纹。",
+      "emotion": {
+        "calm": 0.45,
+        "surprised": 0.1
+      },
+      "data": {
+        "bg": "bg_road.png",
+        "caption": "嫌疑人",
+        "layers": [
+          {
+            "img": "char_terasaki_stand.png",
+            "x": 540,
+            "y": 1910,
+            "h": 1180,
+            "enter": {
+              "type": "fade",
+              "cue": "寺崎忠夫"
+            },
+            "exit": {
+              "cue": "撞墙身亡",
+              "type": "fade"
+            },
+            "acts": [
+              {
+                "cue": "头号嫌疑人",
+                "do": "tremble"
+              }
+            ]
+          },
+          {
+            "img": "prop_lighter.png",
+            "x": 540,
+            "y": 1250,
+            "h": 300,
+            "enter": {
+              "type": "pop",
+              "cue": "登喜路打火机"
+            }
+          }
+        ],
+        "flash": [
+          "撞墙身亡"
+        ],
+        "sfx": [
+          {
+            "cue": "撞墙身亡",
+            "name": "boom",
+            "volume": 0.4
+          }
+        ],
+        "mood": "tense",
+        "fx": [
+          "rain",
+          "headlights"
+        ],
+        "hits": [
+          "撞墙身亡",
+          "没有任何指纹"
+        ],
+        "cam": [
+          {
+            "cue": "没有任何指纹",
+            "to": [
+              1.25,
+              0,
+              -40
+            ],
+            "dur": 20
+          }
+        ]
+      },
+      "intensity": 0.85
+    },
+    {
+      "type": "shot",
+      "narration": "嫌疑人一死，案子就此不了了之。只有笹垣，始终放不下：凶手到底是谁？那一百万，又去了哪里？",
+      "emotion": {
+        "calm": 0.4,
+        "melancholic": 0.3
+      },
+      "data": {
+        "bg": "bg_police.png",
+        "caption": "悬案",
+        "layers": [
+          {
+            "img": "char_sasagaki_think.png",
+            "x": 540,
+            "y": 1910,
+            "h": 1204,
+            "enter": {
+              "type": "fade",
+              "cue": "只有笹垣"
+            },
+            "acts": [
+              {
+                "cue": "始终放不下",
+                "do": "lean",
+                "amount": 0.8
+              }
+            ]
+          }
+        ],
+        "camera": {
+          "from": [
+            1.0,
+            0,
+            0
+          ],
+          "to": [
+            1.12,
+            0,
+            -40
+          ]
+        },
+        "mood": "tense",
+        "fx": [
+          "flicker",
+          "smoke"
+        ],
+        "hits": [],
+        "cam": [
+          {
+            "cue": "那一百万",
+            "to": [
+              1.25,
+              0,
+              -120
+            ],
+            "dur": 40
+          }
+        ]
+      },
+      "intensity": 0.6
+    },
+    {
+      "type": "shot",
+      "narration": "第二年5月，西本文代死于煤气中毒。那天，雪穗说自己没带钥匙，请房东开门。门一开，满屋煤气，文代倒在屋里。雪穗站在门外，轻声问了一句：死了吗？警方认定，这是一场意外。",
+      "emotion": {
+        "calm": 0.4,
+        "melancholic": 0.3
+      },
+      "data": {
+        "bg": "bg_apartment.png",
+        "caption": "1974 · 煤气",
+        "layers": [
+          {
+            "img": "char_yukiho_kid_stand.png",
+            "x": 720,
+            "y": 1910,
+            "h": 968,
+            "enter": {
+              "type": "fade",
+              "cue": "没带钥匙"
+            },
+            "acts": [
+              {
+                "cue": "满屋煤气",
+                "do": "calm"
+              },
+              {
+                "cue": "死了吗",
+                "do": "rise",
+                "amount": 0.6
+              }
+            ]
+          }
+        ],
+        "camera": {
+          "from": [
+            1.15,
+            60,
+            -20
+          ],
+          "to": [
+            1.0,
+            0,
+            0
+          ]
+        },
+        "dark": {
+          "cue": "死了吗",
+          "to": 0.4
+        },
+        "mood": "fear",
+        "fx": [
+          "smoke",
+          "fog",
+          "heartbeat"
+        ],
+        "hits": [
+          "死了吗"
+        ],
+        "cam": [
+          {
+            "cue": "死了吗",
+            "to": [
+              1.4,
+              -60,
+              -320
+            ],
+            "dur": 30
+          }
+        ]
+      },
+      "intensity": 0.85
+    },
+    {
+      "type": "shot",
+      "narration": "雪穗被远房亲戚唐泽礼子收养，改名唐泽雪穗。她跟着礼子学茶道、学礼仪，很快成了人人称赞的大小姐。",
+      "emotion": {
+        "calm": 0.5
+      },
+      "data": {
+        "bg": "bg_mansion.png",
+        "caption": "唐泽家",
+        "layers": [
+          {
+            "img": "char_reiko_stand.png",
+            "x": 330,
+            "y": 1910,
+            "h": 1180,
+            "enter": {
+              "type": "fade",
+              "cue": "唐泽礼子"
+            },
+            "acts": [
+              {
+                "cue": "收养",
+                "do": "nod"
+              }
+            ]
+          },
+          {
+            "img": "char_yukiho_kid_smile.png",
+            "x": 740,
+            "y": 1910,
+            "h": 968,
+            "enter": {
+              "type": "fade",
+              "cue": "唐泽雪穗"
+            },
+            "acts": [
+              {
+                "cue": "大小姐",
+                "do": "nod"
+              }
+            ]
+          }
+        ],
+        "mood": "calm",
+        "fx": [
+          "dust"
+        ],
+        "hits": []
+      },
+      "intensity": 0.35
+    },
+    {
+      "type": "shot",
+      "narration": "没有人注意到，在那之前，雪穗和亮司早就认识。小学的图书馆里，常常能看见他们俩一起找书，一起玩剪纸。",
+      "emotion": {
+        "calm": 0.45,
+        "happy": 0.1
+      },
+      "data": {
+        "bg": "bg_library.png",
+        "caption": "图书馆",
+        "layers": [
+          {
+            "img": "char_ryoji_kid_stand.png",
+            "x": 330,
+            "y": 1910,
+            "h": 968,
+            "enter": {
+              "type": "fade",
+              "cue": "亮司"
+            },
+            "acts": [
+              {
+                "cue": "一起玩剪纸",
+                "do": "lean",
+                "amount": 0.8
+              }
+            ]
+          },
+          {
+            "img": "char_yukiho_kid_smile.png",
+            "x": 760,
+            "y": 1910,
+            "h": 968,
+            "enter": {
+              "type": "fade",
+              "cue": "雪穗"
+            },
+            "acts": [
+              {
+                "cue": "一起玩剪纸",
+                "do": "lean",
+                "amount": -0.8
+              }
+            ]
+          },
+          {
+            "img": "prop_papercut.png",
+            "x": 545,
+            "y": 1000,
+            "h": 300,
+            "enter": {
+              "type": "pop",
+              "cue": "剪纸"
+            }
+          }
+        ],
+        "mood": "calm",
+        "fx": [
+          "dust"
+        ],
+        "hits": [],
+        "cam": [
+          {
+            "cue": "一起玩剪纸",
+            "to": [
+              1.18,
+              0,
+              -60
+            ],
+            "dur": 40
+          }
+        ]
+      },
+      "intensity": 0.4
+    },
+    {
+      "type": "shot",
+      "narration": "四年后，雪穗进了一所贵族女子中学，依旧美得惹眼。别的学校有个叫秋吉雄一的男生，偷拍她的照片，转手卖给了不良少年。",
+      "emotion": {
+        "calm": 0.5
+      },
+      "data": {
+        "bg": "bg_school.png",
+        "caption": "1977 · 初中",
+        "layers": [
+          {
+            "img": "char_yukiho_teen_stand.png",
+            "x": 700,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "雪穗进了"
+            },
+            "acts": [
+              {
+                "cue": "偷拍她",
+                "do": "turn"
+              }
+            ]
+          },
+          {
+            "img": "char_akiyoshi_stand.png",
+            "x": 300,
+            "y": 1910,
+            "h": 1038,
+            "enter": {
+              "type": "left",
+              "cue": "秋吉雄一"
+            },
+            "acts": [
+              {
+                "cue": "偷拍她",
+                "do": "lean",
+                "amount": 0.8
+              }
+            ]
+          }
+        ],
+        "mood": "calm",
+        "fx": [],
+        "hits": []
+      },
+      "intensity": 0.5
+    },
+    {
+      "type": "shot",
+      "narration": "亮司的同学菊池文彦，从雄一那里借来一张旧照片：照片上，是亮司的母亲弥生子和店员松浦，一起从宾馆里走出来。菊池在天台上把照片拿给亮司看。没过多久，照片就丢了。",
+      "emotion": {
+        "calm": 0.5
+      },
+      "data": {
+        "bg": "bg_rooftop.png",
+        "caption": "一张照片",
+        "layers": [
+          {
+            "img": "char_kikuchi_stand.png",
+            "x": 330,
+            "y": 1910,
+            "h": 1038,
+            "enter": {
+              "type": "fade",
+              "cue": "菊池文彦"
+            },
+            "acts": [
+              {
+                "cue": "拿给亮司",
+                "do": "step",
+                "x": 430,
+                "dur": 30
+              }
+            ]
+          },
+          {
+            "img": "prop_photo.png",
+            "x": 540,
+            "y": 980,
+            "h": 320,
+            "enter": {
+              "type": "pop",
+              "cue": "旧照片"
+            },
+            "exit": {
+              "cue": "照片就丢了",
+              "type": "fade"
+            }
+          },
+          {
+            "img": "char_ryoji_teen_stand.png",
+            "x": 760,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "拿给亮司"
+            },
+            "acts": [
+              {
+                "cue": "弥生子",
+                "do": "jump",
+                "amount": 0.5
+              },
+              {
+                "cue": "照片就丢了",
+                "do": "calm"
+              }
+            ]
+          }
+        ],
+        "mood": "tense",
+        "fx": [
+          "fog"
+        ],
+        "hits": [
+          "照片就丢了"
+        ],
+        "cam": [
+          {
+            "cue": "宾馆",
+            "to": [
+              1.22,
+              0,
+              -40
+            ],
+            "dur": 30
+          }
+        ]
+      },
+      "intensity": 0.7
+    },
+    {
+      "type": "shot",
+      "narration": "这时，雪穗的同学藤村都子到处散布流言：说雪穗其实是穷人家的孩子，母亲死得不明不白。",
+      "emotion": {
+        "calm": 0.5
+      },
+      "data": {
+        "bg": "bg_school.png",
+        "caption": "流言",
+        "layers": [
+          {
+            "img": "char_miyako_stand.png",
+            "x": 400,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "藤村都子"
+            },
+            "acts": [
+              {
+                "cue": "散布流言",
+                "do": "lean",
+                "amount": 0.8
+              }
+            ]
+          },
+          {
+            "img": "char_yukiho_teen_stand.png",
+            "x": 780,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "流言"
+            },
+            "dim": {
+              "cue": "死得不明不白",
+              "to": 0.5
+            },
+            "acts": [
+              {
+                "cue": "死得不明不白",
+                "do": "turn"
+              }
+            ]
+          }
+        ],
+        "mood": "tense",
+        "fx": [],
+        "hits": []
+      },
+      "intensity": 0.6
+    },
+    {
+      "type": "shot",
+      "narration": "没过多久，都子在学校附近的仓库里遭人袭击。发现她的，正是雪穗和好友川岛江利子。",
+      "emotion": {
+        "calm": 0.4,
+        "melancholic": 0.3
+      },
+      "data": {
+        "bg": "bg_storage.png",
+        "caption": "仓库",
+        "layers": [
+          {
+            "img": "char_yukiho_teen_stand.png",
+            "x": 360,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "发现她的"
+            },
+            "acts": [
+              {
+                "cue": "发现她的",
+                "do": "calm"
+              }
+            ]
+          },
+          {
+            "img": "char_eriko_stand.png",
+            "x": 740,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "川岛江利子"
+            },
+            "acts": [
+              {
+                "cue": "发现她的",
+                "do": "jump"
+              },
+              {
+                "cue": "川岛江利子",
+                "do": "tremble"
+              }
+            ]
+          }
+        ],
+        "dark": {
+          "cue": "遭人袭击",
+          "to": 0.3
+        },
+        "mood": "fear",
+        "fx": [
+          "fog",
+          "heartbeat"
+        ],
+        "hits": [
+          "遭人袭击"
+        ]
+      },
+      "intensity": 0.85
+    },
+    {
+      "type": "shot",
+      "narration": "现场留下了菊池的不倒翁钥匙扣，菊池成了嫌疑人。可他拿出一张电影票，说自己当时在看《洛基》，有人为他作证。雪穗则告诉警察：秋吉雄一一直在偷拍她。",
+      "emotion": {
+        "calm": 0.45,
+        "surprised": 0.1
+      },
+      "data": {
+        "bg": "bg_storage.png",
+        "caption": "嫌疑",
+        "layers": [
+          {
+            "img": "prop_keychain.png",
+            "x": 540,
+            "y": 900,
+            "h": 260,
+            "enter": {
+              "type": "pop",
+              "cue": "钥匙扣"
+            }
+          },
+          {
+            "img": "char_kikuchi_stand.png",
+            "x": 300,
+            "y": 1910,
+            "h": 1038,
+            "enter": {
+              "type": "fade",
+              "cue": "菊池成了"
+            },
+            "acts": [
+              {
+                "cue": "嫌疑人",
+                "do": "tremble"
+              },
+              {
+                "cue": "洛基",
+                "do": "calm"
+              },
+              {
+                "cue": "洛基",
+                "do": "rise",
+                "amount": 0.5
+              }
+            ]
+          },
+          {
+            "img": "prop_ticket.png",
+            "x": 540,
+            "y": 1300,
+            "h": 260,
+            "enter": {
+              "type": "pop",
+              "cue": "电影票"
+            }
+          },
+          {
+            "img": "char_akiyoshi_stand.png",
+            "x": 780,
+            "y": 1910,
+            "h": 1038,
+            "enter": {
+              "type": "fade",
+              "cue": "秋吉雄一"
+            },
+            "acts": [
+              {
+                "cue": "偷拍她",
+                "do": "jump"
+              },
+              {
+                "cue": "偷拍她",
+                "do": "shake"
+              }
+            ]
+          }
+        ],
+        "mood": "tense",
+        "fx": [
+          "fog"
+        ],
+        "hits": [
+          "偷拍她"
+        ]
+      },
+      "intensity": 0.7
+    },
+    {
+      "type": "shot",
+      "narration": "雪穗替都子守住了这个秘密，两人从此成了好朋友。散布流言的人闭了嘴，雪穗的形象，更加完美了。",
+      "emotion": {
+        "calm": 0.5
+      },
+      "data": {
+        "bg": "bg_school.png",
+        "caption": "和好",
+        "layers": [
+          {
+            "img": "char_miyako_stand.png",
+            "x": 360,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "都子"
+            },
+            "acts": [
+              {
+                "cue": "好朋友",
+                "do": "lean",
+                "amount": 0.8
+              }
+            ]
+          },
+          {
+            "img": "char_yukiho_teen_smile.png",
+            "x": 740,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "两人从此"
+            },
+            "acts": [
+              {
+                "cue": "好朋友",
+                "do": "lean",
+                "amount": -0.8
+              }
+            ]
+          }
+        ],
+        "mood": "calm",
+        "fx": [
+          "dust"
+        ],
+        "hits": [],
+        "cam": [
+          {
+            "cue": "更加完美",
+            "to": [
+              1.15,
+              60,
+              -60
+            ],
+            "dur": 40
+          }
+        ]
+      },
+      "intensity": 0.45
+    },
+    {
+      "type": "shot",
+      "narration": "1979年，亮司上了高中。他做起了见不得光的生意：组织男高中生，陪中年女人约会赚钱。同学园村友彦，也被他拉了进来。",
+      "emotion": {
+        "calm": 0.5
+      },
+      "data": {
+        "bg": "bg_neon.png",
+        "caption": "1979 · 心斋桥",
+        "layers": [
+          {
+            "img": "char_ryoji_teen_walk.png",
+            "x": 380,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "left",
+              "cue": "亮司上了"
+            }
+          },
+          {
+            "img": "char_tomohiko_stand.png",
+            "x": 760,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "园村友彦"
+            },
+            "acts": [
+              {
+                "cue": "拉了进来",
+                "do": "step",
+                "x": 640,
+                "dur": 30
+              }
+            ]
+          }
+        ],
+        "mood": "tense",
+        "fx": [
+          "rain"
+        ],
+        "hits": []
+      },
+      "intensity": 0.6
+    },
+    {
+      "type": "shot",
+      "narration": "一天，友彦瞒着亮司，私下去见一位叫花冈夕子的客人。在心斋桥的酒店里，夕子突然心脏病发作，死在了房间里。友彦吓坏了，独自逃了出来。",
+      "emotion": {
+        "calm": 0.4,
+        "melancholic": 0.3
+      },
+      "data": {
+        "bg": "bg_hotel.png",
+        "caption": "酒店",
+        "layers": [
+          {
+            "img": "char_yuko_stand.png",
+            "x": 540,
+            "y": 1910,
+            "h": 1180,
+            "enter": {
+              "type": "fade",
+              "cue": "花冈夕子"
+            },
+            "glow": true,
+            "exit": {
+              "cue": "死在了",
+              "type": "fade"
+            }
+          },
+          {
+            "img": "char_tomohiko_stand.png",
+            "x": 540,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "吓坏了"
+            },
+            "acts": [
+              {
+                "cue": "死在了",
+                "do": "jump"
+              },
+              {
+                "cue": "吓坏了",
+                "do": "tremble"
+              }
+            ]
+          }
+        ],
+        "dark": {
+          "cue": "死在了",
+          "to": 0.25
+        },
+        "mood": "fear",
+        "fx": [
+          "flicker",
+          "heartbeat"
+        ],
+        "hits": [
+          "死在了"
+        ],
+        "cam": [
+          {
+            "cue": "吓坏了",
+            "to": [
+              1.25,
+              0,
+              -160
+            ],
+            "dur": 30
+          }
+        ]
+      },
+      "intensity": 0.85
+    },
+    {
+      "type": "shot",
+      "narration": "警察很快找上门来。可现场留下的痕迹，和友彦的血型对不上；有个女人在深夜向客房服务要过洗发精。亮司又找来一个同学为友彦作证，还打发走了夕子的丈夫。友彦就这样脱了身。",
+      "emotion": {
+        "calm": 0.45,
+        "surprised": 0.1
+      },
+      "data": {
+        "bg": "bg_police.png",
+        "caption": "脱身",
+        "layers": [
+          {
+            "img": "char_tomohiko_stand.png",
+            "x": 330,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "找上门来"
+            },
+            "acts": [
+              {
+                "cue": "找上门来",
+                "do": "tremble"
+              },
+              {
+                "cue": "脱了身",
+                "do": "calm"
+              }
+            ]
+          },
+          {
+            "img": "char_ryoji_teen_stand.png",
+            "x": 760,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "亮司又找来"
+            },
+            "acts": [
+              {
+                "cue": "亮司又找来",
+                "do": "lean",
+                "amount": 0.7
+              }
+            ]
+          }
+        ],
+        "mood": "tense",
+        "fx": [
+          "smoke"
+        ],
+        "hits": []
+      },
+      "intensity": 0.65
+    },
+    {
+      "type": "shot",
+      "narration": "从此，友彦死心塌地跟着亮司。亮司开了一家公司，叫无限企划，卖起了电脑游戏。公司的账，由一个叫西口奈美江的女人打理。",
+      "emotion": {
+        "calm": 0.5
+      },
+      "data": {
+        "bg": "bg_office.png",
+        "caption": "无限企划",
+        "layers": [
+          {
+            "img": "char_ryoji_teen_stand.png",
+            "x": 330,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "无限企划"
+            },
+            "acts": [
+              {
+                "cue": "无限企划",
+                "do": "nod"
+              }
+            ]
+          },
+          {
+            "img": "char_tomohiko_stand.png",
+            "x": 560,
+            "y": 1910,
+            "h": 1062,
+            "enter": {
+              "type": "fade",
+              "cue": "死心塌地"
+            },
+            "z": 0
+          },
+          {
+            "img": "char_namie_stand.png",
+            "x": 800,
+            "y": 1910,
+            "h": 1180,
+            "enter": {
+              "type": "fade",
+              "cue": "西口奈美江"
+            },
+            "acts": [
+              {
+                "cue": "西口奈美江",
+                "do": "nod"
+              }
+            ]
+          }
+        ],
+        "mood": "calm",
+        "fx": [
+          "dust"
+        ],
+        "hits": []
+      },
+      "intensity": 0.5
+    },
+    {
+      "type": "shot",
+      "narration": "一个走在白天，一个走在黑夜。他们从不在人前相见，可只要有人挡了雪穗的路，就总会出事。而笹垣，始终没有放下那桩旧案。",
+      "emotion": {
+        "calm": 0.4,
+        "melancholic": 0.35
+      },
+      "data": {
+        "bg": "bg_snow_night.png",
+        "caption": "未完",
+        "layers": [
+          {
+            "img": "char_yukiho_teen_stand.png",
+            "x": 740,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "走在白天"
+            },
+            "glow": true
+          },
+          {
+            "img": "char_ryoji_teen_stand.png",
+            "x": 330,
+            "y": 1910,
+            "h": 1109,
+            "enter": {
+              "type": "fade",
+              "cue": "走在黑夜"
+            },
+            "dim": {
+              "cue": "从不在人前",
+              "to": 0.6
+            }
+          },
+          {
+            "img": "char_sasagaki_think.png",
+            "x": 540,
+            "y": 1910,
+            "h": 1204,
+            "enter": {
+              "type": "fade",
+              "cue": "而笹垣"
+            },
+            "z": 0,
+            "dim": {
+              "cue": "旧案",
+              "to": 0.5
+            },
+            "acts": [
+              {
+                "cue": "而笹垣",
+                "do": "rise",
+                "amount": 0.5
+              }
+            ]
+          }
+        ],
+        "camera": {
+          "from": [
+            1.0,
+            0,
+            0
+          ],
+          "to": [
+            1.12,
+            0,
+            -40
+          ]
+        },
+        "dark": {
+          "cue": "旧案",
+          "to": 0.35
+        },
+        "mood": "sad",
+        "fx": [
+          "snow",
+          "fog"
+        ],
+        "hits": [
+          "总会出事"
+        ]
+      },
+      "hold": 1.0,
+      "intensity": 0.6
+    }
+  ]
+}

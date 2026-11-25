@@ -1,0 +1,1100 @@
+{
+  "title": "英雄联盟十七年",
+  "theme": {
+    "style": "hextech",
+    "mark": "LOL",
+    "seal": "竞",
+    "font": "sans",
+    "music": "synth",
+    "colors": {
+      "bg": "#050d18",
+      "paper": "#f0e6d2",
+      "dim": "#8fa3b5",
+      "gold": "#c8aa6e",
+      "red": "#c23a3a",
+      "redDeep": "#4a1418",
+      "accent": "#0ac8b9",
+      "highlight": "#f5d76e"
+    },
+    "regions": {
+      "LCK": "#4fb3ff",
+      "LPL": "#ff4d5a",
+      "欧洲": "#b48cff",
+      "LMS": "#3ddc97"
+    },
+    "keywords": [
+      "Faker",
+      "Uzi",
+      "TheShy",
+      "Xiaohu",
+      "369",
+      "BLG",
+      "EDG",
+      "FPX",
+      "DRX",
+      "RNG",
+      "T1",
+      "IG",
+      "G2",
+      "大魔王",
+      "永远滴神",
+      "YYDS",
+      "天神下凡",
+      "一穿四",
+      "菜是原罪",
+      "下克上",
+      "遥遥领先",
+      "热狗",
+      "验牌",
+      "4396",
+      "板蓝根",
+      "圣经",
+      "洗澡",
+      "二段笑",
+      "拉扯",
+      "毒奶",
+      "僵尸",
+      "道长",
+      "手势舞",
+      "陀螺",
+      "乐队",
+      "SKT",
+      "WE",
+      "CLG",
+      "Bang",
+      "Scout",
+      "Tian",
+      "Doinb",
+      "Knight",
+      "Bin",
+      "SN",
+      "DWG",
+      "WBG",
+      "KT",
+      "TES",
+      "拔网线",
+      "痛苦面具",
+      "简灯笼",
+      "管理学",
+      "推推Bang",
+      "2200",
+      "五五开",
+      "牛肉面",
+      "马踏飞箭",
+      "ROX",
+      "小狗倒了",
+      "ShowMaker",
+      "义不容辞",
+      "贯穿人生",
+      "骑士之路",
+      "最后一舞",
+      "Deft",
+      "三连冠王",
+      "魔咒",
+      "颠沛流离"
+    ],
+    "wall": [
+      {
+        "tag": "S1",
+        "year": "2011",
+        "team": "Fnatic",
+        "region": "欧洲"
+      },
+      {
+        "tag": "S2",
+        "year": "2012",
+        "team": "TPA",
+        "region": "LMS"
+      },
+      {
+        "tag": "S3",
+        "year": "2013",
+        "team": "SKT",
+        "region": "LCK"
+      },
+      {
+        "tag": "S4",
+        "year": "2014",
+        "team": "SSW",
+        "region": "LCK"
+      },
+      {
+        "tag": "S5",
+        "year": "2015",
+        "team": "SKT",
+        "region": "LCK"
+      },
+      {
+        "tag": "S6",
+        "year": "2016",
+        "team": "SKT",
+        "region": "LCK"
+      },
+      {
+        "tag": "S7",
+        "year": "2017",
+        "team": "SSG",
+        "region": "LCK"
+      },
+      {
+        "tag": "S8",
+        "year": "2018",
+        "team": "IG",
+        "region": "LPL"
+      },
+      {
+        "tag": "S9",
+        "year": "2019",
+        "team": "FPX",
+        "region": "LPL"
+      },
+      {
+        "tag": "S10",
+        "year": "2020",
+        "team": "DWG",
+        "region": "LCK"
+      },
+      {
+        "tag": "S11",
+        "year": "2021",
+        "team": "EDG",
+        "region": "LPL"
+      },
+      {
+        "tag": "S12",
+        "year": "2022",
+        "team": "DRX",
+        "region": "LCK"
+      },
+      {
+        "tag": "S13",
+        "year": "2023",
+        "team": "T1",
+        "region": "LCK"
+      },
+      {
+        "tag": "S14",
+        "year": "2024",
+        "team": "T1",
+        "region": "LCK"
+      },
+      {
+        "tag": "S15",
+        "year": "2025",
+        "team": "T1",
+        "region": "LCK"
+      },
+      {
+        "tag": "S16",
+        "year": "2026",
+        "team": "BLG",
+        "region": "LPL"
+      }
+    ]
+  },
+  "cover": {
+    "seal": "竞",
+    "line1": "英雄联盟",
+    "line2": "十七年冠军墙",
+    "tag": "S1 → S16 · 一穿四"
+  },
+  "engine": "index",
+  "indextts": {
+    "home": "~/tts/index-tts",
+    "voice": "voices/narrator.wav",
+    "speed": 1.1,
+    "emo_alpha": 0.65
+  },
+  "pronounce": {
+    "DotA": "刀塔",
+    "4396": "四三九六",
+    "2200": "两千二",
+    "369": "三六九"
+  },
+  "scenes": [
+    {
+      "type": "hook",
+      "narration": "十六届世界赛，韩国队拿走十冠。直到今年，一支中国战队，把四支韩国队挨个送回了家。",
+      "emotion": {
+        "surprised": 0.3,
+        "calm": 0.3
+      },
+      "data": {
+        "kicker": "英雄联盟 · S1—S16",
+        "title": "LCK ×10",
+        "titleCue": "十冠",
+        "ladder": [
+          {
+            "text": "韩华",
+            "cue": "直到今年"
+          },
+          {
+            "text": "DK",
+            "cue": "中国战队"
+          },
+          {
+            "text": "T1",
+            "cue": "四支"
+          },
+          {
+            "text": "GEN",
+            "cue": "挨个"
+          }
+        ],
+        "big": "一穿四",
+        "bigCue": "送回了家",
+        "sub": "S16 · BLG 夺冠"
+      },
+      "stickers": [
+        {
+          "text": "LCK：少了尊重",
+          "cue": "送回了家",
+          "x": 560,
+          "y": 1150,
+          "rot": 5
+        }
+      ],
+      "hold": 1.2
+    },
+    {
+      "type": "timeline",
+      "narration": "2006年，两个DotA玩家创办了拳头公司。2009年英雄联盟上线，2011年国服开服，网吧里全是德玛西亚。",
+      "emotion": {
+        "calm": 0.5
+      },
+      "data": {
+        "items": [
+          {
+            "year": "2006",
+            "event": "拳头公司成立",
+            "cue": "2006年"
+          },
+          {
+            "year": "2009",
+            "event": "英雄联盟上线",
+            "cue": "2009年"
+          },
+          {
+            "year": "2011",
+            "event": "国服开服",
+            "cue": "2011年"
+          }
+        ]
+      },
+      "stickers": [
+        {
+          "text": "德玛西亚！",
+          "cue": "德玛西亚",
+          "x": 560,
+          "y": 1150,
+          "rot": 6
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "narration": "同年S1开打，一共8支队伍，决赛胜者组还自带一分。S2更离谱，WE打CLG断网九个小时，CLG从此人称拔网线战队。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "S1 · 2011 → S2 · 2012",
+        "range": [
+          0,
+          2
+        ],
+        "cues": {
+          "0": "S1",
+          "1": "S2"
+        },
+        "highlight": []
+      },
+      "stickers": [
+        {
+          "text": "开局送一分",
+          "cue": "自带一分",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        },
+        {
+          "text": "S2网管",
+          "cue": "拔网线",
+          "x": 580,
+          "y": 1090,
+          "rot": 6
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "narration": "2013年S3，皇族中单卢本伟赛前放话：训练赛和Faker五五开。决赛，皇族零比三，Faker出道即夺冠，人称大魔王。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "S3 · 2013 · 洛杉矶",
+        "range": [
+          2,
+          3
+        ],
+        "cues": {
+          "2": "出道即夺冠"
+        },
+        "highlight": [
+          2
+        ]
+      },
+      "stickers": [
+        {
+          "text": "五五开",
+          "cue": "五五开",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        },
+        {
+          "text": "大魔王",
+          "cue": "大魔王",
+          "x": 580,
+          "y": 1090,
+          "rot": 6
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "narration": "2014年S4，EDG的ADC娜美赛前吃了碗牛肉面，比赛直接崩盘，从此大赛前禁吃牛肉面。决赛，皇族又输给三星，Uzi两连亚军。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "S4 · 2014 · 首尔",
+        "range": [
+          3,
+          4
+        ],
+        "cues": {
+          "3": "输给三星"
+        },
+        "highlight": []
+      },
+      "stickers": [
+        {
+          "text": "禁止牛肉面",
+          "cue": "牛肉面",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        },
+        {
+          "text": "Uzi：又是亚军",
+          "cue": "两连亚军",
+          "x": 580,
+          "y": 1090,
+          "rot": 6
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "narration": "2015年初，Uzi双排心态爆炸，一句我去洗澡了，挂机走人。世界赛前，LGD选手在直播里问观众冠军皮肤要哪款，结果小组就出局了。冠军，SKT。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "S5 · 2015 · 柏林",
+        "range": [
+          4,
+          5
+        ],
+        "cues": {
+          "4": "冠军，SKT"
+        },
+        "highlight": []
+      },
+      "stickers": [
+        {
+          "text": "澡子哥",
+          "cue": "洗澡",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        },
+        {
+          "text": "皮肤选好了吗",
+          "cue": "冠军皮肤",
+          "x": 580,
+          "y": 1090,
+          "rot": 6
+        }
+      ]
+    },
+    {
+      "type": "chain",
+      "narration": "2016年是厂长的造梗元年：休息室录音成了LPL第一部圣经；小组赛人马开大，一头撞上寒冰的箭，人称马踏飞箭；八强赛，盲僧全场伤害只有4396。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "2016 · 厂长造梗元年",
+        "steps": [
+          {
+            "text": "休息室圣经",
+            "cue": "圣经"
+          },
+          {
+            "text": "人马 · 马踏飞箭",
+            "cue": "马踏飞箭"
+          },
+          {
+            "text": "盲僧 · 4396",
+            "cue": "4396"
+          }
+        ]
+      },
+      "stickers": [
+        {
+          "text": "背诵并默写全文",
+          "cue": "圣经",
+          "x": 60,
+          "y": 1150,
+          "rot": -5
+        },
+        {
+          "text": "4396",
+          "cue": "4396",
+          "x": 600,
+          "y": 1150,
+          "rot": 8
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "narration": "这一年半决赛，SKT和ROX打满五局，被很多人称作世界赛最经典的BO5。决赛，SKT三比二击败三星，二连冠。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "S6 · 2016 · 洛杉矶",
+        "range": [
+          5,
+          6
+        ],
+        "cues": {
+          "5": "二连冠"
+        },
+        "highlight": []
+      },
+      "stickers": [
+        {
+          "text": "史诗BO5",
+          "cue": "经典的BO5",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "narration": "2017年，世界赛来到北京鸟巢。半决赛RNG与SKT打满五局，决胜局最后一波团，解说一句：小狗倒了。决赛，SKT被三星三比零，大魔王落泪。从此流传：推推Bang，你也能单杀Faker。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "S7 · 2017 · 北京鸟巢",
+        "range": [
+          6,
+          7
+        ],
+        "cues": {
+          "6": "三比零"
+        },
+        "highlight": []
+      },
+      "stickers": [
+        {
+          "text": "小狗倒了",
+          "cue": "小狗倒了",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        },
+        {
+          "text": "推推Bang",
+          "cue": "推推Bang",
+          "x": 580,
+          "y": 1090,
+          "rot": 6
+        }
+      ]
+    },
+    {
+      "type": "chain",
+      "narration": "2018年5月，MSI决赛，Uzi带队逆风翻盘，主播一句乌兹永远滴神，喊出了YYDS。Uzi抱着奖杯的照片，从此每年都被网友P上S赛领奖台。",
+      "emotion": {
+        "happy": 0.3,
+        "calm": 0.3
+      },
+      "data": {
+        "label": "2018 · MSI",
+        "steps": [
+          {
+            "text": "RNG 逆风翻盘",
+            "cue": "逆风翻盘"
+          },
+          {
+            "text": "永远滴神 → YYDS",
+            "cue": "YYDS"
+          },
+          {
+            "text": "捧杯照 · 年年被P",
+            "cue": "P上"
+          }
+        ]
+      },
+      "stickers": [
+        {
+          "text": "YYDS",
+          "cue": "YYDS",
+          "x": 60,
+          "y": 1150,
+          "rot": -6
+        },
+        {
+          "text": "又来偷奖杯了",
+          "cue": "P上",
+          "x": 600,
+          "y": 1150,
+          "rot": 6
+        }
+      ]
+    },
+    {
+      "type": "chain",
+      "narration": "到了世界赛，RNG抽签抽到G2，Xiaohu当场笑出二段笑。比赛里，Uzi打出了简灯笼。然后，RNG被G2淘汰了。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "2018 · 世界赛八强",
+        "steps": [
+          {
+            "text": "抽签抽到 G2",
+            "cue": "抽到G2"
+          },
+          {
+            "text": "Xiaohu 二段笑",
+            "cue": "二段笑"
+          },
+          {
+            "text": "Uzi 简灯笼",
+            "cue": "简灯笼"
+          },
+          {
+            "text": "RNG 被 G2 淘汰",
+            "cue": "淘汰了"
+          }
+        ]
+      },
+      "stickers": [
+        {
+          "text": "北影教材",
+          "cue": "二段笑",
+          "x": 60,
+          "y": 1150,
+          "rot": -6
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "narration": "好在IG扛起大旗。TheShy天神下凡，宁王拿下FMVP，IG三比零横扫Fnatic，LPL第一个世界冠军！王校长却因为一口热狗，上了热搜。",
+      "emotion": {
+        "happy": 0.3,
+        "calm": 0.3
+      },
+      "data": {
+        "label": "S8 · 2018 · 仁川",
+        "range": [
+          7,
+          8
+        ],
+        "cues": {
+          "7": "LPL第一个"
+        },
+        "highlight": [
+          7
+        ]
+      },
+      "stickers": [
+        {
+          "text": "天神下凡",
+          "cue": "天神下凡",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        },
+        {
+          "text": "我就不该吃那口热狗",
+          "cue": "热狗",
+          "x": 580,
+          "y": 1090,
+          "rot": 6
+        }
+      ],
+      "intensity": 1.0
+    },
+    {
+      "type": "chain",
+      "narration": "2019年，管泽元一次赛前预测翻车，毒奶之名从此传开。TES教练质问369哪波拉扯了，369说：我真的在拉扯了。世界赛上，Xiaohu的瑞兹只打出2200伤害。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "2019 · 梗之年",
+        "steps": [
+          {
+            "text": "管泽元 · 毒奶封神",
+            "cue": "毒奶"
+          },
+          {
+            "text": "369 · 我真的在拉扯了",
+            "cue": "拉扯了"
+          },
+          {
+            "text": "Xiaohu · 瑞兹 2200",
+            "cue": "2200"
+          }
+        ]
+      },
+      "stickers": [
+        {
+          "text": "管理学",
+          "cue": "毒奶",
+          "x": 60,
+          "y": 1150,
+          "rot": -6
+        },
+        {
+          "text": "你在拉扯吗",
+          "cue": "拉扯了",
+          "x": 600,
+          "y": 1150,
+          "rot": 6
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "narration": "LPL的旗帜交给了FPX。八强赛后，对手说Doinb是本届最菜的中单；决赛，FPX三比零横扫G2。Doinb举杯：我这种打法，也能拿冠军！Tian拿下FMVP，连续两届FMVP，都是姓高的打野。",
+      "emotion": {
+        "happy": 0.3,
+        "calm": 0.3
+      },
+      "data": {
+        "label": "S9 · 2019 · 巴黎",
+        "range": [
+          8,
+          9
+        ],
+        "cues": {
+          "8": "三比零横扫G2"
+        },
+        "highlight": [
+          8
+        ]
+      },
+      "stickers": [
+        {
+          "text": "S9最菜中单",
+          "cue": "最菜的中单",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        },
+        {
+          "text": "高姓打野×2",
+          "cue": "姓高的打野",
+          "x": 580,
+          "y": 1090,
+          "rot": 6
+        }
+      ],
+      "intensity": 1.0
+    },
+    {
+      "type": "wall",
+      "narration": "2020年，Uzi宣布退役，YYDS从此只活在弹幕里。上海世界赛前，ShowMaker说出那句：重铸LCK的荣光，我辈义不容辞。决赛DWG击败SN，他做到了。小组赛上，狼行的痛苦面具，成了万能表情包。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "S10 · 2020 · 上海",
+        "range": [
+          9,
+          10
+        ],
+        "cues": {
+          "9": "击败SN"
+        },
+        "highlight": []
+      },
+      "stickers": [
+        {
+          "text": "我辈义不容辞",
+          "cue": "义不容辞",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        },
+        {
+          "text": "痛苦面具",
+          "cue": "痛苦面具",
+          "x": 580,
+          "y": 1090,
+          "rot": 6
+        }
+      ]
+    },
+    {
+      "type": "chain",
+      "emotion": {
+        "happy": 0.25,
+        "calm": 0.35
+      },
+      "narration": "说到EDG，这是一条漫长的骑士之路：S4到S8，五进世界赛，四次倒在八强。2021年，EDG第六次出征，八强三比二RNG，半决赛三比二GEN，决赛三比二卫冕冠军DK！",
+      "data": {
+        "label": "2021 · 骑士之路",
+        "steps": [
+          {
+            "text": "S4—S8 · 八强 ×4",
+            "cue": "四次倒在八强"
+          },
+          {
+            "text": "八强 3:2 RNG",
+            "cue": "三比二RNG"
+          },
+          {
+            "text": "半决赛 3:2 GEN",
+            "cue": "三比二GEN"
+          },
+          {
+            "text": "决赛 3:2 DK",
+            "cue": "卫冕冠军DK"
+          }
+        ]
+      },
+      "stickers": [
+        {
+          "text": "骑士之路",
+          "cue": "骑士之路",
+          "x": 600,
+          "y": 1150,
+          "rot": 6
+        },
+        {
+          "text": "连续三个3:2",
+          "cue": "三比二GEN",
+          "x": 60,
+          "y": 1150,
+          "rot": -6
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "emotion": {
+        "happy": 0.3,
+        "calm": 0.3
+      },
+      "intensity": 1.0,
+      "narration": "这一年，管泽元的毒奶迎来巅峰，人称管理学。Scout拿下FMVP，ShowMaker赛后感叹：失败总是贯穿人生。那一夜，全国大学宿舍楼一起喊：EDG NB！",
+      "data": {
+        "label": "S11 · 2021 · 冰岛",
+        "range": [
+          10,
+          11
+        ],
+        "cues": {
+          "10": "Scout"
+        },
+        "highlight": [
+          10
+        ]
+      },
+      "stickers": [
+        {
+          "text": "管理学",
+          "cue": "管理学",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        },
+        {
+          "text": "失败总是贯穿人生",
+          "cue": "贯穿人生",
+          "x": 580,
+          "y": 1090,
+          "rot": 6
+        },
+        {
+          "text": "EDG NB！",
+          "cue": "EDG NB",
+          "x": 280,
+          "y": 1200,
+          "rot": -3
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "narration": "2022年，TheShy喜提外号僵尸，赢他的人都被叫作道长。世界赛上，DRX从入围赛一路下克上，Deft跳完了他的最后一舞，决赛击败T1。管泽元说：究竟是什么样的结局，才配得上这一路的颠沛流离。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "S12 · 2022 · 旧金山",
+        "range": [
+          11,
+          12
+        ],
+        "cues": {
+          "11": "击败T1"
+        },
+        "highlight": []
+      },
+      "stickers": [
+        {
+          "text": "道长来了",
+          "cue": "道长",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        },
+        {
+          "text": "最后一舞",
+          "cue": "最后一舞",
+          "x": 580,
+          "y": 1090,
+          "rot": 6
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "narration": "2023年，T1遥遥领先。决赛对手是WBG，TheShy时隔五年重返决赛，可惜零比三。大魔王，第四冠。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "S13 · 2023 · 首尔",
+        "range": [
+          12,
+          13
+        ],
+        "cues": {
+          "12": "零比三"
+        },
+        "highlight": []
+      },
+      "stickers": [
+        {
+          "text": "遥遥领先",
+          "cue": "遥遥领先",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "narration": "2024年，Xiaohu的手势舞火遍世界赛，Chovy看完当场憋笑。决赛T1三比二险胜BLG，大魔王第五冠。赛后，Uzi熟练地把自己P上了领奖台。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "S14 · 2024 · 伦敦",
+        "range": [
+          13,
+          14
+        ],
+        "cues": {
+          "13": "三比二"
+        },
+        "highlight": []
+      },
+      "stickers": [
+        {
+          "text": "手势舞警告",
+          "cue": "手势舞",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        },
+        {
+          "text": "Uzi：生涯第十四冠",
+          "cue": "领奖台",
+          "x": 580,
+          "y": 1090,
+          "rot": 6
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "narration": "2025年，TES在国际赛被打成了陀螺，一首突然的陀螺唱遍B站。成都世界赛，T1三比二击败KT，史无前例三连冠，Faker第六冠，三冠王成了三连冠王。",
+      "emotion": {
+        "calm": 0.45
+      },
+      "data": {
+        "label": "S15 · 2025 · 成都",
+        "range": [
+          14,
+          15
+        ],
+        "cues": {
+          "14": "三连冠"
+        },
+        "highlight": []
+      },
+      "stickers": [
+        {
+          "text": "突然的陀螺",
+          "cue": "陀螺",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        },
+        {
+          "text": "三连冠王",
+          "cue": "三连冠王",
+          "x": 580,
+          "y": 1090,
+          "rot": 6
+        }
+      ]
+    },
+    {
+      "type": "chain",
+      "narration": "2026年，TES乐队照常发歌。BLG先在MSI决赛惜败韩华。到了纽约世界赛，他们二比零韩华，三比零DK；半决赛三比一T1，打破了T1世界赛BO5从没输给LPL的魔咒；决赛，三比一GEN。",
+      "emotion": {
+        "calm": 0.35,
+        "surprised": 0.15
+      },
+      "data": {
+        "label": "2026 · BLG",
+        "steps": [
+          {
+            "text": "MSI 惜败韩华",
+            "cue": "惜败韩华"
+          },
+          {
+            "text": "2:0 韩华",
+            "cue": "二比零韩华"
+          },
+          {
+            "text": "3:0 DK",
+            "cue": "三比零DK"
+          },
+          {
+            "text": "3:1 T1 · 破魔咒",
+            "cue": "魔咒"
+          },
+          {
+            "text": "3:1 GEN",
+            "cue": "三比一GEN"
+          }
+        ]
+      },
+      "stickers": [
+        {
+          "text": "乐队又出新歌了",
+          "cue": "乐队",
+          "x": 60,
+          "y": 1150,
+          "rot": -5
+        },
+        {
+          "text": "魔咒破了",
+          "cue": "魔咒",
+          "x": 600,
+          "y": 1150,
+          "rot": 6
+        }
+      ]
+    },
+    {
+      "type": "wall",
+      "narration": "一穿四！LCK当场要求验牌，经检查，牌没有问题。Knight拿下FMVP，和Bin一起成为LPL首位大满贯中单和上单。板蓝根，治好了LPL五年的老毛病。",
+      "emotion": {
+        "happy": 0.35,
+        "surprised": 0.15,
+        "calm": 0.2
+      },
+      "data": {
+        "label": "S16 · 2026 · 纽约",
+        "range": [
+          15,
+          16
+        ],
+        "cues": {
+          "15": "一穿四"
+        },
+        "highlight": [
+          15
+        ]
+      },
+      "stickers": [
+        {
+          "text": "我要验牌！",
+          "cue": "验牌",
+          "x": 60,
+          "y": 1090,
+          "rot": -6
+        },
+        {
+          "text": "牌没有问题",
+          "cue": "牌没有问题",
+          "x": 580,
+          "y": 1090,
+          "rot": 6
+        },
+        {
+          "text": "板蓝根 YYDS",
+          "cue": "板蓝根",
+          "x": 280,
+          "y": 1200,
+          "rot": -3
+        }
+      ],
+      "intensity": 1.0
+    },
+    {
+      "type": "quote",
+      "narration": "十七年，十六届世界赛。冠军墙只教会我们一件事：电子竞技，菜是原罪。",
+      "emotion": {
+        "calm": 0.6
+      },
+      "data": {
+        "label": "一句话总结",
+        "quote": "电子竞技\n菜是原罪",
+        "source": "峡谷古训",
+        "cue": "电子竞技",
+        "stamp": "GG"
+      },
+      "stickers": [
+        {
+          "text": "菜就多练",
+          "cue": "菜是原罪",
+          "x": 650,
+          "y": 520,
+          "rot": 8
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "ryoji_kid": {"name": "亮司（少年）", "age": "kid", "hair": "messy", "hairColor": "#26232b", "outfit": "#3c4656", "outfit2": "#262b35", "blush": false, "prop": "scissors"},
+  "yukiho_kid": {"name": "雪穗（少女）", "age": "kid", "hair": "long", "hairColor": "#1d1a20", "outfit": "#f4f1ec", "dress": true},
+  "sasagaki": {"name": "笹垣润三", "hair": "side", "hairColor": "#7d7d7d", "outfit": "#e8e0d4", "coat": "#8a6a52", "tie": "#4e342e", "hat": "fedora", "hatColor": "#5b4636", "blush": false, "prop": "notebook"},
+  "yosuke": {"name": "桐原洋介", "hair": "bald", "hairColor": "#3a3a3a", "glasses": true, "outfit": "#8f8a84", "apron": "#5d4a3c", "blush": false},
+  "fumiyo": {"name": "西本文代", "hair": "bob", "hairColor": "#3b2a22", "outfit": "#b8908f", "apron": "#ddd2c2", "blush": false},
+  "terasaki": {"name": "寺崎忠夫", "hair": "short", "hairColor": "#2e2e2e", "outfit": "#5f7d9a", "outfit2": "#3c4f63", "hat": "cap", "hatColor": "#34495e", "blush": false},
+  "reiko": {"name": "唐泽礼子", "hair": "bun", "hairColor": "#a3a3a3", "outfit": "#5d7a69", "dress": true, "blush": false},
+  "yukiho": {"name": "唐泽雪穗", "hair": "long", "hairColor": "#17141a", "outfit": "#ffffff", "dress": true, "necklace": true},
+  "ryoji": {"name": "桐原亮司", "hair": "messy", "hairColor": "#17151a", "outfit": "#2a2a30", "coat": "#1e1f26", "outfit2": "#1b1c22", "blush": false}
+}

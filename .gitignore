@@ -1,0 +1,17 @@
+# 依赖
+node_modules/
+.venv/
+
+# 生成物（都能用脚本重新生成）
+out/
+.cache/
+public/audio/
+public/bgm.*
+public/sfx/
+public/images/
+voices/*.wav
+
+# 杂项
+*.log
+.DS_Store
+__pycache__/

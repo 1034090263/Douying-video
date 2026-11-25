@@ -1,0 +1,20 @@
+{
+  "name": "douyin-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "tts": ".venv/bin/python scripts/tts.py",
+    "dev": "remotion studio src/index.ts",
+    "render": "sh scripts/render.sh",
+    "build": "sh scripts/build.sh",
+    "audio": ".venv/bin/python scripts/audio.py"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.547",
+    "@types/react": "^19.3.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.547",
+    "typescript": "^7.0.2"
+  }
+}

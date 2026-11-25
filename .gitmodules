@@ -1,0 +1,9 @@
+[submodule "vendor/sy-style-100"]
+	path = vendor/sy-style-100
+	url = https://github.com/xiaoxiong20xx-code/sy-style-100.git
+[submodule "vendor/sy-style-new20"]
+	path = vendor/sy-style-new20
+	url = https://github.com/xiaoxiong20xx-code/sy-style-new20.git
+[submodule "vendor/sy-style-more20"]
+	path = vendor/sy-style-more20
+	url = https://github.com/xiaoxiong20xx-code/sy-style-more20.git
