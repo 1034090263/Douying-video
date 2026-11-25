@@ -1,0 +1,36 @@
+{
+  "style": "authentic traditional Chinese shadow puppet (Shaanxi piying), completely flat 2D cutout made of thin translucent dyed leather, stylized folk-art face in strict side profile with a long narrow almond eye and a fine nose line (not realistic, not 3D), bold dark carved outlines, delicate hollow lace-like openwork patterns, vivid translucent red, green and yellow dyes, museum piece, no text",
+  "character_style": "full body, strict side view facing right, arms hanging down, legs straight, flat, isolated on a plain white background, no shadow, no rods",
+  "characters": {
+    "man": {
+      "prompt": "a shadow puppet of a 52-year-old balding man with round glasses, a pawnbroker in a long dark red robe with green trim and carved patterns",
+      "poses": {
+        "stand": "",
+        "walk": "the same puppet walking forward with a long stride, legs apart, side view facing right"
+      }
+    },
+    "girl": {
+      "prompt": "a shadow puppet of an 11-year-old girl with long straight black hair and blunt bangs, wearing a simple white dress with small carved flowers",
+      "poses": {
+        "stand": "",
+        "walk": "the same puppet walking forward with a stride, legs apart, side view facing right"
+      }
+    },
+    "boy": {
+      "prompt": "a shadow puppet of an 11-year-old thin boy with messy black hair, wearing a dark indigo short jacket and patterned shorts, holding small red scissors",
+      "poses": {
+        "stand": "",
+        "walk": "the same puppet walking forward with a stride, legs apart, side view facing right",
+        "shock": "the same puppet recoiling in shock with one hand raised, mouth open",
+        "raise": "the same puppet raising the red scissors high above his head with one arm"
+      }
+    }
+  },
+  "props": {
+    "building": "a shadow puppet scenery piece of a tall unfinished concrete building with empty square windows and a dark doorway, flat carved translucent gray-brown leather",
+    "duct": "a shadow puppet scenery piece of a long straight horizontal ventilation duct, flat carved translucent gray leather with rivets, very wide and thin",
+    "lamp": "a shadow puppet scenery piece of an old street lamp post with a lantern, flat carved dark leather"
+  },
+  "prop_style": "single object, flat, isolated on a plain white background, no shadow, no rods",
+  "prop_art_style": "authentic traditional Chinese shadow puppet scenery (piying), flat 2D thin translucent dyed leather, bold dark carved outlines, hollow lace-like openwork patterns, no text"
+}

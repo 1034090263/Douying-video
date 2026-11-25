@@ -39,7 +39,7 @@ type Layer = {
   acts?: Act[];
 };
 
-const src = (f: string) => staticFile(`images/${TIMELINE.id}/${f}`);
+const src = (f: string) => staticFile(`images/${(TIMELINE.theme as {images?: string} | undefined)?.images ?? TIMELINE.id}/${f}`);
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 const ease = Easing.bezier(0.45, 0, 0.25, 1);
 const noise = (f: number, seed: number) => Math.sin(f / 23 + seed) * 0.6 + Math.sin(f / 11.3 + seed * 2.1) * 0.3 + Math.sin(f / 5.7 + seed * 3.7) * 0.1;

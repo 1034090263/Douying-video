@@ -117,6 +117,25 @@ def main():
             cache[name] = k2
             print("姿势", name, flush=True)
 
+    # 骨骼部件：以角色定妆照为参考，逐个生成部件并抠图（皮影就是分件刻好再铆接的）
+    for cid, parts in art.get("rigs", {}).items():
+        if not want(cid) and not want(f"rig_{cid}"):
+            continue
+        ref_img = Image.open(out / f"raw_{cid}_stand.png").convert("RGB")
+        base_k = cache.get(f"char_{cid}_stand.png", "")
+        for pname, pp in parts.items():
+            name = f"part_{cid}_{pname}.png"
+            prompt = f"{pp}. {style}"
+            k = key_of(prompt, args.seed, base_k)
+            if done(name, k):
+                continue
+            gen = gen or Gen()
+            img = gen.image(prompt, (768, 1024), args.seed, refs=[ref_img])
+            img.save(out / f"raw_part_{cid}_{pname}.png")
+            gen.cutout(img).save(out / name)
+            cache[name] = k
+            print("部件", name, flush=True)
+
     for pid, p in art.get("props", {}).items():
         if not want(pid):
             continue

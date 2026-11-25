@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame} from 'remotion';
 import {C, DISPLAY, FPS, SANS, SceneData, THEME, cueFrame, prog, shake} from './lib';
 import {Burst, Content, Flash, Label, Ring, Seal, Sfx, Shine} from './ui';
+import {PuppetScene} from './puppet';
 import {ShotScene} from './shot';
 import {StageScene} from './stage';
 
@@ -657,5 +658,6 @@ export const SCENES: Record<string, React.FC<P>> = {
   outro: Outro,
   wall: Wall,
   shot: ShotScene,
+  puppet: PuppetScene,
   stage: StageScene,
 };

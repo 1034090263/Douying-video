@@ -6,15 +6,17 @@
       "prompt": "an 11-year-old thin Japanese boy, messy black hair falling over his eyes, pale skin, gloomy quiet expression, dark gray knit sweater, dark navy shorts, white socks, black shoes, holding small red-handled paper-cutting scissors in his right hand",
       "poses": {
         "stand": "",
-        "walk": "the same boy walking to the right, side view",
-        "down": "the same boy looking down with his head lowered, hands at his sides"
+        "walk": "the same boy walking to the right in strict side view, long stride with legs far apart, the near arm swung far backward away from the body so the arm does not overlap the torso, the other arm hidden behind the body",
+        "down": "the same boy looking down with his head lowered, hands at his sides",
+        "shock": "the same boy stepping back in shock, side view facing right, one hand raised",
+        "raise": "the same boy raising the small red-handled scissors high above his head with one arm, side view facing right, determined"
       }
     },
     "yukiho_kid": {
       "prompt": "an 11-year-old Japanese girl, long straight black hair with blunt bangs, pale delicate face, calm gentle expression, simple white dress, white socks, black shoes, holding a red hardcover book against her chest",
       "poses": {
         "stand": "",
-        "walk": "the same girl walking to the left, side view",
+        "walk": "the same girl walking to the left in strict side view, long stride with legs apart, the near arm swung far forward away from the body so the arm does not overlap the dress, the other arm hidden behind the body",
         "smile": "the same girl smiling softly with her hands folded in front"
       }
     },
@@ -29,7 +31,8 @@
     "yosuke": {
       "prompt": "a 52-year-old Japanese pawnbroker, balding with gray hair on the sides, round glasses, slightly heavy build, gray cardigan over a white shirt, dark trousers, faint unsettling smile",
       "poses": {
-        "stand": ""
+        "stand": "",
+        "walk": "the same man walking to the right in strict side view, long stride with legs far apart, the near arm reaching far forward away from the body so the arm does not overlap the torso, the other arm hidden behind the body"
       }
     },
     "fumiyo": {

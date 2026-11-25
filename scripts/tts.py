@@ -343,7 +343,15 @@ def main():
     if scenes:
         scenes[-1]["durationInFrames"] += FPS
     bgm = next((p.name for p in sorted(PUBLIC.glob("bgm.*"))), None)
-    timeline = {"id": vid, "title": script["title"], "fps": FPS, "bgm": bgm, "theme": script.get("theme", {}), "cover": script.get("cover", {}), "scenes": scenes}
+    # 骨骼人偶：把 scripts/rig.py 生成的 rig.json 嵌进时间轴
+    theme = script.get("theme", {})
+    img_set = theme.get("images", vid)
+    rigs = {}
+    for rid in theme.get("rigs", []):
+        f = PUBLIC / "images" / img_set / f"rig_{rid}" / "rig.json"
+        if f.exists():
+            rigs[rid] = json.loads(f.read_text())
+    timeline = {"id": vid, "title": script["title"], "fps": FPS, "bgm": bgm, "theme": theme, "cover": script.get("cover", {}), "rigs": rigs, "scenes": scenes}
     OUT.write_text(json.dumps(timeline, ensure_ascii=False, indent=1))
     total = sum(s["durationInFrames"] for s in scenes) / FPS
     print(f"[{vid} · {engine}] 总时长 {total:.1f}s → {OUT.relative_to(ROOT)}")
