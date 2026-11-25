@@ -1,14 +1,18 @@
 """把一张 AI 生成的「侧面迈步全身像」自动拆成可动部件，输出骨骼描述。
 
-  流程：BiRefNet 抠图 → MediaPipe 识别关节 → 沿骨骼切出头 / 近侧手臂 / 两条腿 → 躯干补洞 → rig.json
-  部件在关节处留圆形重叠，旋转时不露缝；远侧手臂在侧面基本被身体挡住，留在躯干上。
+  流程：
+    1. BiRefNet 抠图；MediaPipe 识别关节
+    2. 部位分割（SegFormer clothes）：每个像素是头发/脸/上衣/裤子/裙子/鞋/手臂皮肤/腿皮肤
+    3. 在「该类别允许的骨骼」里，把像素归给归一化距离最近的那根骨骼
+       头发、脸 → 头；鞋 → 小腿；手臂皮肤 → 手臂；腿皮肤 → 腿；上衣 → 躯干或手臂；裤子 → 躯干或腿
+    4. 每个部件只保留与骨骼相连的那一块，碎片交回躯干；关节处补一圈重叠，转动时不露缝
+  底图请先用 scripts/rigbase.py 挑选（头部严格侧面、四肢彼此分开）。
 
 用法：~/imggen/.venv/bin/python scripts/rig.py <图片目录> <角色id> [--dress]
-  读取 <目录>/raw_<角色>_walk.png，写出 <目录>/rig_<角色>/*.png 和 rig.json
+  读取 <目录>/raw_<角色>_walk.png，写出 <目录>/rig_<角色>/*.png、rig.json 和检查图 debug.jpg
 """
 import argparse
 import json
-import math
 from pathlib import Path
 
 import cv2
@@ -19,8 +23,18 @@ from mediapipe.tasks.python import BaseOptions, vision
 from PIL import Image
 
 MODELS = Path.home() / "imggen" / "models"
-IDX = {"nose": 0, "ear_l": 7, "ear_r": 8, "sh_l": 11, "sh_r": 12, "el_l": 13, "el_r": 14, "wr_l": 15, "wr_r": 16,
+IDX = {"nose": 0, "eye_l": 2, "eye_r": 5, "ear_l": 7, "ear_r": 8, "sh_l": 11, "sh_r": 12, "el_l": 13, "el_r": 14, "wr_l": 15, "wr_r": 16,
        "hip_l": 23, "hip_r": 24, "kn_l": 25, "kn_r": 26, "an_l": 27, "an_r": 28, "toe_l": 31, "toe_r": 32}
+# SegFormer clothes 的类别 → 允许归属的骨骼前缀
+LABEL_BONES = {
+    1: ("head",), 2: ("head",), 3: ("head",), 11: ("head",), 17: ("head", "torso"),  # 帽子 头发 墨镜 脸 围巾
+    4: ("torso", "uarm", "farm"),  # 上衣（含袖子）
+    5: ("torso", "thigh"), 6: ("torso", "thigh", "shin"), 7: ("torso", "uarm", "farm"), 8: ("torso",),  # 裙子 裤子 连衣裙（含袖子） 腰带
+    9: ("shin",), 10: ("shin",),  # 鞋
+    12: ("thigh", "shin"), 13: ("thigh", "shin"),  # 腿
+    14: ("uarm", "farm"), 15: ("uarm", "farm"),  # 手臂皮肤/手
+    16: ("torso", "uarm", "farm"),  # 包
+}
 
 
 def alpha_of(img: Image.Image) -> np.ndarray:
@@ -34,9 +48,21 @@ def alpha_of(img: Image.Image) -> np.ndarray:
     return cv2.resize(m, img.size, interpolation=cv2.INTER_LINEAR)
 
 
+def parse(img: Image.Image) -> np.ndarray:
+    from transformers import AutoModelForSemanticSegmentation, SegformerImageProcessor
+
+    path = MODELS / "segformer-clothes"
+    proc = SegformerImageProcessor.from_pretrained(path)
+    model = AutoModelForSemanticSegmentation.from_pretrained(path).cuda().eval()
+    with torch.no_grad():
+        lg = model(**{k: v.cuda() for k, v in proc(images=img, return_tensors="pt").items()}).logits
+    return torch.nn.functional.interpolate(lg, size=img.size[::-1], mode="bilinear").argmax(1)[0].cpu().numpy()
+
+
 def keypoints(rgb: np.ndarray):
-    opt = vision.PoseLandmarkerOptions(base_options=BaseOptions(model_asset_path=str(MODELS / "mediapipe" / "pose_landmarker_heavy.task")), running_mode=vision.RunningMode.IMAGE)
-    det = vision.PoseLandmarker.create_from_options(opt)
+    det = vision.PoseLandmarker.create_from_options(
+        vision.PoseLandmarkerOptions(base_options=BaseOptions(model_asset_path=str(MODELS / "mediapipe" / "pose_landmarker_heavy.task")), running_mode=vision.RunningMode.IMAGE)
+    )
     r = det.detect(mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb))
     if not r.pose_landmarks:
         raise SystemExit("没有识别到人体关节")
@@ -45,126 +71,126 @@ def keypoints(rgb: np.ndarray):
     return {k: np.array([lm[i].x * w, lm[i].y * h]) for k, i in IDX.items()}, {k: lm[i].z for k, i in IDX.items()}
 
 
-def width_at(alpha, a, b, t=0.5, maxw=200):
-    """沿骨骼 a→b 在 t 处，测量轮廓的垂直宽度"""
-    p = a + (b - a) * t
-    d = (b - a) / (np.linalg.norm(b - a) + 1e-6)
-    n = np.array([-d[1], d[0]])
-    def run(sign):
-        for s in range(1, maxw):
-            q = (p + n * s * sign).astype(int)
-            if not (0 <= q[0] < alpha.shape[1] and 0 <= q[1] < alpha.shape[0]) or alpha[q[1], q[0]] < 0.5:
-                return s
-        return maxw
-    return run(1) + run(-1)
-
-
-def capsule(shape, pts, r):
-    m = np.zeros(shape, np.uint8)
-    for a, b in zip(pts[:-1], pts[1:]):
-        cv2.line(m, tuple(map(int, a)), tuple(map(int, b)), 255, int(r * 2))
-    for p in pts:
-        cv2.circle(m, tuple(map(int, p)), int(r), 255, -1)
-    return m
+def seg_dist(X, Y, a, b):
+    """所有像素到线段 a-b 的距离"""
+    d = b - a
+    L = float(np.dot(d, d)) + 1e-6
+    t = np.clip(((X - a[0]) * d[0] + (Y - a[1]) * d[1]) / L, 0, 1)
+    return np.hypot(X - (a[0] + t * d[0]), Y - (a[1] + t * d[1]))
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("folder")
     ap.add_argument("cid")
-    ap.add_argument("--dress", action="store_true", help="穿裙子：大腿藏在裙子里，只拆膝盖以下")
+    ap.add_argument("--dress", action="store_true", help="穿裙子：大腿藏在裙子里，腿只拆膝盖以下")
     args = ap.parse_args()
     folder = Path(args.folder)
     raw = Image.open(folder / f"raw_{args.cid}_walk.png").convert("RGB")
     rgb = np.array(raw)
     a = alpha_of(raw)
-    A = (a > 0.5).astype(np.uint8) * 255
+    fg = a > 0.5
+    label = parse(raw)
     k, z = keypoints(rgb)
+    H, W = fg.shape
+    Y, X = np.mgrid[0:H, 0:W].astype(np.float32)
 
-    # 前后：MediaPipe 的 z 越小越靠近镜头；手臂只拆近侧那只
-    near_arm = "l" if z["sh_l"] < z["sh_r"] else "r"
+    near = "l" if z["sh_l"] < z["sh_r"] else "r"
+    far = "r" if near == "l" else "l"
     legs = sorted(["l", "r"], key=lambda s: z[f"hip_{s}"] + z[f"kn_{s}"] + z[f"an_{s}"])  # [近, 远]
     hip = (k["hip_l"] + k["hip_r"]) / 2
     neck = (k["sh_l"] + k["sh_r"]) / 2
-    face = (k["ear_l"] + k["ear_r"]) / 2
-    facing = 1 if k["nose"][0] > face[0] else -1
+    face = (k["ear_l"] + k["ear_r"] + k["nose"]) / 3
+    facing = 1 if k["nose"][0] > (k["ear_l"][0] + k["ear_r"][0]) / 2 else -1
+    torso_len = np.linalg.norm(neck - hip)
+    head_top = face + (face - neck) * 0.7
 
-    parts = {}
+    # 骨骼：名称 → (起点, 终点, 归一化半径, 关节点, 父部件)
+    bones = {}
+    bones["torso"] = (neck, hip, torso_len * 0.3, hip, None)
+    bones["head"] = (neck + (face - neck) * 0.35, head_top, np.linalg.norm(face - neck) * 0.9, neck + (face - neck) * 0.2, "torso")
+    axis = (hip - neck) / (torso_len + 1e-6)
+    nrm = np.array([-axis[1], axis[0]])
+    off = lambda p: abs(float(np.dot(p - neck, nrm))) / torso_len  # 离躯干中线多远
+    for tag, s in (("", near), ("_far", far)):
+        sh, el, wr = k[f"sh_{s}"], k[f"el_{s}"], k[f"wr_{s}"]
+        if tag == "_far" and (off(el) + off(wr)) / 2 < 0.3:
+            print("远侧手臂被身体挡住，不单独拆")
+            continue
+        arm_r = np.linalg.norm(el - sh) * 0.22
+        bones[f"uarm{tag}"] = (sh, el, arm_r, sh, "torso")
+        bones[f"farm{tag}"] = (el, wr + (wr - el) * 0.4, arm_r * 0.95, el, f"uarm{tag}")
+    for tag, s in zip(("near", "far"), legs):
+        hp, kn, an, toe = k[f"hip_{s}"], k[f"kn_{s}"], k[f"an_{s}"], k[f"toe_{s}"]
+        leg_r = np.linalg.norm(kn - hp) * 0.2
+        foot = an + (toe - an) * 1.5
+        if not args.dress:
+            bones[f"thigh_{tag}"] = (hp, kn, leg_r, hp, "torso")
+            bones[f"shin_{tag}"] = (kn, foot, leg_r * 0.85, kn, f"thigh_{tag}")
+        else:
+            bones[f"shin_{tag}"] = (kn, foot, leg_r * 0.85, kn, "torso")
 
-    def take(name, mask, pivot, parent, child_pivot=None):
-        m = cv2.bitwise_and(mask, A)
-        ys, xs = np.where(m > 0)
-        if len(xs) == 0:
-            return
-        x0, y0, x1, y1 = xs.min(), ys.min(), xs.max() + 1, ys.max() + 1
-        rgba = np.dstack([rgb, (a * (m > 0)).clip(0, 1) * 255]).astype(np.uint8)[y0:y1, x0:x1]
-        Image.fromarray(rgba).save(out / f"{name}.png")
-        parts[name] = {"file": f"{name}.png", "x": int(x0), "y": int(y0), "w": int(x1 - x0), "h": int(y1 - y0),
-                       "pivot": [float(pivot[0]), float(pivot[1])], "parent": parent}
+    names = list(bones)
+    D = np.stack([seg_dist(X, Y, b[0], b[1]) / b[2] for b in bones.values()])
+    # 按部位类别限制可选骨骼：不允许的骨骼距离设为无穷大
+    for lab_id, prefixes in LABEL_BONES.items():
+        sel = label == lab_id
+        if not sel.any():
+            continue
+        for i, n in enumerate(names):
+            if not n.startswith(prefixes):
+                D[i][sel] = np.inf
+    owner = np.argmin(D, axis=0)
+    owner[~fg] = -1
+
+    # 每个部件只保留与骨骼相连的那一块，碎片交回躯干
+    torso_i = names.index("torso")
+    for i, n in enumerate(names):
+        if n == "torso":
+            continue
+        m = (owner == i).astype(np.uint8)
+        cnt, lab = cv2.connectedComponents(m)
+        if cnt <= 2:
+            continue
+        a0, a1 = bones[n][0], bones[n][1]
+        probe = [(a0 + (a1 - a0) * t).astype(int) for t in (0.2, 0.4, 0.6, 0.8)]
+        keep = {lab[min(max(p[1], 0), H - 1), min(max(p[0], 0), W - 1)] for p in probe} - {0}
+        if not keep:
+            sizes = [(lab == j).sum() for j in range(1, cnt)]
+            keep = {int(np.argmax(sizes)) + 1}
+        owner[(m > 0) & ~np.isin(lab, list(keep))] = torso_i
 
     out = folder / f"rig_{args.cid}"
     out.mkdir(exist_ok=True)
-    used = np.zeros_like(A)
+    for f in out.glob("*.png"):
+        f.unlink()
+    parts = {}
+    colors = np.random.default_rng(1).integers(60, 255, (len(names), 3))
+    debug = (rgb * 0.35).astype(np.uint8)
+    for i, n in enumerate(names):
+        m = owner == i
+        debug[m] = (debug[m] + colors[i] * 0.65).astype(np.uint8)
+        j = bones[n][3]
+        # 关节处补一圈重叠：子部件额外带上关节附近的父部件像素
+        if bones[n][4]:
+            rj = bones[n][2] * (0.3 if n == 'head' else 0.85)  # 脖子处只要一小圈
+            m = m | (fg & (np.hypot(X - j[0], Y - j[1]) < rj) & (owner == names.index(bones[n][4])))
+        ys, xs = np.where(m)
+        if len(xs) == 0:
+            continue
+        x0, y0, x1, y1 = xs.min(), ys.min(), xs.max() + 1, ys.max() + 1
+        rgba = np.dstack([rgb, (a * m * 255).clip(0, 255)]).astype(np.uint8)[y0:y1, x0:x1]
+        Image.fromarray(rgba).save(out / f"{n}.png")
+        parts[n] = {"file": f"{n}.png", "x": int(x0), "y": int(y0), "w": int(x1 - x0), "h": int(y1 - y0), "pivot": [float(j[0]), float(j[1])], "parent": bones[n][4]}
+    Image.fromarray(debug).save(out / "debug.jpg")
 
-    # 腿：近腿在躯干前，远腿在躯干后
-    for tag, s in zip(("near", "far"), legs):
-        h_, kn, an, toe = k[f"hip_{s}"], k[f"kn_{s}"], k[f"an_{s}"], k[f"toe_{s}"]
-        r_th = float(np.clip(width_at(a, h_, kn, 0.6) * 0.55, 16, np.linalg.norm(kn - h_) * 0.22))
-        r_sh = float(np.clip(width_at(a, kn, an, 0.5) * 0.62, 12, np.linalg.norm(an - kn) * 0.2))
-        foot = an + (toe - an) * 1.4
-        shin = capsule(A.shape, [kn, an, foot], r_sh)
-        if args.dress:
-            take(f"shin_{tag}", shin, kn, "torso")
-        else:
-            thigh = capsule(A.shape, [h_, kn], r_th)
-            thigh[: int(h_[1] + r_th * 0.2)] = 0  # 只要髋部以下，不带走躯干
-            take(f"thigh_{tag}", cv2.bitwise_and(thigh, cv2.bitwise_not(shin)), h_, "torso")
-            take(f"shin_{tag}", shin, kn, f"thigh_{tag}")
-            used |= thigh
-        used |= shin
-
-    # 近侧手臂：大臂 + 小臂（含手）
-    s = near_arm
-    sh_, el, wr = k[f"sh_{s}"], k[f"el_{s}"], k[f"wr_{s}"]
-    r_ua = float(np.clip(width_at(a, sh_, el) * 0.5, 14, np.linalg.norm(el - sh_) * 0.24))
-    hand = wr + (wr - el) * 0.35
-    fore = capsule(A.shape, [el, wr, hand], r_ua * 0.9)
-    upper = cv2.bitwise_and(capsule(A.shape, [sh_, el], r_ua), cv2.bitwise_not(fore))
-    take("uarm", upper, sh_, "torso")
-    take("farm", fore, el, "uarm")
-    arm_mask = upper | fore
-
-    # 头：以耳朵为中心的圆，截到脖子以上
-    head_r = np.linalg.norm(face - neck) * 1.05
-    head = np.zeros_like(A)
-    cv2.circle(head, tuple(map(int, face)), int(head_r), 255, -1)
-    cut = np.zeros_like(A)
-    cut[: int(neck[1] - head_r * 0.15)] = 255
-    head &= cut
-    neck_pt = neck + (face - neck) * 0.25
-    take("head", head, neck_pt, "torso")
-
-    # 躯干：剩下的部分；被手臂、腿挡住的区域用周围颜色补上（部件转开时不露洞）
-    body = cv2.bitwise_and(A, cv2.bitwise_not(head))
-    legs_only = used.copy()
-    legs_only[: int(hip[1] + 10)] = 0
-    body = cv2.bitwise_and(body, cv2.bitwise_not(legs_only))
-    body = cv2.bitwise_and(body, cv2.bitwise_not(cv2.bitwise_and(arm_mask, cv2.bitwise_not(capsule(A.shape, [neck, hip], np.linalg.norm(neck - hip) * 0.22)))))
-    hole = cv2.bitwise_and(arm_mask, body)
-    filled = cv2.inpaint(rgb, hole, 15, cv2.INPAINT_TELEA)
-    ys, xs = np.where(body > 0)
-    x0, y0, x1, y1 = xs.min(), ys.min(), xs.max() + 1, ys.max() + 1
-    rgba = np.dstack([filled, (body > 0) * 255]).astype(np.uint8)[y0:y1, x0:x1]
-    Image.fromarray(rgba).save(out / "torso.png")
-    parts["torso"] = {"file": "torso.png", "x": int(x0), "y": int(y0), "w": int(x1 - x0), "h": int(y1 - y0), "pivot": [float(hip[0]), float(hip[1])], "parent": None}
-
-    feet_y = float(max(k["an_l"][1], k["an_r"][1]) + 25)
-    order = ["thigh_far", "shin_far", "torso", "head", "thigh_near", "shin_near", "uarm", "farm"]
-    rig = {"size": list(raw.size), "facing": facing, "ground": feet_y, "order": [o for o in order if o in parts], "parts": parts,
-           "keypoints": {kk: [float(v[0]), float(v[1])] for kk, v in k.items()},
-           "hand": [float(wr[0]), float(wr[1])]}
+    order = ["farm_far", "uarm_far", "thigh_far", "shin_far", "torso", "head", "thigh_near", "shin_near", "uarm", "farm"]
+    hand = bones["farm"][1]
+    rig = {"size": list(raw.size), "facing": facing, "ground": float(max(k["an_l"][1], k["an_r"][1]) + 25),
+           "order": [o for o in order if o in parts], "parts": parts,
+           "keypoints": {kk: [float(v[0]), float(v[1])] for kk, v in k.items()}, "hand": [float(hand[0]), float(hand[1])]}
     (out / "rig.json").write_text(json.dumps(rig, ensure_ascii=False, indent=1))
-    print(f"{args.cid}: 部件 {rig['order']}，近侧手臂={near_arm}，朝向={'右' if facing > 0 else '左'}")
+    print(f"{args.cid}: 部件 {rig['order']}，朝向={'右' if facing > 0 else '左'}")
 
 
 if __name__ == "__main__":

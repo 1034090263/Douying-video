@@ -9,7 +9,7 @@ import {TIMELINE} from './lib';
 
 type Part = {file: string; x: number; y: number; w: number; h: number; pivot: [number, number]; parent: string | null};
 export type Rig = {size: [number, number]; facing: 1 | -1; ground: number; order: string[]; parts: Record<string, Part>; keypoints: Record<string, [number, number]>; hand?: [number, number]};
-export type RigPose = Partial<Record<'lean' | 'head' | 'uarm' | 'farm' | 'thigh_near' | 'shin_near' | 'thigh_far' | 'shin_far' | 'shin', number>>;
+export type RigPose = Partial<Record<'lean' | 'head' | 'uarm' | 'farm' | 'uarm_far' | 'farm_far' | 'thigh_near' | 'shin_near' | 'thigh_far' | 'shin_far' | 'shin', number>>;
 
 const RIGS = ((TIMELINE as unknown as {rigs?: Record<string, Rig>}).rigs ?? {}) as Record<string, Rig>;
 const IMGSET = (TIMELINE.theme as {images?: string} | undefined)?.images ?? TIMELINE.id;
@@ -43,7 +43,10 @@ export const walkPose = (rig: Rig, phase: number): RigPose => {
     thigh_far: -swing,
     shin_near: rig.facing * (s > 0.5 ? bend : 0),
     shin_far: rig.facing * (s <= 0.5 ? bend : 0),
-    uarm: Math.sin(phase) * 18 * rig.facing,
+    // 手臂与同侧腿反向摆：原图里近手在前，所以随近腿往后摆时近手往前收
+    uarm: -swing * 0.55,
+    uarm_far: swing * 0.55,
+    farm: -Math.max(0, Math.sin(phase)) * 10 * rig.facing,
   };
 };
 

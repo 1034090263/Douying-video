@@ -169,7 +169,7 @@ const rigPose = (rig: Rig, pose: string, walking: boolean, frame: number): RigPo
   const st = strideOf(rig);
   const nf = (rig.parts.shin_near?.pivot[0] ?? 0) * rig.facing > (rig.parts.shin_far?.pivot[0] ?? 0) * rig.facing ? 1 : -1;
   const together: RigPose = {thigh_near: (st / 2) * rig.facing * nf, thigh_far: (-st / 2) * rig.facing * nf, shin: 0};
-  let p: RigPose = walking ? walkPose(rig, frame / 4.5) : {...together, uarm: 0};
+  let p: RigPose = walking ? walkPose(rig, frame / 4.5) : {...together, uarm: (-st / 4) * rig.facing * nf * 0.55, uarm_far: (st / 4) * rig.facing * nf * 0.55};
   if (!rig.parts.thigh_near) p = {...p, shin_near: p.thigh_near, shin_far: p.thigh_far};
   const up = -90 + 20 * rig.facing; // 朝前上方
   if (pose === 'raise') p = {...p, ...armTo(rig, up + 5 * rig.facing), lean: -3 * rig.facing};
