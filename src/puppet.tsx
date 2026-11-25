@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, Easing, interpolate, random, useCurrentFrame} from 'remotion';
 import {DISPLAY, SCENE_STARTS, SceneData, TIMELINE, beatPulse, cueFrame, prog} from './lib';
 import {Sfx} from './ui';
-import {Rig, RigPose, RigPuppet, armTo, strideOf, walkPose} from './rig';
+import {Rig, RigPose, RigPuppet, armTo, standPose, walkPose} from './rig';
 
 /**
  * 皮影戏舞台（借鉴 vendor/sy-style-new20/styles/30-shadow 的做法，竖屏重写）：
@@ -166,11 +166,7 @@ const RIGS = ((TIMELINE as unknown as {rigs?: Record<string, Rig>}).rigs ?? {}) 
 
 /** 骨骼人偶的姿势：站立=两腿并拢；走路=交替摆腿；举手、惊吓、低头 */
 const rigPose = (rig: Rig, pose: string, walking: boolean, frame: number): RigPose => {
-  const st = strideOf(rig);
-  const nf = (rig.parts.shin_near?.pivot[0] ?? 0) * rig.facing > (rig.parts.shin_far?.pivot[0] ?? 0) * rig.facing ? 1 : -1;
-  const together: RigPose = {thigh_near: (st / 2) * rig.facing * nf, thigh_far: (-st / 2) * rig.facing * nf, shin: 0};
-  let p: RigPose = walking ? walkPose(rig, frame / 4.5) : {...together, uarm: (-st / 4) * rig.facing * nf * 0.55, uarm_far: (st / 4) * rig.facing * nf * 0.55};
-  if (!rig.parts.thigh_near) p = {...p, shin_near: p.thigh_near, shin_far: p.thigh_far};
+  let p: RigPose = walking ? walkPose(rig, frame / 4.5) : standPose(rig);
   const up = -90 + 20 * rig.facing; // 朝前上方
   if (pose === 'raise') p = {...p, ...armTo(rig, up + 5 * rig.facing), lean: -3 * rig.facing};
   if (pose === 'shock') p = {...p, ...armTo(rig, up + 45 * rig.facing), lean: -8 * rig.facing, head: -10 * rig.facing};

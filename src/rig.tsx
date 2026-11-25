@@ -8,8 +8,8 @@ import {TIMELINE} from './lib';
  */
 
 type Part = {file: string; x: number; y: number; w: number; h: number; pivot: [number, number]; parent: string | null};
-export type Rig = {size: [number, number]; facing: 1 | -1; ground: number; order: string[]; parts: Record<string, Part>; keypoints: Record<string, [number, number]>; hand?: [number, number]};
-export type RigPose = Partial<Record<'lean' | 'head' | 'uarm' | 'farm' | 'uarm_far' | 'farm_far' | 'thigh_near' | 'shin_near' | 'thigh_far' | 'shin_far' | 'shin', number>>;
+export type Rig = {size: [number, number]; facing: 1 | -1; ground: number; order: string[]; parts: Record<string, Part>; keypoints: Record<string, [number, number]>; hand?: [number, number]; feet?: {near: [number, number]; far: [number, number]}};
+export type RigPose = Partial<Record<'lean' | 'head' | 'arm' | 'arm_far' | 'leg_near' | 'leg_far', number>>;
 
 const RIGS = ((TIMELINE as unknown as {rigs?: Record<string, Rig>}).rigs ?? {}) as Record<string, Rig>;
 const IMGSET = (TIMELINE.theme as {images?: string} | undefined)?.images ?? TIMELINE.id;
@@ -18,47 +18,31 @@ const deg = (a: [number, number], b: [number, number]) => (Math.atan2(b[1] - a[1
 
 /** 两腿在原图里张开的角度（走路时在这个幅度内来回摆） */
 export const strideOf = (rig: Rig) => {
-  const k = rig.keypoints;
-  const near = rig.parts.thigh_near ?? rig.parts.shin_near;
-  const far = rig.parts.thigh_far ?? rig.parts.shin_far;
-  if (!near || !far) return 30;
-  const hip: [number, number] = [(k.hip_l[0] + k.hip_r[0]) / 2, (k.hip_l[1] + k.hip_r[1]) / 2];
-  const a1 = deg(hip, k.an_l);
-  const a2 = deg(hip, k.an_r);
-  return Math.abs(a1 - a2);
+  const L = rig.parts.leg_near;
+  if (!L || !rig.feet) return 30;
+  return Math.abs(deg(L.pivot, rig.feet.near) - deg(L.pivot, rig.feet.far));
 };
 
-/** 走路周期：phase 每一步 +π，两腿在张开幅度内交替；摆到后方的腿弯膝，手臂反向摆 */
+/** 原图里近腿在前（朝向那一侧）为 1，否则 -1 */
+export const nearFront = (rig: Rig) => (rig.feet && rig.feet.near[0] * rig.facing > rig.feet.far[0] * rig.facing ? 1 : -1);
+
+/** 两腿并拢、双臂自然下垂的站姿 */
+export const standPose = (rig: Rig): RigPose => {
+  const sw = (strideOf(rig) / 2) * rig.facing * nearFront(rig);
+  return {leg_near: sw, leg_far: -sw, arm: -sw * 0.5, arm_far: sw * 0.5};
+};
+
+/** 走路周期：整条腿绕髋在张开幅度内交替前后摆，手臂绕肩反向摆 */
 export const walkPose = (rig: Rig, phase: number): RigPose => {
-  const st = strideOf(rig);
-  const s = (1 - Math.cos(phase)) / 2; // 0 → 1 → 0
-  // 原图里近腿在前还是在后：用脚踝 x 和朝向判断
-  const k = rig.keypoints;
-  const nearFront = (rig.parts.shin_near?.pivot[0] ?? 0) * rig.facing > (rig.parts.shin_far?.pivot[0] ?? 0) * rig.facing ? 1 : -1;
-  const swing = st * s * rig.facing * nearFront;
-  const bend = Math.max(0, Math.sin(phase)) * 22;
-  void k;
-  return {
-    thigh_near: swing,
-    thigh_far: -swing,
-    shin_near: rig.facing * (s > 0.5 ? bend : 0),
-    shin_far: rig.facing * (s <= 0.5 ? bend : 0),
-    // 手臂与同侧腿反向摆：原图里近手在前，所以随近腿往后摆时近手往前收
-    uarm: -swing * 0.55,
-    uarm_far: swing * 0.55,
-    farm: -Math.max(0, Math.sin(phase)) * 10 * rig.facing,
-  };
+  const swing = strideOf(rig) * ((1 - Math.cos(phase)) / 2) * rig.facing * nearFront(rig);
+  return {leg_near: swing, leg_far: -swing, arm: -swing * 0.55, arm_far: swing * 0.55};
 };
 
-/** 让近侧手臂指向某个绝对方向（度，0=向右，-90=向上） */
+/** 让近侧整条手臂指向某个绝对方向（度，0=向右，-90=向上） */
 export const armTo = (rig: Rig, targetDeg: number): RigPose => {
-  const u = rig.parts.uarm;
-  const f = rig.parts.farm;
-  if (!u || !f) return {};
-  const cur = deg(u.pivot, f.pivot);
-  const fk = rig.keypoints;
-  void fk;
-  return {uarm: targetDeg - cur, farm: 0};
+  const A = rig.parts.arm;
+  if (!A || !rig.hand) return {};
+  return {arm: targetDeg - deg(A.pivot, rig.hand)};
 };
 
 export const RigPuppet: React.FC<{id: string; pose: RigPose; height: number; facing?: 1 | -1; prop?: string; glow?: boolean}> = ({id, pose, height, facing = 1, prop, glow}) => {
@@ -73,7 +57,7 @@ export const RigPuppet: React.FC<{id: string; pose: RigPose; height: number; fac
   const rot = (name: string): string => {
     const p = P[name];
     if (!p) return '';
-    const a = name === 'torso' ? pose.lean ?? 0 : (pose as Record<string, number>)[name] ?? (name.startsWith('shin') && !P.thigh_near ? pose.shin ?? 0 : 0);
+    const a = name === 'torso' ? pose.lean ?? 0 : (pose as Record<string, number>)[name] ?? 0;
     const own = `rotate(${a} ${p.pivot[0]} ${p.pivot[1]})`;
     return p.parent ? `${rot(p.parent)} ${own}` : own;
   };
@@ -86,7 +70,7 @@ export const RigPuppet: React.FC<{id: string; pose: RigPose; height: number; fac
         return (
           <g key={name} transform={rot(name)}>
             <image href={staticFile(`images/${IMGSET}/rig_${id}/${p.file}`)} x={p.x} y={p.y} width={p.w} height={p.h} />
-            {name === 'farm' && prop && wrist && (
+            {name === 'arm' && prop && wrist && (
               <g transform={`translate(${wrist[0]}, ${wrist[1]})`}>
                 <image href={staticFile(`images/${IMGSET}/${prop}`)} x={-60} y={-150} width={120} height={160} />
               </g>
