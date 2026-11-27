@@ -3,6 +3,7 @@ import {AbsoluteFill, Easing, Img, interpolate, random, staticFile, useCurrentFr
 import {DISPLAY, SCENE_STARTS, SceneData, TIMELINE, beatPulse, cueFrame, prog} from './lib';
 import {Sfx} from './ui';
 import {Rig, RigPose, RigPuppet, armTo, standPose, walkPose} from './rig';
+import {FocusLines, Glint, Ink, Insert, RgbDefs, Shards, Slam, heartK} from './climax';
 
 /**
  * 多层景深舞台：骨骼人偶在插画场景里表演。
@@ -33,35 +34,99 @@ const noise = (f: number, s: number) => Math.sin(f / 23 + s) * 0.6 + Math.sin(f 
 
 // ---------------------------------------------------------------- 人物
 type Step = {cue: string; walk?: number; to?: number; dur?: number; pose?: string};
-type Actor = {who: string; x: number; y?: number; scale?: number; facing?: 1 | -1; enter?: string; exit?: string; steps?: Step[]};
+type Actor = {who: string; x: number; y?: number; scale?: number; facing?: 1 | -1; enter?: string; exit?: string; steps?: Step[]; z?: number; silhouette?: boolean};
 
 const RIG_OF: Record<string, string> = {man: 'yosuke', girl: 'yukiho_kid', boy: 'ryoji_kid'};
 const RIG_H: Record<string, number> = {man: 560, girl: 430, boy: 445};
 const RIGS = ((TIMELINE as unknown as {rigs?: Record<string, Rig>}).rigs ?? {}) as Record<string, Rig>;
 
-/** 骨骼人偶的姿势：站立=两腿并拢；走路=交替摆腿；举手、惊吓、低头 */
-const rigPose = (rig: Rig, pose: string, walking: boolean, frame: number): RigPose => {
-  let p: RigPose = walking ? walkPose(rig, frame / 4.5) : standPose(rig);
-  const up = -90 + 20 * rig.facing; // 朝前上方
-  if (pose === 'raise') p = {...p, ...armTo(rig, up + 5 * rig.facing), lean: -3 * rig.facing};
-  if (pose === 'shock') p = {...p, ...armTo(rig, up + 45 * rig.facing), lean: -8 * rig.facing, head: -10 * rig.facing};
-  if (pose === 'down') p = {...p, head: 18 * rig.facing, lean: 5 * rig.facing};
-  if (pose === 'reach') p = {...p, ...armTo(rig, rig.facing > 0 ? -10 : 190)};
-  return p;
+const easeOutBack = Easing.bezier(0.34, 1.56, 0.64, 1);
+const add = (a: RigPose, b: RigPose): RigPose => {
+  const o: RigPose = {...a};
+  for (const k of Object.keys(b) as (keyof RigPose)[]) o[k] = (o[k] ?? 0) + (b[k] ?? 0);
+  return o;
+};
+const lerpPose = (a: RigPose, b: RigPose, t: number): RigPose => {
+  const o: RigPose = {};
+  for (const k of new Set([...Object.keys(a), ...Object.keys(b)]) as Set<keyof RigPose>) o[k] = (a[k] ?? 0) + ((b[k] ?? 0) - (a[k] ?? 0)) * t;
+  return o;
+};
+
+/**
+ * 某个姿势在开始后第 k 帧的样子（带预备动作和余势）：
+ *   stand 站立 · raise 举起 · shock 先一缩再猛地后仰、发抖 · strike 举高→猛刺下去→停住→收回
+ *   recoil 被击中后仰 · down 低头 · fall 倒下时手臂甩起 · reach 伸手
+ * 角度在人偶自己的坐标里：f = rig.facing，正值 = 往前（顺时针）
+ */
+const poseAt = (rig: Rig, pose: string, walking: boolean, frame: number, k: number): RigPose => {
+  const f = rig.facing;
+  const base: RigPose = walking ? walkPose(rig, frame / 4.5) : standPose(rig);
+  const up = -90 + 20 * f; // 朝前上方
+  const fwdDown = 25 * f > 0 ? 25 : 155; // 朝前下方
+  const decay = (tau: number) => Math.exp(-k / tau);
+  switch (pose) {
+    case 'raise':
+      return {...base, ...armTo(rig, up + 5 * f), lean: -3 * f};
+    case 'shock': {
+      const pre = k < 4 ? k / 4 : Math.max(0, 1 - (k - 4) / 3); // 先往里缩
+      const jolt = k < 4 ? 0 : 1;
+      return {...base, ...armTo(rig, up + 45 * f), lean: (4 * pre - 10 * jolt) * f + Math.sin(k * 2.6) * 1.6 * decay(30), head: -12 * jolt * f + Math.sin(k * 3.1) * 2 * decay(25)};
+    }
+    case 'strike': {
+      // 0-4 举高 · 4-8 猛刺下去 · 8-18 停住 · 18-30 收回到举起
+      const hi = armTo(rig, up - 15 * f).arm ?? 0;
+      const lo = armTo(rig, fwdDown).arm ?? 0;
+      const rs = armTo(rig, up + 5 * f).arm ?? 0;
+      const arm = k < 4 ? rs + (hi - rs) * (k / 4) : k < 8 ? hi + (lo - hi) * Easing.in(Easing.quad)((k - 4) / 4) : k < 18 ? lo : lo + (rs - lo) * Easing.inOut(Easing.cubic)(Math.min(1, (k - 18) / 12));
+      const lean = (k < 4 ? -6 * (k / 4) : k < 18 ? 10 : 10 - 13 * Math.min(1, (k - 18) / 12)) * f;
+      return {...base, arm, lean, head: (k >= 4 && k < 18 ? 8 : 0) * f};
+    }
+    case 'recoil': {
+      const r = k < 5 ? k / 5 : 0.55 + 0.45 * decay(8);
+      return {...base, lean: -14 * r * f, head: -20 * r * f + Math.sin(k * 2.2) * 2 * decay(20), ...armTo(rig, up + 70 * f)};
+    }
+    case 'down':
+      return {...base, head: 18 * f, lean: 5 * f};
+    case 'fall':
+      return {...base, ...armTo(rig, up + 20 * f), arm_far: -40 * f, head: -25 * f, leg_near: 18 * f, leg_far: -10 * f};
+    case 'reach':
+      return {...base, ...armTo(rig, f > 0 ? -10 : 190)};
+    default:
+      return base;
+  }
+};
+
+/** 人偶姿势：上一个姿势 → 当前姿势用带回弹的缓动过渡；再叠加呼吸、走路时的前倾和头部反向晃动 */
+const rigPose = (rig: Rig, st: {pose: string; prevPose: string; poseStart: number; walking: boolean}, frame: number, seed: number): RigPose => {
+  const k = frame - st.poseStart;
+  const cur = poseAt(rig, st.pose, st.walking, frame, k);
+  const prev = poseAt(rig, st.prevPose, st.walking, frame, 999);
+  const t = st.pose === 'strike' || st.pose === 'shock' ? 1 : easeOutBack(Math.min(1, k / 9));
+  const f = rig.facing;
+  const life: RigPose = st.walking
+    ? {lean: 4 * f + Math.sin((frame / 4.5) * 2) * 1.2 * f, head: -Math.sin((frame / 4.5) * 2) * 2.5 * f}
+    : {
+        lean: Math.sin(frame / 38 + seed) * 1.3 * f,
+        head: Math.sin(frame / 53 + seed * 2) * 2.4 * f + Math.sin(frame / 17 + seed) * 0.6,
+        arm: Math.sin(frame / 34 + seed) * 2.5,
+        arm_far: -Math.sin(frame / 34 + seed) * 2.5,
+      };
+  return add(lerpPose(prev, cur, Math.max(0, Math.min(1.2, t))), life);
 };
 
 type Light = {x: number; y: number; color?: string};
 
-const ActorView: React.FC<{scene: SceneData; ac: Actor; ground: number; light: Light; tint: string}> = ({scene, ac, ground, light, tint}) => {
-  const frame = useCurrentFrame();
+/** 人物在某一帧的状态（位置、朝向、姿势），镜头跟拍和特效定位都用它 */
+const actorState = (scene: SceneData, ac: Actor, frame: number, ground: number) => {
   const enterAt = ac.enter ? cueFrame(scene, ac.enter, 0) : -1;
-  if (frame < enterAt) return null;
   let x = ac.x;
   let y = ac.y ?? ground;
   let facing = ac.facing ?? 1;
   let walking = false;
   let rot = 0;
-  let curPose = 'stand';
+  let pose = 'stand';
+  let prevPose = 'stand';
+  let poseStart = -999;
   const steps = (ac.steps ?? []).map((s) => ({...s, at: cueFrame(scene, s.cue, 0)})).sort((p, q) => p.at - q.at);
   for (const s of steps) {
     if (frame < s.at) break;
@@ -76,38 +141,54 @@ const ActorView: React.FC<{scene: SceneData; ac: Actor; ground: number; light: L
       y += ((s.to ?? y) - y) * p;
     }
     if (s.pose) {
-      curPose = s.pose;
-      if (s.pose === 'fall') rot = 84 * prog(frame, s.at, 22);
+      prevPose = pose;
+      pose = s.pose;
+      poseStart = s.at;
+      if (s.pose === 'fall') {
+        // 先被打得一顿，膝盖一软，越倒越快，落地弹一下
+        const k = frame - s.at;
+        const a = k < 5 ? -6 * (k / 5) : k < 19 ? -6 + 90 * Easing.in(Easing.quad)((k - 5) / 14) : 84 + 7 * Math.exp(-(k - 19) / 4) * Math.cos((k - 19) * 0.9);
+        rot = -facing * a;
+      }
     }
   }
-  const bob = walking ? -Math.abs(Math.sin(frame / 4.5)) * 7 : Math.sin(frame / 20 + ac.x) * 1.5;
-  const exitP = ac.exit ? prog(frame, cueFrame(scene, ac.exit, 999), 20) : 0;
-  const enterP = enterAt >= 0 ? prog(frame, enterAt, 14) : 1;
-  const sc = ac.scale ?? 1;
+  const h = (RIG_H[ac.who] ?? 450) * (ac.scale ?? 1);
+  const alpha = (enterAt >= 0 ? prog(frame, enterAt, 14) : 1) * (1 - (ac.exit ? prog(frame, cueFrame(scene, ac.exit, 999), 20) : 0));
+  return {x, y, facing, walking, rot, pose, prevPose, poseStart, h, alpha, visible: frame >= enterAt};
+};
+
+/** 人物身上的部位（画面世界坐标） */
+const partPos = (st: ReturnType<typeof actorState>, part: string): [number, number] => {
+  if (part === 'head') return [st.x + st.facing * st.h * 0.04, st.y - st.h * 0.86];
+  if (part === 'hand') return st.pose === 'raise' || st.pose === 'strike' ? [st.x + st.facing * st.h * 0.12, st.y - st.h * 1.05] : [st.x + st.facing * st.h * 0.2, st.y - st.h * 0.5];
+  if (part === 'feet') return [st.x, st.y - st.h * 0.05];
+  return [st.x, st.y - st.h * 0.5];
+};
+
+const ActorView: React.FC<{scene: SceneData; ac: Actor & {silhouette?: boolean}; ground: number; light: Light; tint: string}> = ({scene, ac, ground, light, tint}) => {
+  const frame = useCurrentFrame();
+  const st = actorState(scene, ac, frame, ground);
+  if (!st.visible) return null;
   const rigId = RIG_OF[ac.who];
   const rig = RIGS[rigId];
   if (!rig) return null;
-  const h = RIG_H[ac.who] * sc;
-  const pose = rigPose(rig, curPose, walking, frame);
-  const prop = ac.who === 'boy' && curPose === 'raise' ? 'prop_scissors.png' : undefined;
+  const {x, y, facing, rot, h} = st;
+  const bob = st.walking ? -Math.abs(Math.sin(frame / 4.5)) * 7 : Math.sin(frame / 20 + ac.x) * 1.5;
+  const pose = rigPose(rig, st, frame, ac.x * 0.013);
+  const prop = ac.who === 'boy' && (st.pose === 'raise' || st.pose === 'strike') ? 'prop_scissors.png' : undefined;
   // 投影：朝光源的反方向倒在地上；光源越低影子越长
   const dir = x > light.x ? 1 : -1;
   const len = Math.min(0.75, Math.max(0.22, 260 / Math.max(80, ground - light.y)));
   const skew = dir * Math.min(55, Math.abs(x - light.x) / 12 + 18);
   const lift = Math.max(0, -bob);
+  const look = ac.silhouette ? 'brightness(0.06) drop-shadow(0 0 3px rgba(255,170,110,0.55))' : `${tint} drop-shadow(${(light.x > x ? 1 : -1) * facing * 4}px -1px 1px rgba(255,205,150,0.32))`;
   return (
-    <g opacity={enterP * (1 - exitP)}>
-      {/* 投影 */}
+    <g opacity={st.alpha}>
       <g transform={`translate(${x}, ${ground}) skewX(${skew}) scale(${facing}, ${-len}) rotate(${rot})`} style={{filter: 'brightness(0) blur(5px)'}} opacity={0.32}>
         <RigPuppet id={rigId} pose={pose} height={h} />
       </g>
-      {/* 接触阴影 */}
       <ellipse cx={x} cy={ground + 4} rx={h * 0.2 * (1 - lift / 60)} ry={h * 0.028} fill="rgba(0,0,0,0.5)" style={{filter: 'blur(6px)'}} />
-      {/* 人物：随场景调色 + 光源一侧的轮廓光 */}
-      <g
-        transform={`translate(${x}, ${y + bob}) rotate(${rot}) scale(${facing}, 1)`}
-        style={{filter: `${tint} drop-shadow(${(light.x > x ? 1 : -1) * facing * 4}px -1px 1px rgba(255,205,150,0.32))`}}
-      >
+      <g transform={`translate(${x}, ${y + bob}) rotate(${rot}) scale(${facing}, 1)`} style={{filter: look}}>
         <RigPuppet id={rigId} pose={pose} height={h} prop={prop} />
       </g>
     </g>
@@ -258,6 +339,11 @@ const Grain: React.FC = () => {
 };
 
 // ---------------------------------------------------------------- 场景
+type Look = {who?: string; part?: string; x?: number; y?: number; s: number; at?: [number, number]; r?: number};
+type CamKey = {cue?: string; t?: number; to?: number[]; look?: Look; cut?: boolean; dur?: number};
+type Beat = {cue: string; fx: string; who?: string; part?: string; x?: number; y?: number; text?: string; size?: number; color?: string; rot?: number; dur?: number; power?: number};
+const O: [number, number] = [540, 1190.4]; // 图层变换原点（50% 62%）
+
 export const PuppetScene: React.FC<{scene: SceneData}> = ({scene}) => {
   const frame = useCurrentFrame();
   const idx = TIMELINE.scenes.indexOf(scene as (typeof TIMELINE.scenes)[number]);
@@ -267,18 +353,43 @@ export const PuppetScene: React.FC<{scene: SceneData}> = ({scene}) => {
   const ground: number = d.ground ?? 1330;
   const light: Light = d.light ?? {x: 980, y: 520};
   const fx = (d.fx ?? []) as string[];
-  // 镜头：基础运动 + 剧情推镜 + 重音 + 手持
+  const actors = (d.actors ?? []) as (Actor & {silhouette?: boolean})[];
+  const whoState = (who: string) => {
+    const ac = actors.find((q) => q.who === who);
+    return ac ? actorState(scene, ac, frame, ground) : null;
+  };
+  const kAt = (k: {cue?: string; t?: number}) => (k.cue ? cueFrame(scene, k.cue, 0) : Math.round((k.t ?? 0) * 30));
+
+  // ---------- 镜头：基础运动 → 剧情镜头（可硬切、可锁定人物部位按构图摆放、可倾斜）→ 重音 → 手持
   const cam = (d.camera ?? {from: [1.1, 40, 0], to: [1.0, -40, 0]}) as {from: number[]; to: number[]};
   const t = interpolate(frame, [0, dur], [0, 1], {...clamp, easing: ease});
   let sc = cam.from[0] + (cam.to[0] - cam.from[0]) * t;
   let cx = cam.from[1] + (cam.to[1] - cam.from[1]) * t;
   let cy = cam.from[2] + (cam.to[2] - cam.from[2]) * t;
-  for (const m of (d.cam ?? []) as {cue: string; to: number[]; dur?: number}[]) {
-    const p = interpolate(frame, [cueFrame(scene, m.cue, 0), cueFrame(scene, m.cue, 0) + (m.dur ?? 18)], [0, 1], {...clamp, easing: ease});
-    sc += (m.to[0] - sc) * p;
-    cx += (m.to[1] - cx) * p;
-    cy += (m.to[2] - cy) * p;
+  let cr = 0;
+  const keys = ((d.cam ?? []) as CamKey[]).map((k) => ({...k, at: kAt(k)})).sort((p, q) => p.at - q.at);
+  for (const k of keys) {
+    if (frame < k.at) break;
+    let target: number[];
+    if (k.look) {
+      const L = k.look;
+      const st = L.who ? whoState(L.who) : null;
+      const P = st ? partPos(st, L.part ?? 'body') : [L.x ?? 540, L.y ?? 1000];
+      const A = L.at ?? [540, 900];
+      const r = ((L.r ?? 0) * Math.PI) / 180;
+      const vx = P[0] - O[0];
+      const vy = P[1] - O[1];
+      target = [L.s, A[0] - O[0] - L.s * (vx * Math.cos(r) - vy * Math.sin(r)), A[1] - O[1] - L.s * (vx * Math.sin(r) + vy * Math.cos(r)), L.r ?? 0];
+    } else {
+      target = [...(k.to ?? [sc, cx, cy]), k.to?.[3] ?? cr];
+    }
+    const p = k.cut ? 1 : interpolate(frame, [k.at, k.at + (k.dur ?? 18)], [0, 1], {...clamp, easing: ease});
+    sc += (target[0] - sc) * p;
+    cx += (target[1] - cx) * p;
+    cy += (target[2] - cy) * p;
+    cr += (target[3] - cr) * p;
   }
+  const beats = ((d.beats ?? []) as Beat[]).map((b) => ({...b, at: cueFrame(scene, b.cue, 0)}));
   const hitsAt = [...((d.hits ?? []) as string[]), ...((d.slashes ?? []) as string[])].map((c) => cueFrame(scene, c, 0));
   let hitK = 0;
   let shake = 0;
@@ -289,15 +400,31 @@ export const PuppetScene: React.FC<{scene: SceneData}> = ({scene}) => {
       if (k < 12) shake += Math.sin(k * 2.4) * (12 - k) * 1.8;
     }
   }
-  sc *= 1 + hitK * 0.07 + beatPulse(gf) * 0.006;
+  // 心跳：镜头随心跳一胀一缩，四周泛红
+  const pulse = d.pulse ? heartK(frame, cueFrame(scene, d.pulse.from, 0), cueFrame(scene, d.pulse.to, dur)) : 0;
+  sc *= 1 + hitK * 0.07 + beatPulse(gf) * 0.006 + pulse * 0.025;
   cx += noise(frame, 1.3) * 5 + shake;
   cy += noise(frame, 4.1) * 3.5;
-  const rot = noise(frame, 7.7) * 0.12;
+  const rot = cr + noise(frame, 7.7) * 0.12;
   /** 深度 z 的图层变换：越近的层随镜头移动、缩放得越多 */
   const at = (z: number): React.CSSProperties => ({
     transform: `translate(${cx * z}px, ${cy * z}px) scale(${1 + (sc - 1) * z}) rotate(${rot * z}deg)`,
     transformOrigin: '50% 62%',
   });
+  /** 世界坐标 → 屏幕坐标（人物所在的 z=1 层） */
+  const toScreen = (P: [number, number]): [number, number] => {
+    const r = (rot * Math.PI) / 180;
+    const vx = P[0] - O[0];
+    const vy = P[1] - O[1];
+    return [O[0] + cx + sc * (vx * Math.cos(r) - vy * Math.sin(r)), O[1] + cy + sc * (vx * Math.sin(r) + vy * Math.cos(r))];
+  };
+  const beatPos = (b: Beat): [number, number] => {
+    if (b.who) {
+      const st = whoState(b.who);
+      if (st) return toScreen(partPos(st, b.part ?? 'body'));
+    }
+    return [b.x ?? 540, b.y ?? 900];
+  };
 
   // 背景三层（同一张图按深度遮罩切开）
   const [fs, fx0, fy0] = (d.frame ?? [1, 0, 0]) as number[];
@@ -313,9 +440,10 @@ export const PuppetScene: React.FC<{scene: SceneData}> = ({scene}) => {
     );
   };
   const sprites = (d.sprites ?? []) as Sprite[];
-  const back = sprites.filter((s) => s.z <= 1).sort((a, b) => a.z - b.z);
-  const front = sprites.filter((s) => s.z > 1).sort((a, b) => a.z - b.z);
-  // 调色、压暗
+  const back = sprites.filter((q) => q.z <= 1).sort((p, q) => p.z - q.z);
+  const front = sprites.filter((q) => q.z > 1).sort((p, q) => p.z - q.z);
+  // 人物按深度分层：默认 1；>1 的是镜头前的大剪影
+  const actorLayers = [...new Set(actors.map((q) => q.z ?? 1))].sort((p, q) => p - q);
   const grade = (d.grade ?? {color: '#ff9a50', amount: 0.14}) as {color: string; amount?: number; bright?: number; sat?: number};
   let dim: number = d.dimFrom ?? 0;
   for (const l of (d.dim ?? []) as {cue: string; to: number; dur?: number}[]) dim += (l.to - dim) * prog(frame, cueFrame(scene, l.cue, 0), l.dur ?? 24);
@@ -324,12 +452,27 @@ export const PuppetScene: React.FC<{scene: SceneData}> = ({scene}) => {
   const slashes = ((d.slashes ?? []) as string[]).map((c) => cueFrame(scene, c, 0));
   const splitAt = d.split ? cueFrame(scene, d.split, 999) : 999999;
   const sp = prog(frame, splitAt, 50);
+  // 整个画面的滤镜：冲击帧（黑白反相）、色散、褪色
+  let stageFilter = '';
+  let rgb = 0;
+  let redFlash = 0;
+  for (const b of beats) {
+    const k = frame - b.at;
+    if (k < 0) continue;
+    if (b.fx === 'impact' && k < 3) stageFilter += k < 1 ? ' grayscale(1) contrast(4) invert(1)' : ' grayscale(1) contrast(2.2)';
+    if (b.fx === 'rgb' && k < 18) rgb = Math.max(rgb, (b.power ?? 1) * 22 * Math.exp(-k / 5));
+    if (b.fx === 'redflash' && k < 20) redFlash = Math.max(redFlash, Math.exp(-k / 5));
+  }
+  const mono = d.mono ? prog(frame, cueFrame(scene, d.mono.from, 999), 20) * (d.mono.to ? 1 - prog(frame, cueFrame(scene, d.mono.to, 999), 30) : 1) : 0;
+  if (mono > 0) stageFilter += ` saturate(${1 - mono * 0.85}) contrast(${1 + mono * 0.15})`;
+  if (rgb > 0.5) stageFilter += ' url(#rgbsplit)';
   return (
     <>
-      {((d.sfx ?? []) as {cue: string; name: string; volume?: number}[]).map((s, i) => (
-        <Sfx key={i} at={cueFrame(scene, s.cue, 0)} name={s.name} volume={s.volume ?? 0.6} />
+      {((d.sfx ?? []) as {cue: string; name: string; volume?: number}[]).map((q, i) => (
+        <Sfx key={i} at={cueFrame(scene, q.cue, 0)} name={q.name} volume={q.volume ?? 0.6} />
       ))}
-      <AbsoluteFill style={{overflow: 'hidden', background: '#07080d'}}>
+      <RgbDefs d={rgb} />
+      <AbsoluteFill style={{overflow: 'hidden', background: '#07080d', filter: stageFilter.trim() || undefined}}>
         <AbsoluteFill style={{filter: tint}}>
           {/* 远景：轻微虚化 */}
           <AbsoluteFill style={at(0.45)}>
@@ -337,10 +480,9 @@ export const PuppetScene: React.FC<{scene: SceneData}> = ({scene}) => {
           </AbsoluteFill>
           {masked('_m1', 0.75)}
           {masked('_m2', 1.0)}
-          {/* 人物后面的布景 */}
-          {back.map((s, i) => (
-            <AbsoluteFill key={i} style={at(s.z)}>
-              <SpriteView scene={scene} s={s} />
+          {back.map((q, i) => (
+            <AbsoluteFill key={i} style={at(q.z)}>
+              <SpriteView scene={scene} s={q} />
             </AbsoluteFill>
           ))}
           {fx.includes('fog') && (
@@ -349,29 +491,47 @@ export const PuppetScene: React.FC<{scene: SceneData}> = ({scene}) => {
             </AbsoluteFill>
           )}
         </AbsoluteFill>
-        {/* 人物 */}
-        <AbsoluteFill style={at(1.0)}>
-          <svg width={1080} height={1920} style={{position: 'absolute', overflow: 'visible'}}>
-            {((d.actors ?? []) as Actor[]).map((ac, i) => (
-              <ActorView key={i} scene={scene} ac={ac} ground={ground} light={light} tint={tint} />
-            ))}
-          </svg>
-        </AbsoluteFill>
-        {/* 前景遮挡物：放大、虚化、压暗 */}
-        {front.map((s, i) => (
-          <AbsoluteFill key={i} style={at(s.z)}>
-            <SpriteView scene={scene} s={s} />
-          </AbsoluteFill>
-        ))}
+        {/* 人物（按深度分层） + 前景遮挡物 */}
+        {[...actorLayers.map((z) => ({kind: 'actors' as const, z})), ...front.map((q) => ({kind: 'sprite' as const, z: q.z, q}))]
+          .sort((p, q) => p.z - q.z)
+          .map((L, i) =>
+            L.kind === 'actors' ? (
+              <AbsoluteFill key={`a${i}`} style={{...at(L.z), filter: L.z > 1.12 ? depthLook(L.z) : undefined}}>
+                {/* 地上晕开的一滩暗色（透视压扁） */}
+                {L.z === 1 &&
+                  beats
+                    .filter((b) => b.fx === 'ink')
+                    .map((b, j) => {
+                      const st = b.who ? whoState(b.who) : null;
+                      const x = st ? st.x - st.facing * st.h * 0.45 : b.x ?? 540;
+                      const y = st ? st.y : ground;
+                      return (
+                        <div key={j} style={{position: 'absolute', inset: 0, transformOrigin: `${x}px ${y}px`, transform: 'scaleY(0.28)'}}>
+                          <Ink at={b.at} x={x} y={y} dur={b.dur} r={b.size ?? 560} color="#1a0306" />
+                        </div>
+                      );
+                    })}
+                <svg width={1080} height={1920} style={{position: 'absolute', overflow: 'visible'}}>
+                  {actors
+                    .filter((ac) => (ac.z ?? 1) === L.z)
+                    .map((ac, j) => (
+                      <ActorView key={j} scene={scene} ac={ac} ground={ground} light={light} tint={tint} />
+                    ))}
+                </svg>
+              </AbsoluteFill>
+            ) : (
+              <AbsoluteFill key={`s${i}`} style={at(L.z)}>
+                <SpriteView scene={scene} s={L.q} />
+              </AbsoluteFill>
+            ),
+          )}
         {/* 氛围 */}
         {fx.includes('rays') && <Rays light={light} strength={0.85 * (1 - dim)} />}
         {fx.includes('dust') && <Motes light={light} />}
-        {/* 调色：整体色温 + 光源方向的暖光 */}
         <AbsoluteFill style={{background: grade.color, mixBlendMode: 'soft-light', opacity: grade.amount ?? 0.14}} />
         <AbsoluteFill
           style={{background: `radial-gradient(circle at ${light.x}px ${light.y}px, ${light.color ?? 'rgba(255,190,120,0.35)'} 0%, rgba(0,0,0,0) 55%)`, mixBlendMode: 'screen', opacity: 0.6 * (1 - dim)}}
         />
-        {/* 结尾：一半白昼、一半黑夜 */}
         {sp > 0 && (
           <>
             <AbsoluteFill style={{background: 'linear-gradient(90deg, rgba(8,14,40,0.85) 0%, rgba(8,14,40,0.7) 42%, rgba(8,14,40,0) 56%)', opacity: sp}} />
@@ -393,10 +553,23 @@ export const PuppetScene: React.FC<{scene: SceneData}> = ({scene}) => {
           );
         })}
         <Grain />
-        {/* 暗角 + 上下压暗（栏目头、字幕清楚） */}
         <AbsoluteFill style={{boxShadow: 'inset 0 0 260px 60px rgba(0,0,0,0.75)'}} />
         <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0) 18%, rgba(0,0,0,0) 66%, rgba(0,0,0,0.42) 78%, rgba(0,0,0,0.72) 100%)'}} />
       </AbsoluteFill>
+      {/* 高潮特效 */}
+      {pulse > 0 && <AbsoluteFill style={{boxShadow: `inset 0 0 ${240 + pulse * 200}px ${60 + pulse * 120}px rgba(150,0,8,${0.35 + pulse * 0.45})`}} />}
+      {redFlash > 0 && <AbsoluteFill style={{background: '#c01010', mixBlendMode: 'multiply', opacity: redFlash * 0.45}} />}
+      {beats.map((b, i) => {
+        const [x, y] = beatPos(b);
+        if (b.fx === 'focus') return <FocusLines key={i} at={b.at} x={x} y={y} dur={b.dur} color={b.color} />;
+        if (b.fx === 'shards') return <Shards key={i} at={b.at} x={x} y={y} power={b.power} color={b.color} />;
+        if (b.fx === 'slam') return <Slam key={i} at={b.at} text={b.text ?? ''} x={x} y={y} size={b.size} color={b.color} rot={b.rot} dur={b.dur} />;
+        if (b.fx === 'glint') return <Glint key={i} at={b.at} x={x} y={y} dur={b.dur} />;
+        return null;
+      })}
+      {((d.inserts ?? []) as {cue: string; until: string; img: string; caption?: string}[]).map((q, i) => (
+        <Insert key={i} at={cueFrame(scene, q.cue, 0)} until={cueFrame(scene, q.until, dur)} img={src(q.img)} caption={q.caption} />
+      ))}
       {d.title && (
         <div
           style={{
