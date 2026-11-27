@@ -8,6 +8,7 @@ import {MeshTest} from './MeshTest';
 import {PoseGuide} from './PoseGuide';
 import {SpriteDemo} from './SpriteDemo';
 import {SeqDemo} from './SeqDemo';
+import {CompareDemo} from './CompareDemo';
 import {Cover, Story} from './Story';
 
 export const Root: React.FC = () => (
@@ -25,6 +26,7 @@ export const Root: React.FC = () => (
     <Still id="RigTest" component={RigTest} width={1080} height={1920} />
     <Still id="PoseGuide" component={PoseGuide} width={832} height={1216} defaultProps={{id: 'ryoji_kid', pose: 'stand'}} />
     <Still id="MeshTest" component={MeshTest} width={1080} height={1920} />
+    <Composition id="CompareDemo" component={CompareDemo} durationInFrames={300} fps={30} width={1080} height={1920} />
     <Composition id="SeqDemo" component={SeqDemo} durationInFrames={300} fps={30} width={1080} height={1920} />
     <Composition id="SpriteDemo" component={SpriteDemo} durationInFrames={330} fps={30} width={1080} height={1920} />
     <Composition id="MeshDemo" component={MeshDemo} durationInFrames={330} fps={30} width={1080} height={1920} />

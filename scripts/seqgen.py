@@ -134,11 +134,13 @@ def main():
     ap.add_argument("--ref")
     ap.add_argument("--seed0", type=int, default=1)
     ap.add_argument("--poses", help="火柴人姿势图（同样的排版），作为第二张参考图约束每一帧的姿势")
+    ap.add_argument("--tag", default="", help="输出到 seq_<角色>_<tag>（对比不同生成方法用）")
     ap.add_argument("--guides", help="姿势草稿目录（按文件名排序）：每张草稿让模型重画成完整人物，作为关键帧（不再画连续图）")
     args = ap.parse_args()
     folder = Path(args.folder)
     ref = Image.open(args.ref or folder / f"raw_{args.cid}_walk.png").convert("RGB")
-    out = folder / f"seq_{args.cid}" / args.action
+    sub = f"seq_{args.cid}" + (f"_{args.tag}" if args.tag else "")
+    out = folder / sub / args.action
     out.mkdir(parents=True, exist_ok=True)
     for f in out.glob("*.png"):
         f.unlink()
@@ -169,8 +171,9 @@ def main():
     refs = [ref]
     if args.poses:
         refs.append(Image.open(args.poses).convert("RGB"))
-        prompt = ("Image 2 shows the exact pose of every frame as stick figures (dark lines = the arm and leg nearer to the viewer, gray lines = the farther arm and leg). "
-                  "Draw the character from image 1 in exactly those poses, one character per stick figure, at the same positions. " + prompt)
+        prompt = ("Image 2 is only a pose guide: it shows the pose of every frame as stick figures (dark lines = the arm and leg nearer to the viewer, gray lines = the farther arm and leg). "
+                  "Draw the character from image 1 in exactly those poses, one character per stick figure, at the same positions. "
+                  "Do not draw the stick figures, lines or circles themselves; only the fully drawn character must appear. " + prompt)
     best = None
     for seed in range(args.seed0, args.seed0 + args.n):
         sheet = gen.image(prompt, size, seed, refs=refs)
@@ -260,7 +263,7 @@ def finish(args, folder, out, keys, ax, ay, unit, cw=None, ch=None):
         kinds.append(kind)
     if dropped:
         print(f"  丢掉 {dropped} 张有残影的中间帧")
-    meta_f = folder / f"seq_{args.cid}" / "seq.json"
+    meta_f = out.parent / "seq.json"
     meta = json.loads(meta_f.read_text()) if meta_f.exists() else {}
     ch, cw = keys[0].shape[:2]
     meta[args.action] = {"frames": names, "keys": [i for i, k in enumerate(kinds) if k == "key"], "w": cw, "h": ch, "ax": ax, "ay": ay, "unit": unit, "loop": args.loop}
