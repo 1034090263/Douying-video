@@ -1,0 +1,2466 @@
+{
+  "title": "白夜行 · 上",
+  "theme": {
+    "style": "plain",
+    "seal": "白",
+    "font": "serif",
+    "music": "piano",
+    "bpm": 72,
+    "colors": {
+      "red": "#b3261e",
+      "gold": "#e8e4dc",
+      "highlight": "#a9c8ff"
+    },
+    "keywords": [
+      "桐原洋介",
+      "雪穗",
+      "亮司",
+      "笹垣",
+      "剪刀",
+      "通风管",
+      "一百万",
+      "白天",
+      "黑夜",
+      "文代",
+      "寺崎",
+      "打火机",
+      "煤气"
+    ],
+    "images": "byakuya",
+    "cast": {
+      "ryoji": {
+        "height": 1.03
+      },
+      "yukiho": {
+        "height": 0.94
+      },
+      "yosuke": {
+        "height": 1.0
+      },
+      "yukiho_kid": {
+        "height": 0.8
+      },
+      "ryoji_kid": {
+        "height": 0.82
+      },
+      "sasagaki": {
+        "height": 1.0
+      },
+      "yayoiko": {
+        "height": 0.93
+      },
+      "matsuura": {
+        "height": 1.02
+      },
+      "fumiyo": {
+        "height": 0.92
+      },
+      "terasaki": {
+        "height": 1.0
+      },
+      "reiko": {
+        "height": 0.92
+      }
+    },
+    "rigs": [
+      "yosuke",
+      "yukiho_kid",
+      "ryoji_kid"
+    ]
+  },
+  "cover": {
+    "seal": "白",
+    "line1": "白夜行",
+    "line2": "1973 · 废楼",
+    "tag": "上集 · 废楼里的那个下午"
+  },
+  "engine": "index",
+  "indextts": {
+    "home": "~/tts/index-tts",
+    "voice": "voices/narrator.wav",
+    "speed": 1.1,
+    "emo_alpha": 0.65
+  },
+  "pronounce": {
+    "笹垣": "TI4垣"
+  },
+  "scenes": [
+    {
+      "type": "puppet",
+      "intensity": 0.6,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "1992年的圣诞夜，大阪一家精品店开业。一个扮成圣诞老人的男人倒在楼梯下，手边是一把剪刀。",
+      "data": {
+        "bg": "bg_boutique.png",
+        "frame": [
+          1.0,
+          0,
+          30
+        ],
+        "ground": 1530,
+        "person": 450,
+        "light": {
+          "x": 540,
+          "y": 300,
+          "color": "rgba(255,215,170,0.5)"
+        },
+        "grade": {
+          "color": "#3550b0",
+          "amount": 0.18
+        },
+        "cam": [
+          {
+            "t": 0,
+            "cut": true,
+            "look": {
+              "x": 540,
+              "y": 1100,
+              "s": 1.0,
+              "at": [
+                540,
+                980
+              ]
+            }
+          },
+          {
+            "cue": "倒在楼梯下",
+            "cut": true,
+            "look": {
+              "x": 560,
+              "y": 1490,
+              "s": 1.6,
+              "at": [
+                540,
+                1120
+              ],
+              "r": -4
+            }
+          }
+        ],
+        "actors": [
+          {
+            "who": "ryoji",
+            "x": 540,
+            "steps": [
+              {
+                "cue": "1992",
+                "act": "lying"
+              }
+            ]
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_xmas_tree.png",
+            "x": 1290,
+            "y": 2100,
+            "h": 1400,
+            "z": 1.4
+          }
+        ],
+        "inserts": [
+          {
+            "cue": "剪刀",
+            "until": "剪刀",
+            "img": "prop_scissors.png"
+          }
+        ],
+        "beats": [
+          {
+            "cue": "剪刀",
+            "fx": "glint",
+            "x": 540,
+            "y": 760
+          }
+        ],
+        "fx": [
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "不远处，一个穿白裙的女人转身上楼，一次都没有回头。而这一切，要从十九年前说起。",
+      "data": {
+        "transition": "cut",
+        "bg": "bg_boutique.png",
+        "frame": [
+          1.0,
+          0,
+          30
+        ],
+        "ground": 1530,
+        "person": 450,
+        "light": {
+          "x": 540,
+          "y": 300,
+          "color": "rgba(255,215,170,0.5)"
+        },
+        "grade": {
+          "color": "#3550b0",
+          "amount": 0.18
+        },
+        "camera": {
+          "from": [
+            1.25,
+            0,
+            40
+          ],
+          "to": [
+            1.05,
+            0,
+            0
+          ]
+        },
+        "actors": [
+          {
+            "who": "yukiho",
+            "x": 540,
+            "silhouette": true,
+            "steps": [
+              {
+                "cue": "转身上楼",
+                "act": "climb",
+                "walk": 540,
+                "to": 1030,
+                "size": 0.42,
+                "dur": 170,
+                "after": "climb"
+              }
+            ]
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_xmas_tree.png",
+            "x": 80,
+            "y": 2080,
+            "h": 1300,
+            "z": 1.5,
+            "flip": true
+          }
+        ],
+        "title": {
+          "cue": "十九年前",
+          "text": "1973",
+          "sub": "十九年前"
+        },
+        "fx": [
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.7,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "1973年10月，大阪。几个小学生钻进一栋停工大楼的通风管里玩耍，在楼里发现了一具男尸。",
+      "data": {
+        "transition": "dip",
+        "bg": "bg_ruins.png",
+        "frame": [
+          1.05,
+          0,
+          -40
+        ],
+        "ground": 1500,
+        "person": 300,
+        "light": {
+          "x": 60,
+          "y": 980,
+          "color": "rgba(255,170,110,0.55)"
+        },
+        "grade": {
+          "color": "#ff8a40",
+          "amount": 0.16
+        },
+        "camera": {
+          "from": [
+            1.0,
+            0,
+            0
+          ],
+          "to": [
+            1.08,
+            0,
+            20
+          ]
+        },
+        "cam": [
+          {
+            "cue": "通风管",
+            "look": {
+              "x": 300,
+              "y": 1560,
+              "s": 1.6,
+              "at": [
+                540,
+                1150
+              ]
+            },
+            "dur": 40
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_pole.png",
+            "x": 930,
+            "y": 1600,
+            "h": 1350,
+            "z": 0.8
+          },
+          {
+            "img": "prop_fg_crow.png",
+            "x": 1250,
+            "y": 560,
+            "h": 90,
+            "z": 0.6,
+            "fly": [
+              -250,
+              420
+            ],
+            "enter": "大阪"
+          },
+          {
+            "img": "prop_fg_duct.png",
+            "x": 260,
+            "y": 1880,
+            "h": 420,
+            "w": 820,
+            "z": 1.3
+          },
+          {
+            "img": "prop_fg_weeds.png",
+            "x": 1010,
+            "y": 2050,
+            "h": 640,
+            "z": 1.6,
+            "flip": true
+          }
+        ],
+        "beats": [
+          {
+            "cue": "男尸",
+            "fx": "impact"
+          },
+          {
+            "cue": "男尸",
+            "fx": "focus",
+            "x": 540,
+            "y": 1100
+          }
+        ],
+        "fx": [
+          "dust",
+          "rays"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.6,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "死者叫桐原洋介，五十二岁，开着一家当铺。胸口被细长的利器，刺了好几下。",
+      "data": {
+        "bg": "bg_ruins_room.png",
+        "frame": [
+          1.6,
+          -150,
+          -1100
+        ],
+        "ground": 1380,
+        "person": 590,
+        "light": {
+          "x": 900,
+          "y": 160,
+          "color": "rgba(255,180,110,0.6)"
+        },
+        "grade": {
+          "color": "#ff8040",
+          "amount": 0.18,
+          "bright": 0.95
+        },
+        "transition": "zoom",
+        "dimFrom": 0.25,
+        "cam": [
+          {
+            "t": 0,
+            "cut": true,
+            "look": {
+              "who": "yosuke",
+              "part": "body",
+              "s": 1.25,
+              "at": [
+                560,
+                1100
+              ]
+            }
+          },
+          {
+            "cue": "好几下",
+            "cut": true,
+            "look": {
+              "who": "yosuke",
+              "part": "body",
+              "s": 1.7,
+              "at": [
+                560,
+                1050
+              ],
+              "r": -8
+            }
+          }
+        ],
+        "actors": [
+          {
+            "who": "yosuke",
+            "x": 640,
+            "steps": [
+              {
+                "cue": "死者",
+                "act": "dead"
+              }
+            ]
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_pillar.png",
+            "x": -170,
+            "y": 2150,
+            "h": 2200,
+            "z": 1.5
+          }
+        ],
+        "beats": [
+          {
+            "cue": "死者",
+            "fx": "ink",
+            "who": "yosuke",
+            "dur": 60,
+            "size": 480
+          },
+          {
+            "cue": "好几下",
+            "fx": "redflash"
+          }
+        ],
+        "fx": [
+          "rays",
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "负责这个案子的，是刑警笹垣润三。",
+      "data": {
+        "bg": "bg_ruins_room.png",
+        "frame": [
+          1.6,
+          -150,
+          -1100
+        ],
+        "ground": 1380,
+        "person": 590,
+        "light": {
+          "x": 900,
+          "y": 160,
+          "color": "rgba(255,180,110,0.6)"
+        },
+        "grade": {
+          "color": "#ff8040",
+          "amount": 0.18,
+          "bright": 0.95
+        },
+        "dimFrom": 0.2,
+        "cam": [
+          {
+            "t": 0,
+            "cut": true,
+            "look": {
+              "x": 480,
+              "y": 1100,
+              "s": 1.05,
+              "at": [
+                540,
+                1000
+              ]
+            }
+          },
+          {
+            "cue": "笹垣",
+            "look": {
+              "who": "sasagaki",
+              "part": "head",
+              "s": 1.9,
+              "at": [
+                380,
+                820
+              ]
+            },
+            "dur": 30
+          }
+        ],
+        "actors": [
+          {
+            "who": "yosuke",
+            "x": 700,
+            "steps": [
+              {
+                "cue": "负责",
+                "act": "dead"
+              }
+            ]
+          },
+          {
+            "who": "sasagaki",
+            "x": -120,
+            "steps": [
+              {
+                "cue": "负责",
+                "walk": 400,
+                "dur": 70
+              }
+            ]
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_planks.png",
+            "x": 980,
+            "y": 2080,
+            "h": 560,
+            "z": 1.35
+          }
+        ],
+        "fx": [
+          "rays",
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "他注意到几处怪事：死者的皮带，比平时松了两个扣；当天从银行取出的一百万日元不见了，钱包和一只登喜路打火机，也一起消失了。",
+      "data": {
+        "bg": "bg_ruins_room.png",
+        "frame": [
+          1.6,
+          -150,
+          -1100
+        ],
+        "ground": 1380,
+        "person": 590,
+        "light": {
+          "x": 900,
+          "y": 160,
+          "color": "rgba(255,180,110,0.6)"
+        },
+        "grade": {
+          "color": "#ff8040",
+          "amount": 0.18,
+          "bright": 0.95
+        },
+        "dimFrom": 0.2,
+        "cam": [
+          {
+            "t": 0,
+            "cut": true,
+            "look": {
+              "x": 560,
+              "y": 1200,
+              "s": 1.3,
+              "at": [
+                540,
+                1050
+              ]
+            }
+          },
+          {
+            "cue": "皮带",
+            "look": {
+              "who": "yosuke",
+              "part": "body",
+              "s": 1.9,
+              "at": [
+                600,
+                1000
+              ]
+            },
+            "dur": 20
+          }
+        ],
+        "actors": [
+          {
+            "who": "yosuke",
+            "x": 700,
+            "steps": [
+              {
+                "cue": "他注意到",
+                "act": "dead"
+              }
+            ]
+          },
+          {
+            "who": "sasagaki",
+            "x": 420,
+            "steps": [
+              {
+                "cue": "他注意到",
+                "act": "crouch"
+              }
+            ]
+          }
+        ],
+        "inserts": [
+          {
+            "cue": "一百万日元",
+            "until": "钱包",
+            "img": "prop_money.png",
+            "caption": "一百万日元 · 不见了"
+          },
+          {
+            "cue": "登喜路",
+            "until": "消失了",
+            "img": "prop_lighter.png",
+            "caption": "打火机 · 不见了"
+          }
+        ],
+        "fx": [
+          "rays",
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "警方先查死者身边的人。妻子弥生子和店员松浦勇，案发时都在当铺里，互相作证。",
+      "data": {
+        "bg": "bg_pawnshop.png",
+        "frame": [
+          1.2,
+          0,
+          -396
+        ],
+        "ground": 1380,
+        "person": 670,
+        "light": {
+          "x": 300,
+          "y": 700,
+          "color": "rgba(255,200,140,0.5)"
+        },
+        "grade": {
+          "color": "#3a5aa8",
+          "amount": 0.16
+        },
+        "transition": "wipe",
+        "camera": {
+          "from": [
+            1.06,
+            40,
+            0
+          ],
+          "to": [
+            1.0,
+            -20,
+            0
+          ]
+        },
+        "actors": [
+          {
+            "who": "yayoiko",
+            "x": 600,
+            "facing": -1
+          },
+          {
+            "who": "matsuura",
+            "x": 790,
+            "facing": -1
+          },
+          {
+            "who": "sasagaki",
+            "x": 170,
+            "z": 1.35,
+            "silhouette": true,
+            "y": 1520
+          }
+        ],
+        "fx": [
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "他们的儿子桐原亮司，上小学五年级，眼神阴沉。房间里挂着一幅精致的剪纸帆船。",
+      "data": {
+        "bg": "bg_pawnshop.png",
+        "frame": [
+          1.2,
+          0,
+          -396
+        ],
+        "ground": 1380,
+        "person": 670,
+        "light": {
+          "x": 300,
+          "y": 700,
+          "color": "rgba(255,200,140,0.5)"
+        },
+        "grade": {
+          "color": "#3a5aa8",
+          "amount": 0.16
+        },
+        "cam": [
+          {
+            "t": 0,
+            "cut": true,
+            "look": {
+              "who": "ryoji_kid",
+              "part": "body",
+              "s": 1.3,
+              "at": [
+                640,
+                1050
+              ]
+            }
+          },
+          {
+            "cue": "眼神",
+            "cut": true,
+            "look": {
+              "who": "ryoji_kid",
+              "part": "head",
+              "s": 2.4,
+              "at": [
+                680,
+                820
+              ]
+            }
+          }
+        ],
+        "actors": [
+          {
+            "who": "ryoji_kid",
+            "x": 620,
+            "facing": -1,
+            "steps": [
+              {
+                "cue": "他们的儿子",
+                "act": "stand"
+              }
+            ]
+          }
+        ],
+        "inserts": [
+          {
+            "cue": "剪纸帆船",
+            "until": "剪纸帆船",
+            "img": "prop_papership.png"
+          }
+        ],
+        "fx": [
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "接着，笹垣查到，洋介遇害前最后去的地方，是西本文代的家。垃圾桶里，有洋介买来的水果布丁的包装。",
+      "data": {
+        "bg": "bg_apartment.png",
+        "frame": [
+          1.0,
+          0,
+          30
+        ],
+        "ground": 1380,
+        "person": 700,
+        "light": {
+          "x": 650,
+          "y": 500,
+          "color": "rgba(200,215,255,0.45)"
+        },
+        "grade": {
+          "color": "#3a5aa8",
+          "amount": 0.18
+        },
+        "transition": "whip",
+        "camera": {
+          "from": [
+            1.04,
+            30,
+            0
+          ],
+          "to": [
+            1.0,
+            -20,
+            0
+          ]
+        },
+        "actors": [
+          {
+            "who": "fumiyo",
+            "x": 700,
+            "facing": -1
+          },
+          {
+            "who": "sasagaki",
+            "x": 280
+          }
+        ],
+        "inserts": [
+          {
+            "cue": "水果布丁",
+            "until": "水果布丁",
+            "img": "prop_pudding.png"
+          }
+        ],
+        "fx": [
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "可文代有不在场证明：有人看见，那段时间她一个人坐在公园的秋千上发呆。",
+      "data": {
+        "bg": "bg_park.png",
+        "frame": [
+          1.02,
+          0,
+          10
+        ],
+        "ground": 1418,
+        "person": 420,
+        "light": {
+          "x": 330,
+          "y": 560,
+          "color": "rgba(255,210,150,0.45)"
+        },
+        "grade": {
+          "color": "#3a5aa8",
+          "amount": 0.22,
+          "bright": 0.92
+        },
+        "camera": {
+          "from": [
+            1.0,
+            40,
+            0
+          ],
+          "to": [
+            1.06,
+            -30,
+            0
+          ]
+        },
+        "actors": [
+          {
+            "who": "fumiyo",
+            "x": 340,
+            "steps": [
+              {
+                "cue": "可文代",
+                "act": "sad"
+              }
+            ]
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_branch.png",
+            "x": 980,
+            "y": 700,
+            "h": 900,
+            "z": 1.45,
+            "sway": 1
+          }
+        ],
+        "fx": [
+          "dust",
+          "fog"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "文代的女儿雪穗，也上小学五年级，长得出奇漂亮。笹垣去问话时，她正在读一本《飘》，谈吐老成，完全不像个孩子。",
+      "data": {
+        "bg": "bg_apartment.png",
+        "frame": [
+          1.0,
+          0,
+          30
+        ],
+        "ground": 1380,
+        "person": 700,
+        "light": {
+          "x": 650,
+          "y": 500,
+          "color": "rgba(200,215,255,0.45)"
+        },
+        "grade": {
+          "color": "#3a5aa8",
+          "amount": 0.18
+        },
+        "cam": [
+          {
+            "t": 0,
+            "cut": true,
+            "look": {
+              "x": 480,
+              "y": 1050,
+              "s": 1.1,
+              "at": [
+                540,
+                980
+              ]
+            }
+          },
+          {
+            "cue": "雪穗",
+            "cut": true,
+            "look": {
+              "who": "yukiho_kid",
+              "part": "head",
+              "s": 2.2,
+              "at": [
+                620,
+                820
+              ]
+            }
+          },
+          {
+            "cue": "完全不像",
+            "look": {
+              "who": "yukiho_kid",
+              "part": "head",
+              "s": 2.6,
+              "at": [
+                580,
+                820
+              ]
+            },
+            "dur": 40
+          }
+        ],
+        "actors": [
+          {
+            "who": "yukiho_kid",
+            "x": 640,
+            "facing": -1,
+            "steps": [
+              {
+                "cue": "文代的女儿",
+                "act": "stand"
+              },
+              {
+                "cue": "谈吐老成",
+                "act": "look"
+              }
+            ]
+          },
+          {
+            "who": "sasagaki",
+            "x": 110,
+            "z": 1.4,
+            "silhouette": true,
+            "y": 1560
+          }
+        ],
+        "fx": [
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "很快，文代的情人、送货员寺崎忠夫，成了头号嫌疑人。",
+      "data": {
+        "bg": "bg_neon.png",
+        "frame": [
+          1.0,
+          0,
+          0
+        ],
+        "ground": 1550,
+        "person": 700,
+        "light": {
+          "x": 200,
+          "y": 600,
+          "color": "rgba(255,120,140,0.45)"
+        },
+        "grade": {
+          "color": "#4a3aa8",
+          "amount": 0.2
+        },
+        "cam": [
+          {
+            "t": 0,
+            "cut": true,
+            "look": {
+              "who": "terasaki",
+              "part": "body",
+              "s": 1.05,
+              "at": [
+                640,
+                1080
+              ]
+            }
+          },
+          {
+            "cue": "头号嫌疑人",
+            "look": {
+              "who": "terasaki",
+              "part": "head",
+              "s": 1.8,
+              "at": [
+                640,
+                820
+              ]
+            },
+            "dur": 20
+          }
+        ],
+        "actors": [
+          {
+            "who": "terasaki",
+            "x": 620,
+            "steps": [
+              {
+                "cue": "很快",
+                "act": "lookback"
+              }
+            ]
+          }
+        ],
+        "beats": [
+          {
+            "cue": "头号嫌疑人",
+            "fx": "slam",
+            "text": "嫌疑人",
+            "x": 330,
+            "y": 560,
+            "size": 170,
+            "rot": -8,
+            "dur": 40
+          }
+        ],
+        "fx": [
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.7,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "可一个月后，他在高速公路上疲劳驾驶，撞墙身亡。车里找到了那只登喜路打火机，上面却没有任何指纹。",
+      "data": {
+        "transition": "flash",
+        "bg": "bg_road.png",
+        "frame": [
+          1.0,
+          0,
+          30
+        ],
+        "ground": 1500,
+        "person": 450,
+        "light": {
+          "x": 700,
+          "y": 1200,
+          "color": "rgba(255,240,200,0.5)"
+        },
+        "grade": {
+          "color": "#2a3a78",
+          "amount": 0.22
+        },
+        "camera": {
+          "from": [
+            1.12,
+            0,
+            0
+          ],
+          "to": [
+            1.0,
+            0,
+            0
+          ]
+        },
+        "beats": [
+          {
+            "cue": "撞墙",
+            "fx": "impact"
+          },
+          {
+            "cue": "撞墙",
+            "fx": "shards",
+            "x": 700,
+            "y": 1150,
+            "color": "#d8e8ff",
+            "power": 1.2
+          }
+        ],
+        "hits": [
+          "撞墙"
+        ],
+        "inserts": [
+          {
+            "cue": "打火机",
+            "until": "指纹",
+            "img": "prop_lighter.png",
+            "caption": "没有任何指纹"
+          }
+        ],
+        "fx": [
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "嫌疑人一死，案子就此不了了之。只有笹垣，始终放不下：凶手到底是谁？那一百万，又去了哪里？",
+      "data": {
+        "bg": "bg_police.png",
+        "frame": [
+          1.05,
+          -40,
+          -20
+        ],
+        "ground": 1450,
+        "person": 630,
+        "light": {
+          "x": 860,
+          "y": 700,
+          "color": "rgba(200,215,255,0.4)"
+        },
+        "grade": {
+          "color": "#2a3a78",
+          "amount": 0.2
+        },
+        "camera": {
+          "from": [
+            1.0,
+            0,
+            0
+          ],
+          "to": [
+            1.12,
+            -30,
+            0
+          ]
+        },
+        "mono": {
+          "from": "不了了之"
+        },
+        "actors": [
+          {
+            "who": "sasagaki",
+            "x": 760,
+            "steps": [
+              {
+                "cue": "嫌疑人",
+                "act": "smoke"
+              }
+            ]
+          }
+        ],
+        "beats": [
+          {
+            "cue": "凶手",
+            "fx": "whisper",
+            "text": "凶手到底是谁？",
+            "x": 360,
+            "y": 520
+          },
+          {
+            "cue": "那一百万",
+            "fx": "whisper",
+            "text": "那一百万，去了哪里？",
+            "x": 480,
+            "y": 660
+          }
+        ],
+        "fx": [
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.6,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "第二年5月，西本文代死于煤气中毒。那天，雪穗说自己没带钥匙，请房东开门。门一开，满屋煤气，文代倒在屋里。",
+      "data": {
+        "bg": "bg_apartment.png",
+        "frame": [
+          1.0,
+          0,
+          30
+        ],
+        "ground": 1380,
+        "person": 700,
+        "light": {
+          "x": 650,
+          "y": 500,
+          "color": "rgba(200,215,255,0.45)"
+        },
+        "grade": {
+          "color": "#3a5aa8",
+          "amount": 0.18
+        },
+        "transition": "dip",
+        "cam": [
+          {
+            "t": 0,
+            "cut": true,
+            "look": {
+              "who": "yukiho_kid",
+              "part": "body",
+              "s": 1.3,
+              "at": [
+                420,
+                1050
+              ]
+            }
+          },
+          {
+            "cue": "门一开",
+            "cut": true,
+            "look": {
+              "who": "fumiyo",
+              "part": "body",
+              "s": 1.3,
+              "at": [
+                620,
+                1100
+              ]
+            }
+          }
+        ],
+        "pulse": {
+          "from": "门一开",
+          "to": "倒在屋里"
+        },
+        "actors": [
+          {
+            "who": "yukiho_kid",
+            "x": 150,
+            "steps": [
+              {
+                "cue": "第二年",
+                "act": "stand"
+              }
+            ]
+          },
+          {
+            "who": "fumiyo",
+            "x": 700,
+            "enter": "门一开",
+            "steps": [
+              {
+                "cue": "门一开",
+                "act": "dead"
+              }
+            ]
+          }
+        ],
+        "fx": [
+          "fog",
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "雪穗站在门外，轻声问了一句：死了吗？警方认定，这是一场意外。",
+      "data": {
+        "bg": "bg_apartment.png",
+        "frame": [
+          1.0,
+          0,
+          30
+        ],
+        "ground": 1380,
+        "person": 700,
+        "light": {
+          "x": 650,
+          "y": 500,
+          "color": "rgba(200,215,255,0.45)"
+        },
+        "grade": {
+          "color": "#3a5aa8",
+          "amount": 0.18
+        },
+        "cam": [
+          {
+            "t": 0,
+            "cut": true,
+            "look": {
+              "who": "yukiho_kid",
+              "part": "head",
+              "s": 2.6,
+              "at": [
+                600,
+                820
+              ]
+            }
+          }
+        ],
+        "dimFrom": 0.25,
+        "actors": [
+          {
+            "who": "yukiho_kid",
+            "x": 560,
+            "facing": -1,
+            "steps": [
+              {
+                "cue": "雪穗站在",
+                "act": "look"
+              }
+            ]
+          }
+        ],
+        "beats": [
+          {
+            "cue": "死了吗",
+            "fx": "whisper",
+            "text": "死了吗？",
+            "x": 300,
+            "y": 1150
+          }
+        ],
+        "fx": [
+          "fog"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "雪穗被远房亲戚唐泽礼子收养，改名唐泽雪穗。她学茶道、学礼仪，很快成了人人称赞的大小姐。",
+      "data": {
+        "transition": "iris",
+        "bg": "bg_mansion.png",
+        "frame": [
+          1.0,
+          0,
+          30
+        ],
+        "ground": 1480,
+        "person": 480,
+        "light": {
+          "x": 900,
+          "y": 300,
+          "color": "rgba(255,235,200,0.5)"
+        },
+        "grade": {
+          "color": "#ffd9a0",
+          "amount": 0.14,
+          "bright": 1.08
+        },
+        "camera": {
+          "from": [
+            1.04,
+            40,
+            0
+          ],
+          "to": [
+            1.0,
+            -30,
+            0
+          ]
+        },
+        "actors": [
+          {
+            "who": "reiko",
+            "x": -120,
+            "steps": [
+              {
+                "cue": "雪穗被",
+                "walk": 560,
+                "dur": 200
+              }
+            ]
+          },
+          {
+            "who": "yukiho_kid",
+            "x": -280,
+            "steps": [
+              {
+                "cue": "雪穗被",
+                "walk": 420,
+                "dur": 210
+              }
+            ]
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_branch.png",
+            "x": 120,
+            "y": 760,
+            "h": 950,
+            "z": 1.45,
+            "flip": true,
+            "sway": 1
+          }
+        ],
+        "fx": [
+          "dust",
+          "rays"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "可没有人注意到，在那之前，雪穗和亮司早就认识。小学的图书馆里，常常能看见他们俩一起找书，一起剪纸。",
+      "data": {
+        "bg": "bg_library.png",
+        "frame": [
+          1.0,
+          0,
+          0
+        ],
+        "ground": 1500,
+        "person": 800,
+        "light": {
+          "x": 900,
+          "y": 500,
+          "color": "rgba(255,235,190,0.5)"
+        },
+        "grade": {
+          "color": "#ffb070",
+          "amount": 0.12
+        },
+        "camera": {
+          "from": [
+            1.0,
+            20,
+            0
+          ],
+          "to": [
+            1.08,
+            -10,
+            0
+          ]
+        },
+        "actors": [
+          {
+            "who": "ryoji_kid",
+            "x": 380
+          },
+          {
+            "who": "yukiho_kid",
+            "x": 600,
+            "facing": -1
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_bookshelf.png",
+            "x": -240,
+            "y": 2050,
+            "h": 1900,
+            "z": 1.45
+          },
+          {
+            "img": "prop_fg_bookshelf.png",
+            "x": 1320,
+            "y": 2050,
+            "h": 1900,
+            "z": 1.5,
+            "flip": true
+          }
+        ],
+        "fx": [
+          "dust",
+          "rays"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "十九年后，老刑警笹垣终于把拼图拼完整了。1973年10月的那个下午，究竟发生了什么？",
+      "data": {
+        "bg": "bg_ruins.png",
+        "frame": [
+          1.65,
+          0,
+          -1194
+        ],
+        "ground": 1380,
+        "person": 560,
+        "transition": "dip",
+        "light": {
+          "x": 1000,
+          "y": 260,
+          "color": "rgba(255,186,120,0.55)"
+        },
+        "grade": {
+          "color": "#ff9a50",
+          "amount": 0.14
+        },
+        "camera": {
+          "from": [
+            1.0,
+            0,
+            0
+          ],
+          "to": [
+            1.1,
+            30,
+            0
+          ]
+        },
+        "actors": [
+          {
+            "who": "sasagaki",
+            "x": 330
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_fence.png",
+            "x": 110,
+            "y": 1350,
+            "h": 230,
+            "w": 760,
+            "z": 0.85
+          },
+          {
+            "img": "prop_fg_weeds.png",
+            "x": 70,
+            "y": 2120,
+            "h": 820,
+            "z": 1.55,
+            "sway": 1.5
+          }
+        ],
+        "title": {
+          "cue": "1973年",
+          "text": "1973",
+          "sub": "真 相"
+        },
+        "fx": [
+          "dust",
+          "rays"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "那天，桐原洋介领着雪穗，走进了这栋停工的大楼。他带着的那一百万日元，是准备付给雪穗母亲的钱。",
+      "data": {
+        "bg": "bg_ruins.png",
+        "frame": [
+          1.65,
+          0,
+          -1194
+        ],
+        "ground": 1380,
+        "person": 560,
+        "transition": "dip",
+        "light": {
+          "x": 1000,
+          "y": 260,
+          "color": "rgba(255,186,120,0.55)"
+        },
+        "grade": {
+          "color": "#ff9a50",
+          "amount": 0.14
+        },
+        "cam": [
+          {
+            "t": 0,
+            "cut": true,
+            "look": {
+              "x": 560,
+              "y": 1050,
+              "s": 1.0,
+              "at": [
+                720,
+                1000
+              ]
+            }
+          },
+          {
+            "cue": "领着雪穗",
+            "cut": true,
+            "look": {
+              "who": "yukiho_kid",
+              "part": "body",
+              "s": 1.6,
+              "at": [
+                360,
+                1060
+              ]
+            }
+          },
+          {
+            "cue": "走进了",
+            "look": {
+              "x": 470,
+              "y": 1120,
+              "s": 1.08,
+              "at": [
+                560,
+                1000
+              ],
+              "r": -2
+            },
+            "dur": 30
+          },
+          {
+            "cue": "母亲",
+            "cut": true,
+            "look": {
+              "x": 500,
+              "y": 1080,
+              "s": 1.15,
+              "at": [
+                540,
+                980
+              ]
+            }
+          }
+        ],
+        "actors": [
+          {
+            "who": "yosuke",
+            "x": -180,
+            "exit": "的钱",
+            "steps": [
+              {
+                "cue": "那天",
+                "walk": 520,
+                "dur": 230
+              }
+            ]
+          },
+          {
+            "who": "yukiho_kid",
+            "x": -380,
+            "exit": "的钱",
+            "steps": [
+              {
+                "cue": "那天",
+                "walk": 400,
+                "dur": 240
+              }
+            ]
+          }
+        ],
+        "inserts": [
+          {
+            "cue": "一百万",
+            "until": "母亲",
+            "img": "prop_money.png",
+            "caption": "一百万日元"
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_fence.png",
+            "x": 110,
+            "y": 1350,
+            "h": 230,
+            "w": 760,
+            "z": 0.85
+          },
+          {
+            "img": "prop_fg_drum.png",
+            "x": 930,
+            "y": 1360,
+            "h": 230,
+            "z": 0.9
+          },
+          {
+            "img": "prop_fg_rubble.png",
+            "x": 930,
+            "y": 2060,
+            "h": 560,
+            "z": 1.3
+          },
+          {
+            "img": "prop_fg_weeds.png",
+            "x": 70,
+            "y": 2120,
+            "h": 820,
+            "z": 1.55,
+            "sway": 1.5
+          }
+        ],
+        "fx": [
+          "dust",
+          "rays"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.75,
+      "emotion": {
+        "calm": 0.5,
+        "melancholic": 0.2
+      },
+      "narration": "这一幕，被洋介的儿子亮司看见了。他没有走大门，而是从孩子们常爬的通风管，钻进了大楼。",
+      "data": {
+        "bg": "bg_ruins.png",
+        "frame": [
+          1.65,
+          -170,
+          -1194
+        ],
+        "ground": 1380,
+        "person": 560,
+        "transition": "whip",
+        "light": {
+          "x": 1000,
+          "y": 260,
+          "color": "rgba(255,186,120,0.55)"
+        },
+        "grade": {
+          "color": "#ff9a50",
+          "amount": 0.14
+        },
+        "cam": [
+          {
+            "t": 0,
+            "cut": true,
+            "look": {
+              "x": 600,
+              "y": 1100,
+              "s": 1.0,
+              "at": [
+                440,
+                1000
+              ]
+            }
+          },
+          {
+            "cue": "这一幕",
+            "look": {
+              "who": "ryoji_kid",
+              "part": "body",
+              "s": 1.3,
+              "at": [
+                760,
+                1060
+              ]
+            },
+            "dur": 14
+          },
+          {
+            "cue": "看见了",
+            "cut": true,
+            "look": {
+              "who": "ryoji_kid",
+              "part": "head",
+              "s": 2.7,
+              "at": [
+                380,
+                760
+              ],
+              "r": -4
+            }
+          },
+          {
+            "cue": "他没有",
+            "cut": true,
+            "look": {
+              "x": 520,
+              "y": 1080,
+              "s": 1.05,
+              "at": [
+                600,
+                980
+              ]
+            }
+          },
+          {
+            "cue": "钻进了",
+            "look": {
+              "who": "ryoji_kid",
+              "part": "body",
+              "s": 1.45,
+              "at": [
+                600,
+                1040
+              ]
+            },
+            "dur": 20
+          }
+        ],
+        "actors": [
+          {
+            "who": "ryoji_kid",
+            "x": 1180,
+            "facing": -1,
+            "enter": "这一幕",
+            "exit": "大楼",
+            "steps": [
+              {
+                "cue": "这一幕",
+                "walk": 820,
+                "dur": 40
+              },
+              {
+                "cue": "看见了",
+                "act": "shock"
+              },
+              {
+                "cue": "钻进了",
+                "walk": 170,
+                "dur": 70
+              }
+            ]
+          }
+        ],
+        "beats": [
+          {
+            "cue": "看见了",
+            "fx": "impact"
+          },
+          {
+            "cue": "看见了",
+            "fx": "focus",
+            "who": "ryoji_kid",
+            "part": "head",
+            "dur": 24
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_planks.png",
+            "x": 800,
+            "y": 1350,
+            "h": 290,
+            "z": 0.9
+          },
+          {
+            "img": "prop_fg_duct.png",
+            "x": 300,
+            "y": 1470,
+            "h": 340,
+            "w": 660,
+            "z": 1.02
+          },
+          {
+            "img": "prop_fg_weeds.png",
+            "x": 40,
+            "y": 2120,
+            "h": 780,
+            "z": 1.5,
+            "sway": 1.5
+          },
+          {
+            "img": "prop_fg_rubble.png",
+            "x": 1040,
+            "y": 2080,
+            "h": 600,
+            "z": 1.6
+          }
+        ],
+        "fx": [
+          "dust"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.9,
+      "emotion": {
+        "calm": 0.4,
+        "afraid": 0.15
+      },
+      "narration": "接下来发生的事，书里没有明写。我们只知道，男孩手里，握着那把剪纸用的剪刀。一下，又一下。等一切停下来，桐原洋介已经倒在了地上。",
+      "data": {
+        "bg": "bg_ruins_room.png",
+        "frame": [
+          1.6,
+          -150,
+          -1100
+        ],
+        "ground": 1380,
+        "person": 590,
+        "light": {
+          "x": 900,
+          "y": 160,
+          "color": "rgba(255,180,110,0.6)"
+        },
+        "grade": {
+          "color": "#ff8040",
+          "amount": 0.18,
+          "bright": 0.95
+        },
+        "transition": "wipe",
+        "cam": [
+          {
+            "t": 0,
+            "cut": true,
+            "look": {
+              "who": "yosuke",
+              "part": "body",
+              "s": 1.25,
+              "at": [
+                760,
+                1040
+              ]
+            }
+          },
+          {
+            "cue": "书里",
+            "look": {
+              "who": "yosuke",
+              "part": "head",
+              "s": 1.75,
+              "at": [
+                730,
+                760
+              ]
+            },
+            "dur": 70
+          },
+          {
+            "cue": "男孩",
+            "cut": true,
+            "look": {
+              "who": "ryoji_kid",
+              "part": "body",
+              "s": 1.5,
+              "at": [
+                330,
+                1060
+              ]
+            }
+          },
+          {
+            "cue": "剪刀",
+            "cut": true,
+            "look": {
+              "who": "ryoji_kid",
+              "part": "hand",
+              "s": 2.4,
+              "at": [
+                560,
+                760
+              ],
+              "r": 6
+            }
+          },
+          {
+            "cue": "一下",
+            "cut": true,
+            "look": {
+              "x": 560,
+              "y": 1000,
+              "s": 1.2,
+              "at": [
+                540,
+                960
+              ],
+              "r": -9
+            }
+          },
+          {
+            "cue": "又一下",
+            "cut": true,
+            "look": {
+              "who": "yosuke",
+              "part": "head",
+              "s": 1.9,
+              "at": [
+                660,
+                820
+              ],
+              "r": 9
+            }
+          },
+          {
+            "cue": "等一切",
+            "cut": true,
+            "look": {
+              "x": 560,
+              "y": 1040,
+              "s": 1.02,
+              "at": [
+                540,
+                980
+              ]
+            }
+          },
+          {
+            "cue": "倒在了",
+            "look": {
+              "who": "yosuke",
+              "part": "body",
+              "s": 1.3,
+              "at": [
+                620,
+                1060
+              ]
+            },
+            "dur": 50
+          }
+        ],
+        "pulse": {
+          "from": "握着",
+          "to": "一下"
+        },
+        "mono": {
+          "from": "等一切"
+        },
+        "dimFrom": 0.35,
+        "dim": [
+          {
+            "cue": "握着",
+            "to": 0.15,
+            "dur": 20
+          },
+          {
+            "cue": "一下",
+            "to": 0.3,
+            "dur": 8
+          },
+          {
+            "cue": "等一切",
+            "to": 0.92,
+            "dur": 16
+          },
+          {
+            "cue": "桐原洋介",
+            "to": 0.35,
+            "dur": 40
+          }
+        ],
+        "actors": [
+          {
+            "who": "yosuke",
+            "x": 760,
+            "facing": -1,
+            "steps": [
+              {
+                "cue": "一下",
+                "act": "recoil"
+              },
+              {
+                "cue": "桐原洋介",
+                "act": "dead"
+              }
+            ]
+          },
+          {
+            "who": "ryoji_kid",
+            "x": 220,
+            "enter": "男孩",
+            "steps": [
+              {
+                "cue": "男孩",
+                "walk": 360,
+                "dur": 50
+              },
+              {
+                "cue": "剪刀",
+                "act": "raise"
+              },
+              {
+                "cue": "一下",
+                "act": "strike"
+              },
+              {
+                "cue": "又一下",
+                "act": "strike"
+              },
+              {
+                "cue": "倒在了地上",
+                "act": "down"
+              }
+            ]
+          }
+        ],
+        "beats": [
+          {
+            "cue": "剪刀",
+            "fx": "glint",
+            "who": "ryoji_kid",
+            "part": "hand",
+            "dur": 26
+          },
+          {
+            "cue": "一下",
+            "fx": "impact"
+          },
+          {
+            "cue": "一下",
+            "fx": "redflash"
+          },
+          {
+            "cue": "一下",
+            "fx": "rgb"
+          },
+          {
+            "cue": "一下",
+            "fx": "shards",
+            "who": "ryoji_kid",
+            "part": "hand"
+          },
+          {
+            "cue": "一下",
+            "fx": "slam",
+            "text": "一下",
+            "x": 300,
+            "y": 560,
+            "size": 230,
+            "rot": -10,
+            "dur": 40
+          },
+          {
+            "cue": "又一下",
+            "fx": "impact"
+          },
+          {
+            "cue": "又一下",
+            "fx": "redflash"
+          },
+          {
+            "cue": "又一下",
+            "fx": "rgb",
+            "power": 1.4
+          },
+          {
+            "cue": "又一下",
+            "fx": "shards",
+            "who": "yosuke",
+            "part": "body",
+            "power": 1.4
+          },
+          {
+            "cue": "又一下",
+            "fx": "slam",
+            "text": "又一下",
+            "x": 720,
+            "y": 1180,
+            "size": 250,
+            "rot": 7,
+            "dur": 44
+          },
+          {
+            "cue": "桐原洋介",
+            "fx": "ink",
+            "who": "yosuke",
+            "part": "body",
+            "dur": 90,
+            "size": 520
+          }
+        ],
+        "sfx": [
+          {
+            "cue": "一下",
+            "name": "boom",
+            "volume": 0.5
+          },
+          {
+            "cue": "又一下",
+            "name": "boom",
+            "volume": 0.6
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_pillar.png",
+            "x": -170,
+            "y": 2150,
+            "h": 2200,
+            "z": 1.5
+          },
+          {
+            "img": "prop_fg_planks.png",
+            "x": 960,
+            "y": 2080,
+            "h": 560,
+            "z": 1.35
+          }
+        ],
+        "fx": [
+          "rays",
+          "dust",
+          "flicker"
+        ]
+      }
+    },
+    {
+      "type": "puppet",
+      "intensity": 0.5,
+      "emotion": {
+        "calm": 0.4,
+        "melancholic": 0.35
+      },
+      "narration": "两个孩子从通风管里爬了出去，谁也没有说出这个秘密。从那天起，一个走进了白天，一个留在了黑夜。而这，只是开始。",
+      "data": {
+        "bg": "bg_ruins.png",
+        "frame": [
+          1.65,
+          -170,
+          -1194
+        ],
+        "ground": 1380,
+        "person": 560,
+        "transition": "dip",
+        "light": {
+          "x": 1060,
+          "y": 300,
+          "color": "rgba(255,214,170,0.45)"
+        },
+        "grade": {
+          "color": "#3a5aa8",
+          "amount": 0.22,
+          "bright": 0.88
+        },
+        "split": "从那天起",
+        "cam": [
+          {
+            "t": 0,
+            "cut": true,
+            "look": {
+              "x": 420,
+              "y": 1100,
+              "s": 1.1,
+              "at": [
+                540,
+                1000
+              ]
+            }
+          },
+          {
+            "cue": "谁也没有",
+            "cut": true,
+            "look": {
+              "x": 525,
+              "y": 1040,
+              "s": 1.75,
+              "at": [
+                540,
+                880
+              ]
+            }
+          },
+          {
+            "cue": "从那天起",
+            "cut": true,
+            "look": {
+              "x": 540,
+              "y": 1100,
+              "s": 1.0,
+              "at": [
+                540,
+                980
+              ]
+            }
+          },
+          {
+            "cue": "留在了黑夜",
+            "look": {
+              "x": 500,
+              "y": 1100,
+              "s": 1.08,
+              "at": [
+                560,
+                980
+              ]
+            },
+            "dur": 60
+          }
+        ],
+        "dim": [
+          {
+            "cue": "只是开始",
+            "to": 0.9,
+            "dur": 60
+          }
+        ],
+        "actors": [
+          {
+            "who": "yukiho_kid",
+            "x": 90,
+            "enter": "两个孩子",
+            "steps": [
+              {
+                "cue": "两个孩子",
+                "walk": 620,
+                "dur": 90
+              },
+              {
+                "cue": "走进了白天",
+                "walk": 1250,
+                "dur": 100
+              }
+            ]
+          },
+          {
+            "who": "ryoji_kid",
+            "x": 60,
+            "enter": "爬了出去",
+            "steps": [
+              {
+                "cue": "爬了出去",
+                "walk": 430,
+                "dur": 70
+              },
+              {
+                "cue": "谁也没有",
+                "act": "down"
+              },
+              {
+                "cue": "留在了黑夜",
+                "walk": -220,
+                "dur": 120
+              }
+            ]
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_planks.png",
+            "x": 800,
+            "y": 1350,
+            "h": 290,
+            "z": 0.9
+          },
+          {
+            "img": "prop_fg_crow.png",
+            "x": -200,
+            "y": 520,
+            "h": 80,
+            "z": 0.6,
+            "fly": [
+              1300,
+              380
+            ],
+            "enter": "秘密",
+            "flip": true
+          },
+          {
+            "img": "prop_fg_duct.png",
+            "x": 300,
+            "y": 1470,
+            "h": 340,
+            "w": 660,
+            "z": 1.02
+          },
+          {
+            "img": "prop_fg_weeds.png",
+            "x": 40,
+            "y": 2120,
+            "h": 780,
+            "z": 1.5,
+            "sway": 1.5
+          },
+          {
+            "img": "prop_fg_rubble.png",
+            "x": 1040,
+            "y": 2080,
+            "h": 600,
+            "z": 1.6
+          }
+        ],
+        "fx": [
+          "dust",
+          "fog"
+        ]
+      },
+      "hold": 1.5
+    }
+  ]
+}

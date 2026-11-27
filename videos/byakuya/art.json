@@ -154,7 +154,8 @@
     "neon": "a busy 1970s Osaka Shinsaibashi street at night with glowing neon signs without readable text, rain-wet pavement, no people in foreground",
     "hotel": "a dim 1970s hotel corridor at night, a row of doors, one door slightly open with light spilling out, red carpet, eerie quiet, no people",
     "office": "a small cramped 1979 office room with early personal computers, cassette tapes and game boxes on shelves, a desk with ledgers, fluorescent light, no people",
-    "ruins_room": "inside an abandoned unfinished concrete building, an empty bare concrete room, a large empty window hole on the right with warm orange dusk light streaming in, visible light shafts and floating dust, exposed rebar, a square ventilation duct opening low on the left wall, rubble and old newspapers on the floor, deep shadows, no people"
+    "ruins_room": "inside an abandoned unfinished concrete building, an empty bare concrete room, a large empty window hole on the right with warm orange dusk light streaming in, visible light shafts and floating dust, exposed rebar, a square ventilation duct opening low on the left wall, rubble and old newspapers on the floor, deep shadows, no people",
+    "boutique": "a bright upscale fashion boutique interior in Osaka at night during Christmas 1992, a wide elegant staircase rising from the floor to the second level in the center, Christmas decorations and warm fairy lights, glossy marble floor, glass display windows with cold blue night outside, no people"
   },
   "props": {
     "scissors": "a pair of small paper-cutting scissors with red plastic handles, slightly open",
@@ -175,7 +176,11 @@
     "fg_planks": "a messy stack of old wooden planks and scaffolding boards leaning on each other",
     "fg_drum": "a rusty old metal oil drum, slightly dented",
     "fg_pillar": "a rough unfinished grey concrete pillar with exposed rusty rebar on top, tall vertical",
-    "fg_crow": "a black crow flying with wings spread wide, side view"
+    "fg_crow": "a black crow flying with wings spread wide, side view",
+    "fg_xmas_tree": "a tall decorated Christmas tree with warm fairy lights, red and gold ornaments, side view",
+    "fg_bookshelf": "a tall old wooden library bookshelf full of books, seen from the side at an angle, tall vertical",
+    "fg_doorframe": "a tall old wooden sliding door frame of a small 1970s Japanese apartment, vertical, partially open paper door",
+    "fg_branch": "a hanging pine tree branch with needles, seen from below, wide"
   },
   "prop_style": "single object, centered, plain flat light gray background, no shadow, no text",
   "prop_art_style": "soft painterly illustration, smooth airbrushed gradients, soft glow and rim light, muted cool blue palette, realistic inanimate object, no face, no eyes, no text"

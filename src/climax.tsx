@@ -178,7 +178,7 @@ export const Insert: React.FC<{at: number; until: number; img: string; caption?:
           />
         </div>
         {caption && (
-          <div style={{marginTop: -40, fontFamily: DISPLAY, fontWeight: 900, fontSize: 110, color: '#f2d39a', letterSpacing: 6, textShadow: '0 0 30px rgba(255,180,80,0.6), 0 6px 20px #000'}}>{caption}</div>
+          <div style={{marginTop: -40, fontFamily: DISPLAY, fontWeight: 900, fontSize: Math.min(110, 900 / caption.length), whiteSpace: 'nowrap', color: '#f2d39a', letterSpacing: 6, textShadow: '0 0 30px rgba(255,180,80,0.6), 0 6px 20px #000'}}>{caption}</div>
         )}
       </AbsoluteFill>
     </AbsoluteFill>
@@ -199,3 +199,31 @@ export const RgbDefs: React.FC<{d: number}> = ({d}) => (
     </filter>
   </svg>
 );
+
+/** 耳语字：轻轻浮现、停住、消散（不砸屏、不晃动），用于反差和静默时刻 */
+export const Whisper: React.FC<{at: number; text: string; x: number; y: number; size?: number; dur?: number}> = ({at, text, x, y, size = 64, dur = 70}) => {
+  const frame = useCurrentFrame();
+  const k = frame - at;
+  if (k < 0 || k > dur) return null;
+  const op = interpolate(k, [0, 16, dur - 20, dur], [0, 1, 1, 0], clamp);
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: x,
+        top: y,
+        transform: 'translate(-50%, -50%)',
+        fontFamily: DISPLAY,
+        fontSize: size,
+        letterSpacing: 10,
+        whiteSpace: 'nowrap',
+        color: '#f2efe8',
+        textShadow: '0 0 24px rgba(0,0,0,0.9), 0 0 40px rgba(180,200,255,0.35)',
+        opacity: op,
+        filter: `blur(${(1 - Math.min(1, k / 16)) * 6}px)`,
+      }}
+    >
+      {text}
+    </div>
+  );
+};

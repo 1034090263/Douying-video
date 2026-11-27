@@ -4,7 +4,7 @@ import {DISPLAY, SCENE_STARTS, SceneData, TIMELINE, beatPulse, cueFrame, prog} f
 import {Sfx} from './ui';
 import {MeshPuppet, meshRig} from './mesh';
 import {actorBody} from './acting';
-import {FocusLines, Glint, Ink, Insert, RgbDefs, Shards, Slam, heartK} from './climax';
+import {FocusLines, Glint, Ink, Insert, RgbDefs, Shards, Slam, Whisper, heartK} from './climax';
 
 /**
  * 多层景深舞台：骨骼人偶在插画场景里表演。
@@ -34,7 +34,7 @@ const ease = Easing.bezier(0.45, 0, 0.25, 1);
 const noise = (f: number, s: number) => Math.sin(f / 23 + s) * 0.6 + Math.sin(f / 11.3 + s * 2.1) * 0.3 + Math.sin(f / 5.7 + s * 3.7) * 0.1;
 
 // ---------------------------------------------------------------- 人物
-type Step = {cue: string; walk?: number; to?: number; dur?: number; pose?: string};
+type Step = {cue: string; walk?: number; to?: number; dur?: number; pose?: string; act?: string; after?: string; size?: number};
 type Actor = {who: string; x: number; y?: number; scale?: number; facing?: 1 | -1; enter?: string; exit?: string; steps?: Step[]; z?: number; silhouette?: boolean};
 
 const RIG_OF: Record<string, string> = {man: 'yosuke', girl: 'yukiho_kid', boy: 'ryoji_kid'};
@@ -42,8 +42,14 @@ const RIG_H: Record<string, number> = {man: 560, girl: 430, boy: 445};
 
 type Light = {x: number; y: number; color?: string};
 
+// 连续帧人物（scripts/seqgen.py）：每个动作是一串完整的人物图
+type SeqAction = {frames: string[]; keys: number[]; w: number; h: number; ax: number; ay: number; unit: number; loop: boolean};
+const SEQS = ((TIMELINE as unknown as {seqs?: Record<string, Record<string, SeqAction>>}).seqs ?? {}) as Record<string, Record<string, SeqAction>>;
+const CAST = ((TIMELINE.theme as {cast?: Record<string, {height?: number}>} | undefined)?.cast ?? {}) as Record<string, {height?: number}>;
+const HOLD = 2; // 一拍二：每张画稿停 2 帧
+
 /** 人物在某一帧的状态（位置、朝向、姿势），镜头跟拍和特效定位都用它 */
-const actorState = (scene: SceneData, ac: Actor, frame: number, ground: number) => {
+const actorState = (scene: SceneData, ac: Actor, frame: number, ground: number, person = 560) => {
   const enterAt = ac.enter ? cueFrame(scene, ac.enter, 0) : -1;
   let x = ac.x;
   let y = ac.y ?? ground;
@@ -53,10 +59,18 @@ const actorState = (scene: SceneData, ac: Actor, frame: number, ground: number) 
   let pose = 'stand';
   let prevPose = 'stand';
   let poseStart = -999;
+  // 连续帧动作时间线：显式 act；移动时自动 walk，停下后自动 stand（或 after 指定的动作）
+  const acts: [number, string][] = [[-999, 'stand']];
+  let size = 1;
   const steps = (ac.steps ?? []).map((s) => ({...s, at: cueFrame(scene, s.cue, 0)})).sort((p, q) => p.at - q.at);
   for (const s of steps) {
     if (frame < s.at) break;
     const p = interpolate(frame, [s.at, s.at + (s.dur ?? 45)], [0, 1], {...clamp, easing: ease});
+    if (s.walk !== undefined || s.to !== undefined) {
+      acts.push([s.at, s.act ?? 'walk'], [s.at + (s.dur ?? 45), s.after ?? 'stand']);
+    } else if (s.act) {
+      acts.push([s.at, s.act]);
+    }
     if (s.walk !== undefined || s.to !== undefined) {
       const nx = s.walk ?? x;
       if (p < 1) {
@@ -65,6 +79,7 @@ const actorState = (scene: SceneData, ac: Actor, frame: number, ground: number) 
       }
       x += (nx - x) * p;
       y += ((s.to ?? y) - y) * p;
+      if (s.size !== undefined) size += (s.size - size) * p; // 走向远处时变小
     }
     if (s.pose) {
       prevPose = pose;
@@ -78,9 +93,11 @@ const actorState = (scene: SceneData, ac: Actor, frame: number, ground: number) 
       }
     }
   }
-  const h = (RIG_H[ac.who] ?? 450) * (ac.scale ?? 1);
+  const seq = SEQS[ac.who];
+  const h = (seq ? person * (CAST[ac.who]?.height ?? 1) * (ac.scale ?? 1) : (RIG_H[ac.who] ?? 450) * (ac.scale ?? 1)) * size;
+  const cur = acts.filter((a) => a[0] <= frame).sort((p, q) => p[0] - q[0]).pop() ?? [-999, 'stand'];
   const alpha = (enterAt >= 0 ? prog(frame, enterAt, 14) : 1) * (1 - (ac.exit ? prog(frame, cueFrame(scene, ac.exit, 999), 20) : 0));
-  return {x, y, facing, walking, rot, pose, prevPose, poseStart, h, alpha, visible: frame >= enterAt};
+  return {x, y, facing, walking, rot, pose: seq ? cur[1] : pose, prevPose, poseStart, act: cur[1], actStart: cur[0], h, alpha, visible: frame >= enterAt};
 };
 
 /** 人物身上的部位（画面世界坐标） */
@@ -91,8 +108,40 @@ const partPos = (st: ReturnType<typeof actorState>, part: string): [number, numb
   return [st.x, st.y - st.h * 0.5];
 };
 
-const ActorView: React.FC<{scene: SceneData; ac: Actor & {silhouette?: boolean}; ground: number; light: Light; tint: string}> = ({scene, ac, ground, light, tint}) => {
+/** 连续帧人物：按动作取当前画稿（走路循环，其他动作播一遍停在最后一帧），不加任何抖动 */
+const SeqActorView: React.FC<{scene: SceneData; ac: Actor; ground: number; person: number; light: Light; tint: string}> = ({scene, ac, ground, person, light, tint}) => {
   const frame = useCurrentFrame();
+  const st = actorState(scene, ac, frame, ground, person);
+  if (!st.visible) return null;
+  const lib = SEQS[ac.who];
+  const name = lib[st.act] ? st.act : lib.stand ? 'stand' : Object.keys(lib)[0];
+  const sq = lib[name];
+  const n = Math.max(0, Math.floor((frame - Math.max(0, st.actStart)) / HOLD));
+  const idx = sq.loop ? n % sq.frames.length : Math.min(n, sq.frames.length - 1);
+  const k = st.h / sq.unit;
+  const src_ = src(`seq_${ac.who}/${name}/${sq.frames[idx]}`);
+  const box: React.CSSProperties = {position: 'absolute', left: -sq.ax * k, top: -sq.ay * k, width: sq.w * k, height: sq.h * k};
+  // 投影：朝光源的反方向倒在地上
+  const dir = st.x > light.x ? 1 : -1;
+  const len = Math.min(0.7, Math.max(0.2, 260 / Math.max(80, ground - light.y)));
+  const skew = dir * Math.min(50, Math.abs(st.x - light.x) / 12 + 16);
+  const look = ac.silhouette ? 'brightness(0.06) drop-shadow(0 0 3px rgba(255,170,110,0.55))' : `${tint} drop-shadow(${(light.x > st.x ? 1 : -1) * 3}px -1px 1px rgba(255,205,150,0.28))`;
+  return (
+    <div style={{position: 'absolute', left: 0, top: 0, opacity: st.alpha}}>
+      <div style={{position: 'absolute', left: st.x - st.h * 0.2, top: ground - st.h * 0.025, width: st.h * 0.4, height: st.h * 0.06, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 70%)'}} />
+      <div style={{position: 'absolute', left: st.x, top: ground, transform: `skewX(${skew}deg) scale(${st.facing}, ${-len})`, transformOrigin: '0 0', opacity: 0.3, filter: 'brightness(0) blur(4px)'}}>
+        <Img src={src_} style={box} />
+      </div>
+      <div style={{position: 'absolute', left: st.x, top: st.y, transform: `rotate(${st.rot}deg) scaleX(${st.facing})`, transformOrigin: '0 0', filter: look}}>
+        <Img src={src_} style={box} />
+      </div>
+    </div>
+  );
+};
+
+const ActorView: React.FC<{scene: SceneData; ac: Actor & {silhouette?: boolean}; ground: number; person?: number; light: Light; tint: string}> = ({scene, ac, ground, person = 560, light, tint}) => {
+  const frame = useCurrentFrame();
+  if (SEQS[ac.who]) return <SeqActorView scene={scene} ac={ac} ground={ground} person={person} light={light} tint={tint} />;
   const st = actorState(scene, ac, frame, ground);
   if (!st.visible) return null;
   const rigId = RIG_OF[ac.who];
@@ -153,12 +202,13 @@ const SpriteView: React.FC<{scene: SceneData; s: Sprite}> = ({scene, s}) => {
       src={src(s.img)}
       style={{
         position: 'absolute',
-        left: x - (s.w ?? s.h) / 2,
+        left: x,
         top: y - s.h,
         height: s.h,
         width: s.w,
         transformOrigin: '50% 100%',
-        transform: `scaleX(${s.flip ? -1 : 1}) scaleY(${flap}) rotate(${sway}deg)`,
+        // 按图片真实宽度居中（布景件有宽有窄，不能按正方形算）
+        transform: `translateX(-50%) scaleX(${s.flip ? -1 : 1}) scaleY(${flap}) rotate(${sway}deg)`,
         filter: depthLook(s.z),
         opacity: s.enter ? prog(frame, at, 10) : 1,
       }}
@@ -273,12 +323,13 @@ export const PuppetScene: React.FC<{scene: SceneData}> = ({scene}) => {
   const d = scene.data;
   const dur = scene.durationInFrames;
   const ground: number = d.ground ?? 1330;
+  const person: number = d.person ?? 560; // 这个镜头里成年人站在地面线上的身高（像素）
   const light: Light = d.light ?? {x: 980, y: 520};
   const fx = (d.fx ?? []) as string[];
   const actors = (d.actors ?? []) as (Actor & {silhouette?: boolean})[];
   const whoState = (who: string) => {
     const ac = actors.find((q) => q.who === who);
-    return ac ? actorState(scene, ac, frame, ground) : null;
+    return ac ? actorState(scene, ac, frame, ground, person) : null;
   };
   const kAt = (k: {cue?: string; t?: number}) => (k.cue ? cueFrame(scene, k.cue, 0) : Math.round((k.t ?? 0) * 30));
 
@@ -436,7 +487,7 @@ export const PuppetScene: React.FC<{scene: SceneData}> = ({scene}) => {
                 {actors
                   .filter((ac) => (ac.z ?? 1) === L.z)
                   .map((ac, j) => (
-                    <ActorView key={j} scene={scene} ac={ac} ground={ground} light={light} tint={tint} />
+                    <ActorView key={j} scene={scene} ac={ac} ground={ground} person={person} light={light} tint={tint} />
                   ))}
               </AbsoluteFill>
             ) : (
@@ -485,10 +536,11 @@ export const PuppetScene: React.FC<{scene: SceneData}> = ({scene}) => {
         if (b.fx === 'shards') return <Shards key={i} at={b.at} x={x} y={y} power={b.power} color={b.color} />;
         if (b.fx === 'slam') return <Slam key={i} at={b.at} text={b.text ?? ''} x={x} y={y} size={b.size} color={b.color} rot={b.rot} dur={b.dur} />;
         if (b.fx === 'glint') return <Glint key={i} at={b.at} x={x} y={y} dur={b.dur} />;
+        if (b.fx === 'whisper') return <Whisper key={i} at={b.at} text={b.text ?? ''} x={x} y={y} size={b.size} dur={b.dur} />;
         return null;
       })}
       {((d.inserts ?? []) as {cue: string; until: string; img: string; caption?: string}[]).map((q, i) => (
-        <Insert key={i} at={cueFrame(scene, q.cue, 0)} until={cueFrame(scene, q.until, dur)} img={src(q.img)} caption={q.caption} />
+        <Insert key={i} at={cueFrame(scene, q.cue, 0)} until={Math.max(cueFrame(scene, q.until, dur), cueFrame(scene, q.cue, 0) + 75)} img={src(q.img)} caption={q.caption} />
       ))}
       {d.title && (
         <div

@@ -90,23 +90,25 @@ def split(sheet: Image.Image, frames: int):
     for i in comps:
         m = lab == i
         ys, xs = np.where(m)
-        bottom = ys.max()
-        low = ys > bottom - (bottom - ys.min()) * 0.04
-        out.append({"box": st[i, :4].tolist(), "foot": (float(xs[low].mean()), float(bottom)), "height": int(st[i, cv2.CC_STAT_HEIGHT]), "mask": m})
+        top, bottom = ys.min(), ys.max()
+        # 水平基准用躯干中心（头顶往下 20%~50% 那一段的平均 x），不用两脚中点——走路时两脚前后交替，脚的中点会来回跳
+        band = (ys > top + (bottom - top) * 0.2) & (ys < top + (bottom - top) * 0.5)
+        cx = float(xs[band].mean()) if band.any() else float(xs.mean())
+        out.append({"box": st[i, :4].tolist(), "foot": (cx, float(bottom)), "height": int(st[i, cv2.CC_STAT_HEIGHT]), "width": int(st[i, cv2.CC_STAT_WIDTH]), "mask": m})
     return out, a
 
 
 def motion(comps):
     """相邻两帧轮廓（按脚底对齐）的平均差异：0 = 一模一样"""
-    if len(comps) < 2 or max(c["box"][2] for c in comps) > 900:
+    if len(comps) < 2 or max(c["box"][2] for c in comps) > 1300:
         return 0.0
     vals = []
     for c0, c1 in zip(comps[:-1], comps[1:]):
         can = []
         for c in (c0, c1):
             x0, y0, w, h = c["box"]
-            m = np.zeros((1400, 1000), bool)
-            ox, oy = int(500 - (c["foot"][0] - x0)), int(1300 - (c["foot"][1] - y0))
+            m = np.zeros((2200, 2600), bool)
+            ox, oy = int(1300 - (c["foot"][0] - x0)), int(2100 - (c["foot"][1] - y0))
             m[oy:oy + h, ox:ox + w] = c["mask"][y0:y0 + h, x0:x0 + w]
             can.append(m)
         vals.append(1 - (can[0] & can[1]).sum() / max(1, (can[0] | can[1]).sum()))
@@ -134,6 +136,9 @@ def main():
     ap.add_argument("--ref")
     ap.add_argument("--seed0", type=int, default=1)
     ap.add_argument("--poses", help="火柴人姿势图（同样的排版），作为第二张参考图约束每一帧的姿势")
+    ap.add_argument("--cell", type=int, default=512, help="每帧格子宽度（躺着的人用 1024）")
+    ap.add_argument("--unit-width", action="store_true", help="身高单位按人物宽度算（躺着的人）")
+    ap.add_argument("--any-facing", action="store_true", help="不要求每帧都朝右（转头看镜头之类）")
     ap.add_argument("--tag", default="", help="输出到 seq_<角色>_<tag>（对比不同生成方法用）")
     ap.add_argument("--guides", help="姿势草稿目录（按文件名排序）：每张草稿让模型重画成完整人物，作为关键帧（不再画连续图）")
     args = ap.parse_args()
@@ -160,14 +165,17 @@ def main():
         ys = np.where(rest)[0] if rest is not None else np.array([0, rig["ground"]])
         finish(args, folder, out, keys, float(rig["spine"][0][0]), float(ys.max()), float(ys.max() - ys.min()))
         return
-    if args.frames <= 4:
-        size = (512 * args.frames, 1024)
+    if args.frames <= 4 or args.cell > 512:
+        size = (min(2048, args.cell * args.frames), 1024)
         layout = f"{args.frames} frames of the same character side by side in one row, read from left to right"
     else:  # 多帧排成两行，避免挤在一起粘连
         cols = (args.frames + 1) // 2
         size = (512 * cols, 2048)
         layout = f"{args.frames} frames of the same character in two rows of {cols}, read left to right along the top row, then left to right along the bottom row, every frame well separated"
-    prompt = f"A character animation sequence sheet: {layout}, showing one continuous action. {args.desc} {STYLE}"
+    style = STYLE if not args.any_facing else (
+        "Every frame shows the whole body at the same size with the feet on the same ground line, evenly spaced. Keep exactly the same character as the reference image: "
+        "same face, hairstyle, clothes, colors and soft painterly art style. Plain flat light gray background, no panel borders, no text, no shadows.")
+    prompt = f"A character animation sequence sheet: {layout}, showing one continuous action. {args.desc} {style}"
     refs = [ref]
     if args.poses:
         refs.append(Image.open(args.poses).convert("RGB"))
@@ -182,7 +190,8 @@ def main():
         faces = [facing_right(det, rgb[c["box"][1]:c["box"][1] + c["box"][3], c["box"][0]:c["box"][0] + c["box"][2]]) for c in comps]
         hs = np.array([c["height"] for c in comps]) if comps else np.array([1])
         change = motion(comps)
-        score = (60 if len(comps) == args.frames else -60 * abs(len(comps) - args.frames)) + 15 * sum(f is True for f in faces) - 30 * sum(f is False for f in faces) - 200 * float(hs.std() / hs.mean())
+        face_score = 0 if args.any_facing else 15 * sum(f is True for f in faces) - 30 * sum(f is False for f in faces)
+        score = (60 if len(comps) == args.frames else -60 * abs(len(comps) - args.frames)) + face_score - 200 * float(hs.std() / hs.mean())
         score += 80 * min(change, 0.25) - 120 * max(0, change - 0.45)  # 相邻帧要有变化，但不能跳太大
         print(f"  候选 {seed}: {len(comps)} 人，朝右 {faces}，身高差 {hs.std() / hs.mean():.2f}，相邻变化 {change:.2f} → {score:.0f}", flush=True)
         sheet.save(out / f"_sheet_{seed}.jpg")
@@ -197,7 +206,7 @@ def main():
     L = max(c["foot"][0] - c["box"][0] for c in comps) + 30
     R = max(c["box"][0] + c["box"][2] - c["foot"][0] for c in comps) + 30
     U = max(c["foot"][1] - c["box"][1] for c in comps) + 30
-    cw, ch = int(L + R), int(U + 20)
+    cw, ch = int(L + R) + 60, int(U + 20)  # 多留一点边距，四舍五入不会越界
     keys = []
     for c in comps:
         can = np.zeros((ch, cw, 3), np.uint8) + bg
@@ -205,10 +214,13 @@ def main():
         m = c["mask"][y0:y0 + h, x0:x0 + w]
         m = cv2.dilate(m.astype(np.uint8), np.ones((7, 7), np.uint8)) > 0
         ox, oy = int(round(L - (c["foot"][0] - x0))), int(round(U - (c["foot"][1] - y0)))
-        region = can[oy:oy + h, ox:ox + w]
-        region[m] = rgb[y0:y0 + h, x0:x0 + w][m]
+        hh, ww = min(h, ch - oy), min(w, cw - ox)  # 裁到画布范围内
+        region = can[oy:oy + hh, ox:ox + ww]
+        mm = m[:hh, :ww]
+        region[mm] = rgb[y0:y0 + hh, x0:x0 + ww][mm]
         keys.append(can)
-    finish(args, folder, out, keys, float(L), float(U), float(np.median([c["height"] for c in comps])), cw, ch)
+    unit = float(np.median([c["width"] for c in comps])) * 0.95 if args.unit_width else float(np.median([c["height"] for c in comps]))
+    finish(args, folder, out, keys, float(L), float(U), unit, cw, ch)
 
 
 GUIDE_PROMPT = (
