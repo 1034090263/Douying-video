@@ -377,8 +377,10 @@ def main():
     # ---------- 输出 ----------
     out = folder / f"rig_{args.cid}"
     out.mkdir(exist_ok=True)
+    old_faces = json.loads((out / "rig.json").read_text()).get("faces", []) if (out / "rig.json").exists() else []
     for f in out.glob("*.png"):
-        f.unlink()
+        if not f.name.startswith("head_"):  # 表情图（scripts/faces.py 生成）保留
+            f.unlink()
     pivots = {n: limbs[n][0][0] for n in limbs}
     pivots["torso"], pivots["head"] = hip, head_pivot
     parts = {}
@@ -422,6 +424,12 @@ def main():
            "order": [o for o in order if o in parts], "parts": parts,
            "keypoints": {kk: [float(v[0]), float(v[1])] for kk, v in k.items()}, "hand": [float(hand[0]), float(hand[1])],
            "feet": {t: [float(v) for v in limbs[f"leg_{t}"][0][2]] for t in ("near", "far")}}
+    # 网格变形用：每条肢体的关节链（手臂 肩→肘→腕外；腿 胯→膝→踝→脚尖外）、肢体半宽、脊柱（胯→颈）
+    P = lambda v: [float(v[0]), float(v[1])]
+    rig["chains"] = {n: [P(v) for v in [c[0]] + list(lower[n])] for n, (c, _) in limbs.items()}
+    rig["widths"] = {n: float(w) for n, w in widths.items()}
+    rig["spine"] = [P(hip), P(neck)]
+    rig["faces"] = [f for f in old_faces if (out / f"head_{f}.png").exists()]
     (out / "rig.json").write_text(json.dumps(rig, ensure_ascii=False, indent=1))
     print(f"{args.cid}: 部件 {rig['order']}，朝向={'右' if facing > 0 else '左'}")
 

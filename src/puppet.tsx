@@ -2,7 +2,8 @@ import React from 'react';
 import {AbsoluteFill, Easing, Img, interpolate, random, staticFile, useCurrentFrame} from 'remotion';
 import {DISPLAY, SCENE_STARTS, SceneData, TIMELINE, beatPulse, cueFrame, prog} from './lib';
 import {Sfx} from './ui';
-import {Rig, RigPose, RigPuppet, armTo, standPose, walkPose} from './rig';
+import {MeshPuppet, meshRig} from './mesh';
+import {actorBody} from './acting';
 import {FocusLines, Glint, Ink, Insert, RgbDefs, Shards, Slam, heartK} from './climax';
 
 /**
@@ -38,81 +39,6 @@ type Actor = {who: string; x: number; y?: number; scale?: number; facing?: 1 | -
 
 const RIG_OF: Record<string, string> = {man: 'yosuke', girl: 'yukiho_kid', boy: 'ryoji_kid'};
 const RIG_H: Record<string, number> = {man: 560, girl: 430, boy: 445};
-const RIGS = ((TIMELINE as unknown as {rigs?: Record<string, Rig>}).rigs ?? {}) as Record<string, Rig>;
-
-const easeOutBack = Easing.bezier(0.34, 1.56, 0.64, 1);
-const add = (a: RigPose, b: RigPose): RigPose => {
-  const o: RigPose = {...a};
-  for (const k of Object.keys(b) as (keyof RigPose)[]) o[k] = (o[k] ?? 0) + (b[k] ?? 0);
-  return o;
-};
-const lerpPose = (a: RigPose, b: RigPose, t: number): RigPose => {
-  const o: RigPose = {};
-  for (const k of new Set([...Object.keys(a), ...Object.keys(b)]) as Set<keyof RigPose>) o[k] = (a[k] ?? 0) + ((b[k] ?? 0) - (a[k] ?? 0)) * t;
-  return o;
-};
-
-/**
- * 某个姿势在开始后第 k 帧的样子（带预备动作和余势）：
- *   stand 站立 · raise 举起 · shock 先一缩再猛地后仰、发抖 · strike 举高→猛刺下去→停住→收回
- *   recoil 被击中后仰 · down 低头 · fall 倒下时手臂甩起 · reach 伸手
- * 角度在人偶自己的坐标里：f = rig.facing，正值 = 往前（顺时针）
- */
-const poseAt = (rig: Rig, pose: string, walking: boolean, frame: number, k: number): RigPose => {
-  const f = rig.facing;
-  const base: RigPose = walking ? walkPose(rig, frame / 4.5) : standPose(rig);
-  const up = -90 + 20 * f; // 朝前上方
-  const fwdDown = 25 * f > 0 ? 25 : 155; // 朝前下方
-  const decay = (tau: number) => Math.exp(-k / tau);
-  switch (pose) {
-    case 'raise':
-      return {...base, ...armTo(rig, up + 5 * f), lean: -3 * f};
-    case 'shock': {
-      const pre = k < 4 ? k / 4 : Math.max(0, 1 - (k - 4) / 3); // 先往里缩
-      const jolt = k < 4 ? 0 : 1;
-      return {...base, ...armTo(rig, up + 45 * f), lean: (4 * pre - 10 * jolt) * f + Math.sin(k * 2.6) * 1.6 * decay(30), head: -12 * jolt * f + Math.sin(k * 3.1) * 2 * decay(25)};
-    }
-    case 'strike': {
-      // 0-4 举高 · 4-8 猛刺下去 · 8-18 停住 · 18-30 收回到举起
-      const hi = armTo(rig, up - 15 * f).arm ?? 0;
-      const lo = armTo(rig, fwdDown).arm ?? 0;
-      const rs = armTo(rig, up + 5 * f).arm ?? 0;
-      const arm = k < 4 ? rs + (hi - rs) * (k / 4) : k < 8 ? hi + (lo - hi) * Easing.in(Easing.quad)((k - 4) / 4) : k < 18 ? lo : lo + (rs - lo) * Easing.inOut(Easing.cubic)(Math.min(1, (k - 18) / 12));
-      const lean = (k < 4 ? -6 * (k / 4) : k < 18 ? 10 : 10 - 13 * Math.min(1, (k - 18) / 12)) * f;
-      return {...base, arm, lean, head: (k >= 4 && k < 18 ? 8 : 0) * f};
-    }
-    case 'recoil': {
-      const r = k < 5 ? k / 5 : 0.55 + 0.45 * decay(8);
-      return {...base, lean: -14 * r * f, head: -20 * r * f + Math.sin(k * 2.2) * 2 * decay(20), ...armTo(rig, up + 70 * f)};
-    }
-    case 'down':
-      return {...base, head: 18 * f, lean: 5 * f};
-    case 'fall':
-      return {...base, ...armTo(rig, up + 20 * f), arm_far: -40 * f, head: -25 * f, leg_near: 18 * f, leg_far: -10 * f};
-    case 'reach':
-      return {...base, ...armTo(rig, f > 0 ? -10 : 190)};
-    default:
-      return base;
-  }
-};
-
-/** 人偶姿势：上一个姿势 → 当前姿势用带回弹的缓动过渡；再叠加呼吸、走路时的前倾和头部反向晃动 */
-const rigPose = (rig: Rig, st: {pose: string; prevPose: string; poseStart: number; walking: boolean}, frame: number, seed: number): RigPose => {
-  const k = frame - st.poseStart;
-  const cur = poseAt(rig, st.pose, st.walking, frame, k);
-  const prev = poseAt(rig, st.prevPose, st.walking, frame, 999);
-  const t = st.pose === 'strike' || st.pose === 'shock' ? 1 : easeOutBack(Math.min(1, k / 9));
-  const f = rig.facing;
-  const life: RigPose = st.walking
-    ? {lean: 4 * f + Math.sin((frame / 4.5) * 2) * 1.2 * f, head: -Math.sin((frame / 4.5) * 2) * 2.5 * f}
-    : {
-        lean: Math.sin(frame / 38 + seed) * 1.3 * f,
-        head: Math.sin(frame / 53 + seed * 2) * 2.4 * f + Math.sin(frame / 17 + seed) * 0.6,
-        arm: Math.sin(frame / 34 + seed) * 2.5,
-        arm_far: -Math.sin(frame / 34 + seed) * 2.5,
-      };
-  return add(lerpPose(prev, cur, Math.max(0, Math.min(1.2, t))), life);
-};
 
 type Light = {x: number; y: number; color?: string};
 
@@ -170,28 +96,24 @@ const ActorView: React.FC<{scene: SceneData; ac: Actor & {silhouette?: boolean};
   const st = actorState(scene, ac, frame, ground);
   if (!st.visible) return null;
   const rigId = RIG_OF[ac.who];
-  const rig = RIGS[rigId];
+  const rig = meshRig(rigId);
   if (!rig) return null;
   const {x, y, facing, rot, h} = st;
-  const bob = st.walking ? -Math.abs(Math.sin(frame / 4.5)) * 7 : Math.sin(frame / 20 + ac.x) * 1.5;
-  const pose = rigPose(rig, st, frame, ac.x * 0.013);
+  const {body, lift} = actorBody(st, frame, ac.x * 0.013);
   const prop = ac.who === 'boy' && (st.pose === 'raise' || st.pose === 'strike') ? 'prop_scissors.png' : undefined;
   // 投影：朝光源的反方向倒在地上；光源越低影子越长
   const dir = x > light.x ? 1 : -1;
   const len = Math.min(0.75, Math.max(0.22, 260 / Math.max(80, ground - light.y)));
   const skew = dir * Math.min(55, Math.abs(x - light.x) / 12 + 18);
-  const lift = Math.max(0, -bob);
-  const look = ac.silhouette ? 'brightness(0.06) drop-shadow(0 0 3px rgba(255,170,110,0.55))' : `${tint} drop-shadow(${(light.x > x ? 1 : -1) * facing * 4}px -1px 1px rgba(255,205,150,0.32))`;
+  const look = ac.silhouette ? 'brightness(0.06) drop-shadow(0 0 3px rgba(255,170,110,0.55))' : `${tint} drop-shadow(${(light.x > x ? 1 : -1) * 4}px -1px 1px rgba(255,205,150,0.32))`;
   return (
-    <g opacity={st.alpha}>
-      <g transform={`translate(${x}, ${ground}) skewX(${skew}) scale(${facing}, ${-len}) rotate(${rot})`} style={{filter: 'brightness(0) blur(5px)'}} opacity={0.32}>
-        <RigPuppet id={rigId} pose={pose} height={h} />
-      </g>
-      <ellipse cx={x} cy={ground + 4} rx={h * 0.2 * (1 - lift / 60)} ry={h * 0.028} fill="rgba(0,0,0,0.5)" style={{filter: 'blur(6px)'}} />
-      <g transform={`translate(${x}, ${y + bob}) rotate(${rot}) scale(${facing}, 1)`} style={{filter: look}}>
-        <RigPuppet id={rigId} pose={pose} height={h} prop={prop} />
-      </g>
-    </g>
+    <div style={{position: 'absolute', left: 0, top: 0, opacity: st.alpha}}>
+      {/* 接触阴影 */}
+      <div style={{position: 'absolute', left: x - h * 0.2, top: ground - h * 0.025, width: h * 0.4, height: h * 0.06, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 70%)'}} />
+      <div style={{position: 'absolute', left: x, top: y}}>
+        <MeshPuppet id={rigId} body={body} height={h} flip={(facing * rig.facing) as 1 | -1} rot={rot} lift={lift} filter={look} shadow={{skew, len, opacity: 0.32}} prop={prop} frameKey={frame} />
+      </div>
+    </div>
   );
 };
 
@@ -511,13 +433,11 @@ export const PuppetScene: React.FC<{scene: SceneData}> = ({scene}) => {
                         </div>
                       );
                     })}
-                <svg width={1080} height={1920} style={{position: 'absolute', overflow: 'visible'}}>
-                  {actors
-                    .filter((ac) => (ac.z ?? 1) === L.z)
-                    .map((ac, j) => (
-                      <ActorView key={j} scene={scene} ac={ac} ground={ground} light={light} tint={tint} />
-                    ))}
-                </svg>
+                {actors
+                  .filter((ac) => (ac.z ?? 1) === L.z)
+                  .map((ac, j) => (
+                    <ActorView key={j} scene={scene} ac={ac} ground={ground} light={light} tint={tint} />
+                  ))}
               </AbsoluteFill>
             ) : (
               <AbsoluteFill key={`s${i}`} style={at(L.z)}>
