@@ -153,7 +153,8 @@
     "storage": "an old wooden storage shed behind a school at dusk, door slightly open, dark inside, dry leaves, ominous mood, no people",
     "neon": "a busy 1970s Osaka Shinsaibashi street at night with glowing neon signs without readable text, rain-wet pavement, no people in foreground",
     "hotel": "a dim 1970s hotel corridor at night, a row of doors, one door slightly open with light spilling out, red carpet, eerie quiet, no people",
-    "office": "a small cramped 1979 office room with early personal computers, cassette tapes and game boxes on shelves, a desk with ledgers, fluorescent light, no people"
+    "office": "a small cramped 1979 office room with early personal computers, cassette tapes and game boxes on shelves, a desk with ledgers, fluorescent light, no people",
+    "ruins_room": "inside an abandoned unfinished concrete building, an empty bare concrete room, a large empty window hole on the right with warm orange dusk light streaming in, visible light shafts and floating dust, exposed rebar, a square ventilation duct opening low on the left wall, rubble and old newspapers on the floor, deep shadows, no people"
   },
   "props": {
     "scissors": "a pair of small paper-cutting scissors with red plastic handles, slightly open",
@@ -165,7 +166,16 @@
     "photo": "an old faded instant photograph showing a man and a woman walking out of a building at night, slightly bent",
     "keychain": "a small red daruma doll keychain with a metal ring",
     "ticket": "a torn old cinema ticket stub, paper, no readable text",
-    "camera": "an old 1970s film camera"
+    "camera": "an old 1970s film camera",
+    "fg_weeds": "a wide clump of tall dry wild grass and weeds, wispy stems, seen from the side",
+    "fg_rubble": "a pile of broken grey concrete rubble chunks with bent rusty steel rebar sticking out",
+    "fg_fence": "a long section of an old rusty corrugated metal construction fence with a few loose panels, wide horizontal",
+    "fg_pole": "an old 1970s Japanese wooden utility pole with a small round street lamp and a transformer, tall and thin",
+    "fg_duct": "a long horizontal square galvanized sheet-metal ventilation duct lying on the ground, its open dark square end facing the viewer at an angle, dented and rusty",
+    "fg_planks": "a messy stack of old wooden planks and scaffolding boards leaning on each other",
+    "fg_drum": "a rusty old metal oil drum, slightly dented",
+    "fg_pillar": "a rough unfinished grey concrete pillar with exposed rusty rebar on top, tall vertical",
+    "fg_crow": "a black crow flying with wings spread wide, side view"
   },
   "prop_style": "single object, centered, plain flat light gray background, no shadow, no text",
   "prop_art_style": "soft painterly illustration, smooth airbrushed gradients, soft glow and rim light, muted cool blue palette, realistic inanimate object, no face, no eyes, no text"

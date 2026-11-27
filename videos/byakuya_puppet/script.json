@@ -6,7 +6,6 @@
     "font": "serif",
     "music": "piano",
     "bpm": 72,
-    "transition": "fade",
     "colors": {
       "red": "#b3261e",
       "gold": "#e8e4dc",
@@ -56,16 +55,100 @@
       },
       "narration": "1973年10月的那个下午，废楼里究竟发生了什么？十九年后，老刑警笹垣，终于把拼图拼完整了。",
       "data": {
-        "scenery": [
-          "lamp"
+        "bg": "bg_ruins.png",
+        "frame": [
+          1.05,
+          0,
+          -40
         ],
-        "lightFrom": 0,
-        "light": [
+        "ground": 1500,
+        "camera": {
+          "from": [
+            1.0,
+            0,
+            0
+          ],
+          "to": [
+            1.14,
+            0,
+            40
+          ]
+        },
+        "light": {
+          "x": 60,
+          "y": 980,
+          "color": "rgba(255,170,110,0.55)"
+        },
+        "grade": {
+          "color": "#ff8a40",
+          "amount": 0.16
+        },
+        "dimFrom": 1,
+        "dim": [
           {
             "cue": "1973年",
-            "to": 1,
+            "to": 0.15,
             "dur": 50
+          },
+          {
+            "cue": "十九年后",
+            "to": 0.35,
+            "dur": 30
           }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_pole.png",
+            "x": 930,
+            "y": 1600,
+            "h": 1350,
+            "z": 0.8
+          },
+          {
+            "img": "prop_fg_crow.png",
+            "x": 1250,
+            "y": 560,
+            "h": 90,
+            "z": 0.6,
+            "fly": [
+              -250,
+              420
+            ],
+            "enter": "1973年"
+          },
+          {
+            "img": "prop_fg_crow.png",
+            "x": 1350,
+            "y": 660,
+            "h": 70,
+            "z": 0.55,
+            "fly": [
+              -150,
+              500
+            ],
+            "enter": "下午"
+          },
+          {
+            "img": "prop_fg_weeds.png",
+            "x": 60,
+            "y": 2080,
+            "h": 760,
+            "z": 1.5,
+            "sway": 1.5
+          },
+          {
+            "img": "prop_fg_weeds.png",
+            "x": 1040,
+            "y": 2100,
+            "h": 700,
+            "z": 1.65,
+            "sway": 1.2,
+            "flip": true
+          }
+        ],
+        "fx": [
+          "dust",
+          "rays"
         ],
         "title": {
           "cue": "1973年",
@@ -83,19 +166,96 @@
       },
       "narration": "那天，当铺老板桐原洋介，领着一个小女孩，走进了那栋停工的大楼。女孩叫西本雪穗。洋介取出的那一百万日元，是准备付给她母亲的钱。",
       "data": {
-        "scenery": [
-          "building",
-          "lamp"
+        "transition": "zoom",
+        "bg": "bg_ruins.png",
+        "frame": [
+          1.65,
+          0,
+          -1194
+        ],
+        "ground": 1380,
+        "camera": {
+          "from": [
+            1.06,
+            90,
+            0
+          ],
+          "to": [
+            1.0,
+            -70,
+            0
+          ]
+        },
+        "cam": [
+          {
+            "cue": "西本雪穗",
+            "to": [
+              1.32,
+              180,
+              -40
+            ],
+            "dur": 16
+          },
+          {
+            "cue": "一百万",
+            "to": [
+              1.04,
+              -40,
+              0
+            ],
+            "dur": 20
+          }
+        ],
+        "light": {
+          "x": 1000,
+          "y": 260,
+          "color": "rgba(255,186,120,0.55)"
+        },
+        "grade": {
+          "color": "#ff9a50",
+          "amount": 0.14
+        },
+        "sprites": [
+          {
+            "img": "prop_fg_fence.png",
+            "x": 110,
+            "y": 1350,
+            "h": 230,
+            "w": 760,
+            "z": 0.85
+          },
+          {
+            "img": "prop_fg_drum.png",
+            "x": 930,
+            "y": 1360,
+            "h": 230,
+            "z": 0.9
+          },
+          {
+            "img": "prop_fg_rubble.png",
+            "x": 930,
+            "y": 2060,
+            "h": 560,
+            "z": 1.3
+          },
+          {
+            "img": "prop_fg_weeds.png",
+            "x": 70,
+            "y": 2120,
+            "h": 820,
+            "z": 1.55,
+            "sway": 1.5
+          }
         ],
         "actors": [
           {
             "who": "man",
-            "x": -200,
-            "scale": 1.15,
+            "x": -180,
+            "scale": 0.95,
             "steps": [
               {
                 "cue": "那天",
-                "walk": 660,
+                "walk": 520,
                 "dur": 230
               }
             ],
@@ -104,16 +264,20 @@
           {
             "who": "girl",
             "x": -380,
-            "scale": 1.15,
+            "scale": 1.0,
             "steps": [
               {
                 "cue": "那天",
-                "walk": 520,
+                "walk": 400,
                 "dur": 240
               }
             ],
             "exit": "一百万"
           }
+        ],
+        "fx": [
+          "dust",
+          "rays"
         ]
       }
     },
@@ -126,21 +290,102 @@
       },
       "narration": "这一幕，被洋介的儿子亮司看见了。他没有走大门，而是从孩子们常爬的通风管，钻进了大楼。",
       "data": {
-        "scenery": [
-          "building",
-          "duct"
+        "transition": "whip",
+        "bg": "bg_ruins.png",
+        "frame": [
+          1.65,
+          -170,
+          -1194
+        ],
+        "ground": 1380,
+        "camera": {
+          "from": [
+            1.04,
+            -60,
+            0
+          ],
+          "to": [
+            1.0,
+            60,
+            0
+          ]
+        },
+        "cam": [
+          {
+            "cue": "看见了",
+            "to": [
+              1.35,
+              -250,
+              -60
+            ],
+            "dur": 10
+          },
+          {
+            "cue": "通风管",
+            "to": [
+              1.02,
+              60,
+              0
+            ],
+            "dur": 22
+          }
+        ],
+        "hits": [
+          "看见了"
+        ],
+        "light": {
+          "x": 1000,
+          "y": 260,
+          "color": "rgba(255,186,120,0.55)"
+        },
+        "grade": {
+          "color": "#ff9a50",
+          "amount": 0.14
+        },
+        "sprites": [
+          {
+            "img": "prop_fg_planks.png",
+            "x": 800,
+            "y": 1350,
+            "h": 290,
+            "z": 0.9
+          },
+          {
+            "img": "prop_fg_duct.png",
+            "x": 300,
+            "y": 1470,
+            "h": 340,
+            "w": 660,
+            "z": 1.02
+          },
+          {
+            "img": "prop_fg_weeds.png",
+            "x": 40,
+            "y": 2120,
+            "h": 780,
+            "z": 1.5,
+            "sway": 1.5
+          },
+          {
+            "img": "prop_fg_rubble.png",
+            "x": 1040,
+            "y": 2080,
+            "h": 600,
+            "z": 1.6
+          }
         ],
         "actors": [
           {
             "who": "boy",
-            "x": 1120,
-            "scale": 1.2,
+            "x": 1180,
+            "scale": 1.0,
             "facing": -1,
             "enter": "这一幕",
+            "exit": "大楼",
             "steps": [
               {
                 "cue": "这一幕",
-                "walk": 900,
+                "walk": 820,
                 "dur": 40
               },
               {
@@ -152,15 +397,9 @@
                 "pose": "stand"
               },
               {
-                "cue": "通风管",
-                "to": "duct",
-                "walk": 880,
-                "dur": 20
-              },
-              {
                 "cue": "钻进了",
-                "walk": 260,
-                "dur": 110
+                "walk": 170,
+                "dur": 70
               }
             ]
           }
@@ -171,6 +410,9 @@
             "name": "stamp",
             "volume": 0.4
           }
+        ],
+        "fx": [
+          "dust"
         ]
       }
     },
@@ -183,32 +425,114 @@
       },
       "narration": "接下来发生的事，书里没有明写。我们只知道，男孩手里，握着那把剪纸用的剪刀。一下，又一下。等一切停下来，桐原洋介已经倒在了地上。",
       "data": {
-        "scenery": [],
-        "lightFrom": 0.55,
-        "light": [
+        "transition": "wipe",
+        "bg": "bg_ruins_room.png",
+        "frame": [
+          1.6,
+          -150,
+          -1100
+        ],
+        "ground": 1380,
+        "camera": {
+          "from": [
+            1.0,
+            0,
+            0
+          ],
+          "to": [
+            1.12,
+            40,
+            0
+          ]
+        },
+        "cam": [
+          {
+            "cue": "剪刀",
+            "to": [
+              1.38,
+              260,
+              90
+            ],
+            "dur": 14
+          },
+          {
+            "cue": "等一切",
+            "to": [
+              1.04,
+              -40,
+              0
+            ],
+            "dur": 30
+          }
+        ],
+        "light": {
+          "x": 900,
+          "y": 160,
+          "color": "rgba(255,180,110,0.6)"
+        },
+        "grade": {
+          "color": "#ff8040",
+          "amount": 0.18,
+          "bright": 0.95
+        },
+        "dimFrom": 0.35,
+        "dim": [
           {
             "cue": "握着",
-            "to": 0.8,
+            "to": 0.15,
             "dur": 20
           },
           {
             "cue": "一下",
-            "to": 0.35,
-            "dur": 10
+            "to": 0.55,
+            "dur": 8
           },
           {
             "cue": "等一切",
-            "to": 0.55,
+            "to": 0.3,
             "dur": 40
+          }
+        ],
+        "sprites": [
+          {
+            "img": "prop_fg_pillar.png",
+            "x": 10,
+            "y": 2150,
+            "h": 2200,
+            "z": 1.5
+          },
+          {
+            "img": "prop_fg_planks.png",
+            "x": 960,
+            "y": 2080,
+            "h": 560,
+            "z": 1.35
           }
         ],
         "actors": [
           {
-            "who": "boy",
-            "x": 330,
-            "scale": 1.7,
-            "enter": "握着",
+            "who": "man",
+            "x": 760,
+            "scale": 1.05,
+            "facing": -1,
             "steps": [
+              {
+                "cue": "桐原洋介",
+                "pose": "fall"
+              }
+            ]
+          },
+          {
+            "who": "boy",
+            "x": 60,
+            "scale": 1.2,
+            "enter": "男孩",
+            "steps": [
+              {
+                "cue": "男孩",
+                "walk": 330,
+                "dur": 50
+              },
               {
                 "cue": "剪刀",
                 "pose": "raise"
@@ -216,19 +540,6 @@
               {
                 "cue": "倒在了地上",
                 "pose": "down"
-              }
-            ]
-          },
-          {
-            "who": "man",
-            "x": 700,
-            "scale": 1.25,
-            "facing": -1,
-            "enter": "桐原洋介",
-            "steps": [
-              {
-                "cue": "桐原洋介",
-                "pose": "fall"
               }
             ]
           }
@@ -240,6 +551,11 @@
         "hits": [
           "一下",
           "又一下"
+        ],
+        "fx": [
+          "rays",
+          "dust",
+          "flicker"
         ]
       }
     },
@@ -253,74 +569,138 @@
       },
       "narration": "两个孩子从通风管里爬了出去，谁也没有说出这个秘密。从那天起，一个走进了白天，一个留在了黑夜。",
       "data": {
-        "scenery": [
-          "building",
-          "duct"
+        "transition": "dip",
+        "bg": "bg_ruins.png",
+        "frame": [
+          1.65,
+          -170,
+          -1194
         ],
+        "ground": 1380,
+        "camera": {
+          "from": [
+            1.08,
+            40,
+            0
+          ],
+          "to": [
+            1.0,
+            0,
+            0
+          ]
+        },
+        "cam": [
+          {
+            "cue": "从那天起",
+            "to": [
+              0.98,
+              0,
+              0
+            ],
+            "dur": 40
+          }
+        ],
+        "light": {
+          "x": 1060,
+          "y": 300,
+          "color": "rgba(255,214,170,0.45)"
+        },
+        "grade": {
+          "color": "#3a5aa8",
+          "amount": 0.22,
+          "bright": 0.88
+        },
         "split": "从那天起",
+        "sprites": [
+          {
+            "img": "prop_fg_planks.png",
+            "x": 800,
+            "y": 1350,
+            "h": 290,
+            "z": 0.9
+          },
+          {
+            "img": "prop_fg_crow.png",
+            "x": -200,
+            "y": 520,
+            "h": 80,
+            "z": 0.6,
+            "fly": [
+              1300,
+              380
+            ],
+            "enter": "秘密",
+            "flip": true
+          },
+          {
+            "img": "prop_fg_duct.png",
+            "x": 300,
+            "y": 1470,
+            "h": 340,
+            "w": 660,
+            "z": 1.02
+          },
+          {
+            "img": "prop_fg_weeds.png",
+            "x": 40,
+            "y": 2120,
+            "h": 780,
+            "z": 1.5,
+            "sway": 1.5
+          },
+          {
+            "img": "prop_fg_rubble.png",
+            "x": 1040,
+            "y": 2080,
+            "h": 600,
+            "z": 1.6
+          }
+        ],
         "actors": [
           {
             "who": "girl",
-            "x": 300,
-            "y": "duct",
-            "scale": 1.2,
+            "x": 90,
+            "scale": 1.0,
+            "enter": "两个孩子",
             "steps": [
               {
                 "cue": "两个孩子",
-                "pose": "stand"
-              },
-              {
-                "cue": "两个孩子",
-                "walk": 760,
-                "dur": 100
-              },
-              {
-                "cue": "谁也没有",
-                "pose": "stand"
-              },
-              {
-                "cue": "谁也没有",
-                "to": "ground",
-                "dur": 20
+                "walk": 620,
+                "dur": 90
               },
               {
                 "cue": "走进了白天",
-                "walk": 1150,
-                "dur": 90
+                "walk": 1250,
+                "dur": 100
               }
             ]
           },
           {
             "who": "boy",
-            "x": 160,
-            "y": "duct",
-            "scale": 1.2,
+            "x": 60,
+            "scale": 1.0,
+            "enter": "爬了出去",
             "steps": [
               {
-                "cue": "两个孩子",
-                "pose": "stand"
-              },
-              {
-                "cue": "两个孩子",
-                "walk": 620,
-                "dur": 100
+                "cue": "爬了出去",
+                "walk": 430,
+                "dur": 70
               },
               {
                 "cue": "谁也没有",
                 "pose": "down"
               },
               {
-                "cue": "谁也没有",
-                "to": "ground",
-                "dur": 20
-              },
-              {
                 "cue": "留在了黑夜",
-                "walk": -160,
-                "dur": 110
+                "walk": -220,
+                "dur": 120
               }
             ]
           }
+        ],
+        "fx": [
+          "dust",
+          "fog"
         ]
       }
     }
